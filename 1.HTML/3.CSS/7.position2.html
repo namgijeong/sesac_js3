@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>position2</title>
+    <style>
+        .bg{
+            height:300px;
+            background-color: orange;
+        }
+        .center{
+            background-color: orangered;
+        }
+        .fixed{
+            width:100px;
+            height:100px;
+            background-color: teal;
+            /* 창의 크기가 어떻든 항상 같은 위치를 유지한다 */
+            position:fixed;
+            bottom:50px;
+            right:50px;
+
+            background-image:url("./images/starbucks_logo.png");
+            background-size:100% 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="bg center"></div>
+    <div class="bg"></div>
+    <div class="fixed"></div>
+</body>
+</html>
