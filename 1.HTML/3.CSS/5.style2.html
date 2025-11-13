@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이미지를 통한 페이지 흐름 이해하기</title>
+    <style>
+        #img1{
+            /* float 속성은 부모 태그 바깥으로 삐져나간다 */
+            float:left;
+            margin-right:20px;
+            padding-right:20px;
+            width:300px;
+            height:350px;
+            border:1px dashed red;
+        }
+        #img2{
+            float:right;
+            margin-left:50px;
+            padding:10px;
+            width:300px;
+            height:350px;
+            border:1px dotted blue;
+        }
+        .container{
+            border:3px dashed orange;
+        }
+        #red{
+            color:red;
+        }
+    </style>
+</head>
+<body>
+    <h1>이미지를 통한 페이지 흐름 이해하기</h1>
+    <div class="container">
+        <img id="img1" src="images/april_sakura.jpg" width="200px"/>
+        <img id="img2" src="images/july_sea.jpg" width="200px"/>
+        <p>Lorem ipsum <span id="red">dolor</span> sit amet consectetur adipisicing elit. Vel alias, perferendis ex culpa quod asperiores sit mollitia doloremque dignissimos hic eveniet earum assumenda sed quae voluptatem sint eius fugit officiis.</p>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Libero doloremque a hic harum adipisci quis, ipsam, deserunt distinctio molestias voluptates corrupti aspernatur necessitatibus beatae voluptas non sed, quae corporis reiciendis?</p>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quam officia sequi nisi laudantium cumque id itaque. Et deserunt repudiandae quos iure non ex, aut quia sed, numquam asperiores cumque iste.</p>
+    </div>
+    
+</body>
+</html>
