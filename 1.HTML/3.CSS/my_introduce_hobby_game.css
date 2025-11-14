@@ -64,16 +64,19 @@
 .place_picture{
     width:50%;
     height:100%;
+    padding:10px;
     /* margin-right:10px; */
 }
 .ilove1{
     background-image: url('./images/my_introduce_hobby_game1.jpg');
-    background-size:100% 100%;
+    background-size:cover;
+    background-position: center center;
     background-repeat: no-repeat;
 }
 .ilove2{
     background-image: url('./images/my_introduce_hobby_game2.jpg');
-    background-size:100% 100%;
+    background-size:cover;
+    background-position: center center;
     background-repeat: no-repeat;
 }
 .ilove3{

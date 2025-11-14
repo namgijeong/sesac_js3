@@ -64,18 +64,21 @@
 .place_picture{
     width:50%;
     height:100%;
+    padding:10px;
     /* margin-right:10px; */
 }
 .peacock{
    
     background-image: url('./images/my_introduce_hobby_walk2.jpg');
-    background-size:100% 100%;
+    background-size:cover;
+    background-position: center center;
     background-repeat: no-repeat;
 }
 .rabbit{
    
     background-image: url('./images/my_introduce_hobby_walk3.jpg');
-    background-size:100% 100%;
+    background-size:cover;
+    background-position: center center;
     background-repeat: no-repeat;
 }
 .fallen{
