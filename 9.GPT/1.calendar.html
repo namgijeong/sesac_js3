@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>포토 캘린더</title>
+  <style>
+    :root{
+      --accent: #222;
+      --sunday: #d9534f; /* 빨강 */
+      --saturday: #1e90ff; /* 파랑 */
+      --text: #fff;
+      --bg: #f8f9fa;
+      --card-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;background:var(--bg);color:var(--accent)}
+
+    /* 컨테이너: 화면 전체에 꽉 채움 */
+    .container{
+      max-width:1000px; /* 원하는 최대폭 */
+      margin:24px auto;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      padding:0 16px;
+    }
+
+    /* 헤더 */
+    header{display:flex;flex-direction:column;align-items:center;gap:6px}
+    .title{font-size:28px;font-weight:700;letter-spacing:1px}
+    .ym{font-size:18px;color:#555}
+
+    /* 사진 영역 - 화면을 가로로 꽉 채우는 풍경 사진 */
+    .photo{
+      width:100%;
+      aspect-ratio: 16/6; /* 가로형 사진 비율 - 필요시 조정 */
+      background-image: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80');
+      background-size: cover;
+      background-position: center;
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .photo .caption{
+      position:absolute;left:14px;bottom:12px;background:rgba(0,0,0,0.35);color:var(--text);padding:8px 12px;border-radius:8px;font-size:14px;
+    }
+
+    /* 달력 카드 - 화면을 가득 채우도록 너비 사용, 높이는 사진과 비슷하게 맞춤 */
+    .calendar{
+      width:100%;
+      background:white;
+      border-radius:12px;
+      box-shadow:var(--card-shadow);
+      overflow:hidden;
+    }
+
+    .calendar .month-head{
+      display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #eee;
+    }
+    .month-head h2{margin:0;font-size:18px}
+    .month-head .year{color:#666}
+
+    /* 요일 헤더 */
+    .weekdays{
+      display:grid;grid-template-columns:repeat(7,1fr);text-align:center;padding:10px 12px;background:#fafafa;border-bottom:1px solid #f0f0f0;font-weight:600;color:#444
+    }
+    .weekdays div{font-size:14px}
+    .weekdays .sun{color:var(--sunday)}
+    .weekdays .sat{color:var(--saturday)}
+
+    /* 날짜 그리드 */
+    .days{
+      display:grid;
+      grid-template-columns:repeat(7,1fr);
+      gap:6px;
+      padding:14px;
+      align-items:start;
+    }
+    .days li{
+      list-style:none;
+      min-height:74px;
+      background:linear-gradient(180deg,#fff,#fbfbfb);
+      border-radius:8px;
+      padding:8px;
+      box-shadow:0 3px 8px rgba(0,0,0,0.04);
+      display:flex;flex-direction:column;
+      justify-content:flex-start;
+      font-size:14px;
+    }
+    .days li.empty{background:transparent;box-shadow:none}
+
+    /* 일요일 빨강, 토요일 파랑: 그리드에서 위치 기준으로 지정 (일요일이 첫 열일 때) */
+    .days li:nth-child(7n+1) { color: var(--sunday); }
+    .days li:nth-child(7n) { color: var(--saturday); }
+
+    /* 날짜 숫자 스타일 */
+    .days li .date{font-weight:700;margin-bottom:6px}
+    .days li .note{font-size:12px;color:#666;line-height:1.25}
+
+    /* 반응형: 좁아지면 사진과 달력 비율 조정 */
+    @media (max-width:640px){
+      .title{font-size:20px}
+      .photo{aspect-ratio: 10/6}
+      .days li{min-height:64px;padding:6px;font-size:13px}
+    }
+
+    /* 사용 안내용 작은 텍스트 */
+    .hint{font-size:12px;color:#777;margin-top:6px;text-align:center}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="title">포토캘린더</div>
+      <div class="ym">2025년 11월</div>
+    </header>
+
+    <div class="photo">
+      <div class="caption">가을 풍경 — 원하는 사진으로 background-image URL을 바꿔주세요</div>
+    </div>
+
+    <section class="calendar" aria-label="한 달 달력">
+      <div class="month-head">
+        <h2>11월</h2>
+        <div class="year">2025</div>
+      </div>
+
+      <div class="weekdays">
+        <div class="sun">일</div>
+        <div>월</div>
+        <div>화</div>
+        <div>수</div>
+        <div>목</div>
+        <div>금</div>
+        <div class="sat">토</div>
+      </div>
+
+      <!-- 날짜를 직접 넣는 방식입니다. 빈칸(.empty)을 달의 시작 요일에 맞춰 앞에 넣어주세요. -->
+      <ul class="days">
+        <!-- 예시: 이번 달이 토요일(6)부터 시작한다고 가정하면 앞에 empty 6개를 넣어둠 -->
+        <!-- 빈 칸 수를 조절해서 1일의 위치를 바꾸세요. -->
+        <li class="empty"></li>
+        <li class="empty"></li>
+        <li class="empty"></li>
+        <li class="empty"></li>
+        <li class="empty"></li>
+        <li class="empty"></li>
+
+        <!-- 실제 날짜들 (1~30 등) -->
+        <li><div class="date">1</div><div class="note">토요일</div></li>
+        <li><div class="date">2</div><div class="note"></div></li>
+        <li><div class="date">3</div><div class="note"></div></li>
+        <li><div class="date">4</div><div class="note"></div></li>
+        <li><div class="date">5</div><div class="note"></div></li>
+        <li><div class="date">6</div><div class="note"></div></li>
+        <li><div class="date">7</div><div class="note"></div></li>
+        <li><div class="date">8</div><div class="note"></div></li>
+        <li><div class="date">9</div><div class="note"></div></li>
+        <li><div class="date">10</div><div class="note"></div></li>
+        <li><div class="date">11</div><div class="note"></div></li>
+        <li><div class="date">12</div><div class="note"></div></li>
+        <li><div class="date">13</div><div class="note"></div></li>
+        <li><div class="date">14</div><div class="note"></div></li>
+        <li><div class="date">15</div><div class="note"></div></li>
+        <li><div class="date">16</div><div class="note"></div></li>
+        <li><div class="date">17</div><div class="note"></div></li>
+        <li><div class="date">18</div><div class="note"></div></li>
+        <li><div class="date">19</div><div class="note"></div></li>
+        <li><div class="date">20</div><div class="note"></div></li>
+        <li><div class="date">21</div><div class="note"></div></li>
+        <li><div class="date">22</div><div class="note"></div></li>
+        <li><div class="date">23</div><div class="note"></div></li>
+        <li><div class="date">24</div><div class="note"></div></li>
+        <li><div class="date">25</div><div class="note"></div></li>
+        <li><div class="date">26</div><div class="note"></div></li>
+        <li><div class="date">27</div><div class="note"></div></li>
+        <li><div class="date">28</div><div class="note"></div></li>
+        <li><div class="date">29</div><div class="note"></div></li>
+        <li><div class="date">30</div><div class="note"></div></li>
+        <!-- 31일이 있는 달은 위에 31 추가 -->
+      </ul>
+    </section>
+
+    <div class="hint">사용법: 사진을 바꾸려면 .photo의 background-image URL을 변경하세요. 달 시작 요일을 바꾸려면 .days 안에 앞쪽에 있는 .empty 항목 수를 조절하세요.</div>
+  </div>
+</body>
+</html>

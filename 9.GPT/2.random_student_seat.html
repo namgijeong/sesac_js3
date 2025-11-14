@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>자리 바꾸기 프로그램</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f2f2f2;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .tables {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .table-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .table-box {
+            background: #d9e7ff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            width: 250px;
+        }
+
+        .seat-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .seat {
+            background: white;
+            flex: 1;
+            /* 행 안에서 균등 분할 */
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        .table-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+
+
+        #shuffleBtn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background: #4a74f5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #shuffleBtn:hover {
+            background: #3b5cd6;
+        }
+
+        #studentList {
+            border-collapse: collapse;
+            /* 테두리 겹치지 않게 */
+            width: 80%;
+            margin: 0 auto;
+            /* 가운데 정렬 */
+            background-color: #e0f0ff;
+            /* 테이블 배경색 */
+            text-align: center;
+        }
+
+        #studentList td,
+        #studentList th {
+            border: 2px solid #4a74f5;
+            /* 테두리 색상 */
+            padding: 10px;
+            background-color: white;
+            /* 셀 배경색 */
+        }
+
+        #studentList th {
+            background-color: #4a74f5;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>자리 바꾸기 프로그램</h1>
+
+    <div class="center">
+        <h2>수강생 목록</h2>
+        <table id="studentList">
+            <tr>
+                <td>신지원</td>
+                <td>남기정</td>
+                <td>변영찬</td>
+                <td>김윤군</td>
+            </tr>
+            <tr>
+                <td>이지안</td>
+                <td>김준성</td>
+                <td>김주연</td>
+                <td>공정배</td>
+            </tr>
+            <tr>
+                <td>이유랑</td>
+                <td>노정운</td>
+                <td>장수빈</td>
+                <td>박호정</td>
+            </tr>
+            <tr>
+                <td>조진희</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+        <button id="shuffleBtn">자리 랜덤 배정</button>
+    </div>
+
+    <div class="tables">
+        <!-- 4자리 테이블 2줄 -->
+        <div class="table-row">
+            <div class="table-box" id="table1">
+                <div class="table-title">테이블 1 (4자리)</div>
+                <div class="seat-row">
+                    <div class="seat"></div>
+                    <div class="seat"></div>
+                </div>
+                <div class="seat-row">
+                    <div class="seat"></div>
+                    <div class="seat"></div>
+                </div>
+            </div>
+
+            <div class="table-box" id="table2">
+                <div class="table-title">테이블 2 (4자리)</div>
+                <div class="seat-row">
+                    <div class="seat"></div>
+                    <div class="seat"></div>
+                </div>
+                <div class="seat-row">
+                    <div class="seat"></div>
+                    <div class="seat"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-row">
+            <div class="table-box" id="table3">
+                <div class="table-title">테이블 3 (3자리)</div>
+                <div class="seat-row">
+                    <div class="seat"></div>
+                    <div class="seat"></div>
+                    <div class="seat"></div>
+                </div>
+            </div>
+
+            <div class="table-box" id="table4">
+                <div class="table-title">테이블 4 (2자리)</div>
+                <div class="seat-row">
+                    <div class="seat"></div>
+                    <div class="seat"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const students = [
+            "신지원", "남기정", "변영찬", "김윤군", "이지안", "김준성",
+            "김주연", "공정배", "이유랑", "노정운", "장수빈", "박호정", "조진희"
+        ];
+
+        const tables = [
+            { id: "table1", seats: 4 },
+            { id: "table2", seats: 4 },
+            { id: "table3", seats: 3 },
+            { id: "table4", seats: 2 }
+        ];
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function assignSeats() {
+            const shuffled = shuffle([...students]);
+            let index = 0;
+
+            tables.forEach(table => {
+                const box = document.getElementById(table.id);
+                const seats = box.querySelectorAll('.seat');
+
+                seats.forEach(seat => {
+                    seat.textContent = shuffled[index] || "";
+                    index++;
+                });
+            });
+        }
+
+        document.getElementById("shuffleBtn").addEventListener("click", assignSeats);
+    </script>
+</body>
+
+</html>
