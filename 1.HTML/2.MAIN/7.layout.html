@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="descrition" content="본 페이지는 서울의 주요 도시를 소개하는 페이지 입니다." />
+    <meta name="keywords" content="서울, 부산, 세종, 제주" />
+    <meta name="author" content="000 관광공사" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        header{
+            background-color:#555;
+            color:white;
+            padding:10px;
+            text-align:center;
+        }
+
+        nav{
+            float:left;
+            background-color:#ccc;
+            color:white;
+
+            padding:20px;
+            width:30%;
+            height:300px;
+        }
+
+        article{
+            /* nav바로 옆에 오른쪽에 붙게된다. 30대 70대로 한줄로 채우게 된다. */
+            float:left;
+            background-color:#f1f1f1;
+            
+            padding:20px;
+            width:70%;
+            height:300px;
+        }
+
+        footer{
+            background-color:#777;
+            color:white;
+            padding:10px;
+            text-align:center;
+        }
+
+        /* 모바일 뷰 대응 */
+        @media (max-width:600px){
+            nav,article{
+                width:100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!--필요에 따라 시맨틱 태그로 영역을 구분해주면 좋다-->
+    <header>
+        <h1>도시</h1>
+    </header>
+
+    <section>
+        <nav>
+            <ul>
+                <li>서울</li>
+                <li>부산</li>
+                <li>세종</li>
+                <li>제주</li>
+            </ul>
+        </nav>
+        <article>
+            <h2>서울</h2>
+            <p>서울에 대한 소개글을 작성하는 곳</p>
+        </article>
+    </section>
+
+    <footer>
+        여기는 copyright을 작성하는 곳
+    </footer>
+
+</body>
+
+</html>

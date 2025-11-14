@@ -12,7 +12,7 @@
     position:relative;
 
     margin:0px auto;
-    width:80%;
+    width:50%;
     /* 100%를 쓸꺼면 html,body모두 100%를 줘야함 */
     /* height:100%; */
     height:100vh;
