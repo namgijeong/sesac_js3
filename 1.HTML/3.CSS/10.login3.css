@@ -1,0 +1,131 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+
+     font-family: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+
+body{
+    background-color: #080710;
+    position:relative;
+}
+
+
+#form_container{
+    position:relative;
+    margin: 0 auto;
+
+    width:40%;
+    height:100vh;
+}
+
+#form_inner_container{
+    position:absolute;
+    top:50%;
+    transform: translateY(-50%);
+
+    width:100%;
+    height:70%;
+
+    background-color: rgba(255, 255, 255, 0.1);
+    /* 
+        backdrop-filter는 CSS에서 요소 뒤쪽에 있는 배경에 시각 효과를 적용하는 속성
+        “투명한 유리창” 느낌을 만들 때 쓰는 것 
+    */
+    backdrop-filter: blur(5px);
+
+    border-radius:10px;
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.3);
+
+    overflow:hidden;
+}
+
+input[type="checkbox"]{
+    display:none !important;
+}
+/* A ~ B 뜻
+A와 같은 부모를 가진 모든 형제 요소 중에서,
+A 뒤에 나오는 B 요소들을 선택 */
+#check:checked  ~ #login{
+    transform:translateY(-90%);
+    transition: transform 0.8s ease-in-out;
+}
+#check:checked ~ #signup .input_container{
+    visibility: hidden;
+}
+#check:checked ~ #signup .button_container{
+    visibility: hidden;
+}
+
+#signup,#login{
+    width:100%;
+    height:80%;
+}
+#signup_title label{
+    z-index:20;
+    /* z-index works only on positioned elements (position relative, absolute, fixed, or sticky). */
+    /* z-index 적용을 위해 강제로 relative */
+    position:relative;
+}
+#login_title label{
+    z-index:1;
+    /* z-index works only on positioned elements (position relative, absolute, fixed, or sticky). */
+    /* z-index 적용을 위해 강제로 relative */
+    position:relative;
+}
+#signup_title,#login_title{
+    width:100%;
+    height:100px;
+
+    text-align:center;
+    line-height:100px;
+    color:white;
+
+}
+
+.input_container{
+    width:80%;
+    height:100px;
+    margin: 10px auto;
+
+    display:flex;
+    flex-direction: column;
+    justify-content: column;
+    gap:10px;
+
+    color:white;
+}
+
+input{
+    display:inline-block;
+    width:100%;
+    height:60px;
+    padding:10px;
+
+    background-color: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    color:white;
+}
+input:focus{
+    outline: none;
+}
+
+.button_container{
+    width:60%;
+    height:50px;
+    margin: 10px auto;
+    margin-top:30px;
+    
+}
+
+button{
+    width:100%;
+    height:100%;
+    background-color:rgba(255, 255, 255, 1);
+    border:1px solid white;
+    border-radius:10px;
+    box-shadow: 0 0 5px 5px rgba(255, 255, 255, 0.3);
+}
+
