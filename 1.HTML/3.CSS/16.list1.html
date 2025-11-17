@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>div, ul 가상선택자</title>
+    <style>
+        ul{
+            list-style-type: none;
+        }
+        ul li::before {
+            content: "♪";
+            width:10px;
+            margin-right:5px;
+            color:red;
+            
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <ul>
+            <li>아메리카노</li>
+            <li>카푸치노</li>
+            <li>에스프레소</li>
+        </ul>
+    </div>
+</body>
+</html>
