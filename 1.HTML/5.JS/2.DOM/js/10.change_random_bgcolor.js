@@ -9,14 +9,23 @@
 //10진수 rgb때 쓸것
 let randomNumberArray = [];
 
+// document.getElementById("test").addEventListener('click',function(){
+//     showRandomHexColor();
+// });
+
 function showRandomHexColor() {
+
     let color_text_div = document.getElementById("color_text_container");
-    randomNumberArray= [];
+    randomNumberArray = [];
 
     let colorRandom = makeHexColorRandom();
 
+    console.log("colorRandom: ",colorRandom);
     document.body.style.backgroundColor = colorRandom;
-    color_text_div.innerHTML = `<div>HEX: ${colorRandom}</div> <br> <div>RGB: rgb(${randomNumberArray[0]}, ${randomNumberArray[1]}, ${randomNumberArray[2]})</div>`
+    color_text_div.innerHTML = `<div>HEX: ${colorRandom}</div> <br> <div>RGB: rgb(${randomNumberArray[0]}, ${randomNumberArray[1]}, ${randomNumberArray[2]})</div>`;
+
+    // localStorage.clear();
+    // sessionStorage.clear();
 }
 
 function makeRandomNumber() {
@@ -38,6 +47,7 @@ function makeHexRandomNumber() {
         currentRemainder = currentQuotient % 16;
         currentQuotient = Math.floor(currentQuotient / 16);
         //console.log("currentRemainder : ",currentRemainder,"currentQuotient : ",currentQuotient);
+    
         remainderTmpArray.push(currentRemainder);
     }
 
@@ -46,7 +56,11 @@ function makeHexRandomNumber() {
     //역순으로 나열하며 알파벳으로 바꾸기 
     for (let i = remainderTmpArray.length - 1; i >= 0; i--) {
         currentRemainder = remainderTmpArray[i];
-        //console.log(currentRemainder);
+        // if (currentRemainder < 10){
+        //     currentRemainder = '0' +currentRemainder;
+        
+        // }
+        console.log(currentRemainder);
         switch (currentRemainder) {
             case 15:
                 remainderArray.push('f');
@@ -79,17 +93,25 @@ function makeHexRandomNumber() {
 
 function makeHexColorRandom() {
     let totalHexString = '#';
+    let hexString='';
     let hexArray = ''
     for (let i = 0; i < 3; i++) {
         hexArray = makeHexRandomNumber();
-        //console.log(hexArray);
+        hexString='';
+        
         for (let j = 0; j < hexArray.length; j++) {
-            totalHexString += hexArray[j];
+            hexString += hexArray[j];
         }
 
+        if (hexString.length < 2 ){
+            hexString = '0'+ hexString;
+        }
+
+        totalHexString += hexString
     }
 
-    //console.log(totalHexString);
+    //document.getElementById("container").style.backgroundColor = totalHexString;
+    console.log(totalHexString);
     return totalHexString;
 
 }
