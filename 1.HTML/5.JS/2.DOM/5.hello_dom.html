@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hello dom</title>
+</head>
+<body>
+    <h1>헬로우 DOM</h1>
+    <button onclick="sayHello()">Hello</button>
+    <div id="result"></div>
+    <script>
+        function sayHello(){
+            let result = document.getElementById("result");
+            // result.textContent = "say 헬로우";
+            result.innerHTML = "<b>say 헬로우</b>";
+
+            // 요소를 지워버리고 대체해버린다
+            // result.outerHTML = "<b>say 헬로우</b>";
+
+            //.textContent => 태그 파싱 안함, 있는 그대로 표현
+            //.innerHTML => 내가 쓰고 싶은 글을 HTML로 파싱함
+            //.outerHTML => 몰라도 됨. 내가 가져온 HTML 요소를 지우고 새로 대체함
+        }
+    </script>
+</body>
+</html>

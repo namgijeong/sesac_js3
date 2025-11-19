@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hello dom</title>
+</head>
+
+<body>
+    <h1>헬로우 DOM</h1>
+    <button onclick="changeRedColor()">색상바꾸기1</button>
+    <button onclick="changeBlueColor()">색상바꾸기2</button>
+    <button onclick="changeResetColor()">색상바꾸기3</button>
+    <div id="result"></div>
+    <script>
+        const h1_div = document.getElementsByTagName("h1")[0];
+        function changeRedColor() {
+            h1_div.style.color = "red";
+            h1_div.style.backgroundColor = "yellow";
+            h1_div.style.width = "300px";
+        }
+
+        function changeBlueColor() {
+            h1_div.style.color = "blue";
+            h1_div.style.backgroundColor = "skyblue";
+            h1_div.style.width = "300px";
+        }
+
+        function changeResetColor() {
+            // h1_div.style.color = "black";
+            // h1_div.style.backgroundColor = "white";
+
+            //기존 설정한 값들을 지운다.
+            //하지만 이러면 <h1 style> 이란 태그가 망가졌지만, 동작은 하게 된다.
+            // h1_div.style.color = "";
+            // h1_div.style.backgroundColor = "";
+            // h1_div.style.width = "";
+            
+            //removeAttribute로 style을 제거하는 것이 올바르다
+            h1_div.removeAttribute('style');
+        }
+    </script>
+</body>
+
+</html>
