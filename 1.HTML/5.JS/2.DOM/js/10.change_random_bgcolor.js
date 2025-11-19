@@ -9,80 +9,89 @@
 //10진수 rgb때 쓸것
 let randomNumberArray = [];
 
-function makeRandomNumber(){
-    let randomNumber = Math.floor(Math.random()*255);
+function showRandomHexColor() {
+    let color_text_div = document.getElementById("color_text_container");
+    randomNumberArray= [];
+
+    let colorRandom = makeHexColorRandom();
+
+    document.body.style.backgroundColor = colorRandom;
+    color_text_div.innerHTML = `<div>HEX: ${colorRandom}</div> <br> <div>RGB: rgb(${randomNumberArray[0]}, ${randomNumberArray[1]}, ${randomNumberArray[2]})</div>`
+}
+
+function makeRandomNumber() {
+    let randomNumber = Math.floor(Math.random() * 255);
     randomNumberArray.push(randomNumber);
     //console.log(randomNumber);
 
     return randomNumber;
 }
 
-function makeHexRandomNumber(){
+function makeHexRandomNumber() {
     let randomNumber = makeRandomNumber();
     let remainderTmpArray = [];
     let remainderArray = [];
     let currentQuotient = randomNumber;
     let currentRemainder = 0;
 
-    while(currentQuotient > 0){
+    while (currentQuotient > 0) {
         currentRemainder = currentQuotient % 16;
         currentQuotient = Math.floor(currentQuotient / 16);
         //console.log("currentRemainder : ",currentRemainder,"currentQuotient : ",currentQuotient);
         remainderTmpArray.push(currentRemainder);
     }
-    
+
     //console.log(remainderTmpArray);
 
     //역순으로 나열하며 알파벳으로 바꾸기 
-    for (let i = remainderTmpArray.length - 1; i >= 0 ; i--){
+    for (let i = remainderTmpArray.length - 1; i >= 0; i--) {
         currentRemainder = remainderTmpArray[i];
         //console.log(currentRemainder);
-        switch(currentRemainder){
+        switch (currentRemainder) {
             case 15:
                 remainderArray.push('f');
                 break;
             case 14:
-                remainderArray.push('e');  
-                break;  
+                remainderArray.push('e');
+                break;
             case 13:
-                remainderArray.push('d');  
+                remainderArray.push('d');
                 break;
             case 12:
-                remainderArray.push('c');  
-                break; 
+                remainderArray.push('c');
+                break;
             case 11:
                 remainderArray.push('b');
-                break;  
+                break;
             case 10:
-                remainderArray.push('a'); 
-                break;  
+                remainderArray.push('a');
+                break;
             default:
-                remainderArray.push(''+ currentRemainder);              
+                remainderArray.push('' + currentRemainder);
         }
-        
+
     }
 
     //console.log(remainderArray);
     return remainderArray;
-    
+
 }
 
-function makeHexColorRandom(){
+function makeHexColorRandom() {
     let totalHexString = '#';
     let hexArray = ''
-    for (let i = 0; i < 3; i++){
+    for (let i = 0; i < 3; i++) {
         hexArray = makeHexRandomNumber();
         //console.log(hexArray);
-        for (let j = 0; j < hexArray.length; j++){
+        for (let j = 0; j < hexArray.length; j++) {
             totalHexString += hexArray[j];
-        } 
-        
+        }
+
     }
 
     //console.log(totalHexString);
     return totalHexString;
-    
+
 }
 
-makeHexColorRandom();
 
