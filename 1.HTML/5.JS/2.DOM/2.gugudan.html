@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>구구단 출력</title>
+</head>
+<body>
+    <h1>구구단 콘솔</h1>
+    <input id="userInput" type="number" placeholder="단을 입력하시오"/>
+    <!-- 어? 사용자가 입력한 값을 가져와야하네
+     근데 문제는 html은 표현을 위한 언어지.
+     개발을 위한 언어가 아니네
+     그래서 사용자가 입력한걸 가져오는 기능이 없다
+     브라우저내에서 내맘대로 하기위해 js
+      -->
+    <button onclick="gugudan()">구구단 출력</button>
+
+    <div id="result"></div>
+
+    <script>
+        function gugudan(){
+            //내가 여기에서 사용자가 html 코드 어딘가에서 입력한 글자를 가져와야함
+            let dan = document.getElementById("userInput");
+            console.log(dan);
+            //어? 난 값을 원했으나 돌아오는것은 요소다
+            //여기서 값을 구해온다
+            let dan_input = dan.value;
+            console.log(dan_input);
+            
+            let result = document.getElementById("result");
+            result.innerHTML = "";
+
+            for(let i = 1;i<=9; i++){
+                console.log(dan_input+"x"+i+"="+dan_input*i);
+                //이제 결과를 콘솔로그에 찍을 게 아니고 어떻게 하면 화면에 찍을까?
+                // document.write(dan_input+"x"+i+"="+dan_input*i+"<br>");
+                //답을 쓸 공간을 가져오고 거기다 쓴다
+                // let result = document.getElementById("result");
+                //아 미안 br은 html이야
+                //result.textContent += dan_input + "x"+i+"="+dan_input*i+"<br>";
+                result.innerHTML += dan_input + "x"+i+"="+dan_input*i+"<br>";
+
+                //이 결과를 출력하기 위해서는 이전결과를 지워야하는구나
+                //따라서 초기화를 해야겠다
+                //반복문전에
+            }
+        }
+        
+    </script>    
+</body>
+</html>
