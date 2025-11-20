@@ -4,14 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guess the Number</title>
+    <style>
+        #feed_back{
+            margin-top:20px;
+            margin-bottom:20px;
+        }
+
+        #history_container{
+            margin-top:20px;
+            margin-bottom:20px;
+        }
+    </style>
 </head>
 <body>
     <h1>Guess the Number (1~100)</h1>
     <div>
         <input id="guess" type="number" placeholder="Enter your guess"/>
-        <button>Guess</button>
+        <button onclick="playGame()">Guess</button>
     </div>
     <div id="feed_back"></div>
+    <h1>Guess History</h1>
+    <div id="history_container">
+        <ol id="history"></ul>
+    </div>
 </body>
 <script src="./js/14.guess_the_number_game.js"></script>
 </html>
