@@ -29,7 +29,7 @@ function showRandomHexColor() {
 }
 
 function makeRandomNumber() {
-    let randomNumber = Math.floor(Math.random() * 255);
+    let randomNumber = Math.floor(Math.random() * 256);
     randomNumberArray.push(randomNumber);
     //console.log(randomNumber);
 

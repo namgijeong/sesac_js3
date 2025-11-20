@@ -208,8 +208,11 @@ function drawTriangle() {
     let shape = document.getElementById("triangle_shape").value;
     //버튼을 누르기전에 value를 읽지 않도록 주의.
     let line = document.getElementById("triangle_line").value;
-
-    if (line <= 1 || line == undefined) {
+    
+    if (line == ''){
+        resultDiv.innerHTML = "입력안함";
+    }
+    if (line <= 1 || line == '') {
         resultDiv.innerHTML = "line은 2이상 입력해주세요.";
         return;
     }
