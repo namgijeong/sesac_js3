@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>버튼을 통한 숫자 제어</title>
+</head>
+<body>
+    <h1>버튼을 통한 숫자 제어</h1>
+    <input type="text" value="hello" placeholder="숫자/글자 아무거나 입력하시오"/>
+    <div id="result">0</div>
+    <div>
+        <button onclick="number_inc()">+1</button>
+        <button onclick="number_dec()">-1</button>
+    </div>
+    <script>
+        //value로 가져올 수 있는 케이스
+        //input태그는 value라는 속성을 가진다
+
+        //div가 감싸고 있는 내용을 가져오기 위해서는
+        //innerText로 가져온다
+        //textContent도 된다
+
+        function number_inc(){
+            // console.log('+');
+            let resultDiv = document.getElementById("result");
+            let resultNumber = Number(resultDiv.textContent);
+            //웹에서의 기본은 명시하지 안으면 모든건 다 글자로 처리됨
+            //textContent에다가 바로 +=1을하면 123... 문자열이 나온다
+            resultNumber += 1;
+            resultDiv.textContent = resultNumber;
+        }
+
+        function number_dec(){
+            // console.log('-');
+            let resultDiv = document.getElementById("result");
+            // let resultNumber = Number(resultDiv.textContent);
+            // let resultNumber = resultDiv.textContent;
+            let resultNumber = resultDiv.innerText;
+            resultNumber -= 1;
+            resultDiv.textContent = resultNumber;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>테이블을 DOM으로 제어해보기</title>
+    <style>
+        table{
+            border:1px solid black;
+            border-collapse: collapse;
+        }
+        td{
+            padding:10px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <h1>테이블을 DOM으로 제어해보기</h1>
+    <table>
+        <tr>
+            <td>셀 1</td>
+            <td>셀 2</td>
+            <td>셀 3</td>
+        </tr>
+        <tr>
+            <td>셀 4</td>
+            <td>셀 5</td>
+            <td>셀 6</td>
+        </tr>
+        <tr>
+            <td>셀 7</td>
+            <td>셀 8</td>
+            <td>셀 9</td>
+        </tr>
+        <tr>
+            <td>셀 10</td>
+            <td>셀 11</td>
+            <td>셀 12</td>
+        </tr>
+    </table>
+
+    <button onclick="changeCellColor()">셀 색상 모두 변경</button>
+    <button onclick="changeEvenCellColor()">짝수셀 색상 모두 변경(초록)</button>
+    <button onclick="changeOddCellColor()">홀수셀 색상 모두 변경(주황)</button>
+    <script>
+        function changeCellColor(){
+            // let cells = document.getElementId('cellId');
+
+            // 다수를 원하면 class 혹은 tag로 가져오기
+            // tag나 class는 여러개 복수형으로 함수를 지음
+            // 그러면 어떤 자료구조로 올것인가? => 배열
+            let cells = document.getElementsByTagName("td");
+
+            ///cells = [td,td,td...]
+            console.log(cells);
+
+            //개별요소 하나하나에 적용해야함 => 하드코딩 하지마라
+            for (let i = 0; i < cells.length; i++){
+                 cells[i].style.backgroundColor = "lightblue";
+            }
+
+        }
+
+        function changeEvenCellColor(){
+            let cells = document.getElementsByTagName("td");
+
+            //0인덱스가 1번셀과 매치 
+            for(let i = 0; i < cells.length; i++){
+                if((i+1) % 2 == 0){
+                    cells[i].style.backgroundColor = "green";
+                }
+            }
+        }
+
+        function changeOddCellColor(){
+            let cells = document.getElementsByTagName("td");
+
+            for(let i = 0; i < cells.length; i++){
+                if((i+1) % 2 == 1){
+                    cells[i].style.backgroundColor = "orange";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
