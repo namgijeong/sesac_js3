@@ -32,9 +32,17 @@
     width: 90%;
     height: 20%;
     margin-bottom: 20px;
+    padding:20px;
 
     border: 1px solid gray;
     border-radius: 10px;
+
+    font-size:20px;
+    line-height:50px;
+    
+    overflow-x:auto;
+    overflow-y:hidden;
+    white-space: nowrap;
 }
 
 #button_grid_container {
