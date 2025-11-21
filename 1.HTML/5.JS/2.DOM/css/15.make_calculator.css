@@ -51,8 +51,8 @@
 
     display: grid;
     /* minmax를 쓰는 이유 - 컨테이너가 줄어들어도 item이 줄어들지 않는다 */
-    /* grid-template-columns: repeat(4, minmax(0,1fr)); */
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    /* grid-template-columns: repeat(4, 1fr); */
     grid-template-rows: auto;
     align-items: center;
     justify-items: center;
