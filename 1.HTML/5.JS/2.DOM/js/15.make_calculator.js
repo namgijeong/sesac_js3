@@ -42,7 +42,6 @@ function clickButton(e) {
             }
         }
 
-
         //에러문구인 상태로 또 누르면 
         if (inputString.includes('error')) {
             inputString = 'error: 유효한 식이 아닙니다.';
@@ -66,7 +65,13 @@ function clickButton(e) {
         }
 
     } else if (currentInput == "C") {
-        inputString = inputString.slice(0, inputString.length - 1);
+        //만약 오류메시지면 한번에 지우자 
+        if (inputString.includes("error")) {
+            inputString = '';
+        } else {
+            inputString = inputString.slice(0, inputString.length - 1);
+        }
+
     } else {
         inputString += currentInput;
     }
