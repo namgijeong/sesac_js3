@@ -9,7 +9,7 @@
 
     margin: 0 auto;
     height: 100vh;
-    width: 50%;
+    width: 30%;
 }
 
 #calculator {
@@ -50,6 +50,8 @@
     height: 70%;
 
     display: grid;
+    /* minmax를 쓰는 이유 - 컨테이너가 줄어들어도 item이 줄어들지 않는다 */
+    /* grid-template-columns: repeat(4, minmax(0,1fr)); */
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: auto;
     align-items: center;
@@ -58,7 +60,9 @@
 } 
 
 .button_grid_item {
-    width: 100px;
+    /* px로 줬더니, item cell이 줄어들어도 안줄어듬 */
+    /* width: 100px; */
+    width:90%;
     height: 50px;
 
     background-color: lightpink;
