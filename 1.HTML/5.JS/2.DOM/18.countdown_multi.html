@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>카운트다운 타이머</title>
+</head>
+
+<body>
+    <h1>카운트다운 타이머</h1>
+    <input type="number" id="timeInput" placeholder="초 입력" />
+    <button id="count_down" onclick="startButton()">시작</button>
+    <button id="count_down_reset" onclick="clearButton()">카운트다운 멀티 클리어</button>
+    <div id="display"></div>
+</body>
+<script>
+    let inputNumber = document.getElementById("timeInput");
+    let displayDiv = document.getElementById("display");
+    let countDownButton = document.getElementById("count_down");
+    let timeIntervalArray = [];
+
+    function startButton() {
+        //새로운 dom 요소를 추가하려면?
+        const timerElement = document.createElement('p');
+        displayDiv.appendChild(timerElement);
+
+        let inputSeconds = inputNumber.value;
+        
+        let timeInterval = setInterval(() => {
+            console.log(inputSeconds);
+
+            if (inputSeconds <= 0) {
+                timerElement.innerText = '시간이 종료되었습니다.';
+                clearInterval(timeInterval);
+               
+            } else {
+                timerElement.innerText = `${inputSeconds}초 남았습니다.`;
+                inputSeconds -= 1;
+            }
+
+        }, 1000);
+
+        timeIntervalArray.push(timeInterval);
+    }
+
+    function clearButton(){
+        for (let i = 0; i < timeIntervalArray.length; i++){
+            clearInterval(timeIntervalArray[i]);
+        }
+
+        displayDiv.innerHTML = '';
+    }
+</script>
+
+</html>

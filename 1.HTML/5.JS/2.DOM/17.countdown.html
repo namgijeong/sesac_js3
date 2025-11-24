@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>카운트다운 타이머</title>
+</head>
+
+<body>
+    <h1>카운트다운 타이머</h1>
+    <input type="number" id="timeInput" placeholder="초 입력" />
+    <button id="count_down" onclick="startButton()">시작</button>
+    <div id="display"></div>
+</body>
+<script>
+    let inputNumber = document.getElementById("timeInput");
+    let displayDiv = document.getElementById("display");
+    let countDownButton = document.getElementById("count_down");
+
+    function startButton() {
+        inputNumber.disabled = true;
+        countDownButton.disabled = true;
+
+        let inputSeconds = inputNumber.value;
+        let timeInterval = setInterval(() => {
+            console.log(inputSeconds);
+
+            if (inputSeconds <= 0) {
+                displayDiv.innerText = '시간이 종료되었습니다.';
+
+                clearInterval(timeInterval);
+                inputNumber.disabled = false;
+                countDownButton.disabled = false;
+            } else {
+                displayDiv.innerText = `${inputSeconds}초 남았습니다.`;
+                inputSeconds -= 1;
+            }
+
+        }, 1000);
+    }
+</script>
+
+</html>
