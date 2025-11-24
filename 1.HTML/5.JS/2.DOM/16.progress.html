@@ -41,7 +41,7 @@
     function start() {
         //버튼을 누르면 여러개의 타이머가 동시에 돌아가는 문제
         //해결방법1
-        //startButton.disabled = true;
+        startButton.disabled = true;
 
         //해결방법2
         if (timeInterval) {
@@ -73,7 +73,7 @@
     }
 
     function reset() {
-        //startButton.disabled = false;
+        startButton.disabled = false;
         clearInterval(timeInterval);
         progress.style.width = '0%';
     }

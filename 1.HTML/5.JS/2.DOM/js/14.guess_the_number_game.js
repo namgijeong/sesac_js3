@@ -98,29 +98,40 @@ function autoPlay() {
     // }
 
 
-    const timerId = setInterval(
-        () => {
-            for (let guess = 1; guess <= 100; guess++) {
-                document.getElementById("guess").value = guess;
-                feedbackString = checkAnswer(guess);
+    //이진탐색으로 찍기
+    let numberArray = [];
+    for (let i = 1; i < 101; i++) {
+        numberArray.push(i);
+    }
+    console.log(numberArray);
 
-                console.log("입력시도: ", guess);
+    let lowIndex = 0;
+    let highIndex = numberArray.length - 1
+    let midIndex = Math.floor((highIndex + lowIndex) / 2);
 
-                let totalFeedbackString = '<b>' + feedbackString + '</b> <br/>';
-                resultDiv.innerHTML = totalFeedbackString;
+    while (lowIndex <= highIndex) {
+        console.log('midindex: ' + midIndex + ', number: ' + numberArray[midIndex]);
+        
+        feedbackString = checkAnswer(numberArray[midIndex]);
+        let totalFeedbackString = '<b>' + feedbackString + '</b> <br/>';
+        resultDiv.innerHTML = totalFeedbackString;
 
-                let historyString = `You guessed ${guess}: ${feedbackString} <br/>`;
-                let li = document.createElement('li');
-                li.innerHTML = historyString;
-                historyUl.appendChild(li);
+        let historyString = `You guessed ${numberArray[midIndex]}: ${feedbackString} <br/>`;
+        let li = document.createElement('li');
+        li.innerHTML = historyString;
+        historyUl.appendChild(li);
 
-                if (feedbackString.includes("Correct")) {
-                    clearInterval(timerId);
-                    break;
-                }
-            }
+        if (numberArray[midIndex] > correctAnswer) {
+            highIndex = midIndex - 1;
+            midIndex = Math.floor((highIndex + lowIndex) / 2);
         }
-        , 1000);
-
+        else if (numberArray[midIndex] < correctAnswer) {
+            lowIndex = midIndex + 1;
+            midIndex = Math.floor((highIndex + lowIndex) / 2);
+        }
+        else {
+            break;
+        }
+    }
 
 }
