@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 폼</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        #total_container {
+            position: relative;
+
+            width: 70%;
+            height: 100vh;
+            margin: 0 auto;
+        }
+
+        #content_container {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+
+            width: 100%;
+            height: 80%;
+        }
+
+        .section {
+            width: 100%;
+            height: 130px;
+
+            margin-bottom: 10px;
+        }
+
+        .section_name {
+            width: 100%;
+            height: 40px;
+            margin-bottom: 10px;
+
+            line-height: 40px;
+        }
+
+        .section_content {
+            width: 100%;
+            height: 50px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            border: 3px solid #eceff1;
+        }
+
+        .section_content_left{
+            width: 100%;
+            height: 50px;
+
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+
+        }
+
+        .section_icon {
+            width: 10%;
+            height: 100%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background-color: #f8f9fa;
+        }
+
+        .section_input {
+            display: inline-block;
+            width: 90%;
+            height: 100%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .inputbox {
+            width: 90%;
+            height: 100%;
+            margin-left:10px;
+
+            line-height: 50px;
+
+            outline: none;
+            border: none;
+
+        }
+
+        .section_result {
+            width: 10%;
+            height: 100%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .section_result_img {
+            width: 100%;
+            height: 100%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .section_result_text {
+            width: 100%;
+            height: 30px;
+        }
+
+        .inputcheck{
+            /* width:50px; */
+            /* margin-right:10px; */
+            height:20px;
+
+        }
+
+        label{
+            margin: 0 10px;
+            width:100px;
+            height:20px;
+        }
+
+        #submit_button{
+            width:80px;
+            height:40px;
+
+            border-radius:5px;
+            border:1px solid skyblue;
+            background-color: skyblue;
+            color:white;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="total_container">
+        <div id="content_container">
+            <div class="section">
+                <div class="section_name">사용자명</div>
+                <div class="section_content">
+                    <div class="section_icon">
+                        <div class="section_icon_img">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                    </div>
+                    <div class="section_input">
+                        <input class="inputbox" id="usernickname" type="text" min="3" max="10"
+                            placeholder="3~10글자로 입력하세요." />
+                        <div class="section_result">
+                            <div class="section_result_img">
+                                <i class="fa-solid fa-circle-exclamation" style="color:red;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section_result_text">test</div>
+            </div>
+
+            <div class="section">
+                <div class="section_name">비밀번호</div>
+                <div class="section_content">
+                    <div class="section_icon">
+                        <div class="section_icon_img">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                    </div>
+                    <div class="section_input">
+                        <input class="inputbox" id="userpassword" type="password" min="8"
+                            placeholder="대소문자, 숫자/특수문자 포함 8자 이상" />
+                        <div class="section_result">
+                            <div class="section_result_img">
+                                <i class="fa-solid fa-check" style="color:green;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section_result_text">test</div>
+            </div>
+
+            <div class="section">
+                <div class="section_name">이름</div>
+                <div class="section_content">
+                    <div class="section_icon">
+                        <div class="section_icon_img">
+                            <i class="fa-regular fa-rectangle-list"></i>
+                        </div>
+                    </div>
+                    <div class="section_input">
+                        <input class="inputbox" id="username" type="text" min="1" max="10"
+                            placeholder="1~10글자로 입력하세요." />
+                        <div class="section_result">
+                            <div class="section_result_img">
+                                <i class="fa-solid fa-check" style="color:green;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section_result_text">test</div>
+            </div>
+
+            <div class="section">
+                <div class="section_name">생년월일</div>
+                <div class="section_content">
+                    <div class="section_icon">
+                        <div class="section_icon_img">
+                            <i class="fa-regular fa-calendar"></i>
+                        </div>
+                    </div>
+                    <div class="section_input">
+                        <input class="inputbox" id="userbirthday" type="date" min="1" max="10" />
+                        <div class="section_result">
+                            <div class="section_result_img">
+                                <i class="fa-solid fa-check" style="color:green;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section_result_text">test</div>
+            </div>
+
+            <div class="section">
+                <div class="section_name">관심 분야 (최소 1개, 최대 3개 선택)</div>
+                <div class="section_content_left">
+                    <input id="language1" class="inputcheck" type="checkbox" value="java"/><label for="language1">java</label>
+                    <input id="language2"class="inputcheck" type="checkbox" value="javascript"/><label for="language2">javascript</label>
+                    <input id="language3" class="inputcheck" type="checkbox" value="python"/><label for="language3">python</label>
+                    <input id="language4" class="inputcheck" type="checkbox" value="c"/><label for="language4">c</label>
+                </div>
+                <div class="section_result_text">test</div>
+            </div>
+
+            <div class="section">
+                <button id="submit_button">제출</button>
+            </div>
+
+        </div>
+    </div>
+</body>
+<script>
+
+</script>
+
+</html>
