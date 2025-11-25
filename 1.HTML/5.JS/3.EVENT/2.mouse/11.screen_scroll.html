@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>scroll</title>
+    <style>
+        #content{
+            height:2000px;
+            background:linear-gradient(to bottom, #ffcc00 0%, #ff6600 100%);
+        }
+    </style>
+</head>
+<body>
+    <div id="content"></div>
+    <script>
+        //브라우저=> window 에 걸때는 브라우저의 특성에 따라 나올수도 있고 안나올수도 있다.
+        window.addEventListener('scroll', () => {
+            console.log("페이지 스크롤중");
+            const scrollPosition = window.pageYOffset;
+            console.log(`현재 스크롤포지션: ${scrollPosition}`);
+
+            const scrollPosition2 = document.documentElement.scrollTop;
+            console.log(`현재 스크롤포지션2: ${scrollPosition2}`);
+
+            //어쩔땐 브라우저마다 a가 있고 b가 없고...
+            //따로따로 코딩하려니 번거로워서 하는게??
+
+            const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+            console.log(`현재 스크롤포지션 둘중하나는 나옴: ${scrollPos}`);
+        })
+    </script>
+</body>
+</html>

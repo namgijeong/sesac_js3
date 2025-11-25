@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>drag</title>
+    <style>
+        #dragItem {
+            width: 100px;
+            height: 100px;
+            background-color: #ffcc00;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .placeholder {
+            position: absolute;
+            color: #999;
+        }
+
+        .container {
+            width: 200px;
+            height: 200px;
+            background-color: #f0f0f0;
+            border: 2px dashed #cccccc;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            position: relative;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>드래그 앤 드롭2</h1>
+
+    <div id="startZone" class="container">
+        <span class="placeholder" id="startPlaceholder">Drop here</span>
+        <div id="dragItem" draggable="true">드래그 미</div>
+    </div>
+
+    <div id="dropZone" class="container">
+        <span class="placeholder" id="dropPlaceholder">Drop here</span>
+    </div>
+
+
+</body>
+<script>
+    const startZone = document.getElementById("startZone");
+    const dragItem = document.getElementById("dragItem");
+    const dropZone = document.getElementById("dropZone");
+
+    dragItem.addEventListener('dragstart', () => {
+        console.log('드래그 시작');
+    });
+
+
+    [dropZone, startZone].forEach(zone => {
+        zone.addEventListener('dragover', (ev) => {
+            ev.preventDefault();
+        });
+    });
+
+    // dropZone은 drop을 받기 전에 dragover에서 반드시 preventDefault()를 호출해야 함.
+    //이걸 안 하면 브라우저는 “여기는 드롭 가능한 영역이 아니다”라고 판단해서 drop 이벤트가 절대 실행되지 않아.
+    [dropZone, startZone].forEach(zone => {
+        zone.addEventListener('drop', (ev) => {
+            ev.preventDefault();
+            console.log('dropzone drag');
+            zone.appendChild(dragItem);
+        });
+    });
+
+</script>
+
+</html>

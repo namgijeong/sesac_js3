@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>drag</title>
+    <style>
+        #dragItem{
+            width:100px;
+            height:100px;
+            background-color: #ffcc00;
+            
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor:pointer;
+            margin-bottom: 20px;
+        }
+
+        #dropZone{
+            width:200px;
+            height:200px;
+            background-color: #f0f0f0;
+            border:2px dashed #cccccc;
+
+            display:flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>드래그 앤 드롭</h1>
+    <div id="dragItem" draggable="true">드래그 미</div>
+    <div id="dropZone">드롭 여기...</div>
+
+    <script>
+        const dragItem = document.getElementById("dragItem");
+        const dropZone = document.getElementById("dropZone");
+
+        dragItem.addEventListener('dragstart', () => {
+            console.log('드래그 시작');
+        });
+
+        dragItem.addEventListener('dragend', () => {
+            console.log('드래그 끝');
+        });
+
+        dropZone.addEventListener('dragover', (ev) => {
+            //os로부터 브라우저로 각종 파일 등을 끌어다 놔서 열리게 하는 현상하지 않기
+            ev.preventDefault();
+            console.log('뭔가 나에게 오는중');
+        });
+
+        // dropZone은 drop을 받기 전에 dragover에서 반드시 preventDefault()를 호출해야 함.
+        //이걸 안 하면 브라우저는 “여기는 드롭 가능한 영역이 아니다”라고 판단해서 drop 이벤트가 절대 실행되지 않아.
+        dropZone.addEventListener('drop', (ev) => {
+            ev.preventDefault();
+            console.log('나한테 뭔가 떨어짐');
+
+            dropZone.appendChild(dragItem);
+        });
+    </script>
+</body>
+</html>
