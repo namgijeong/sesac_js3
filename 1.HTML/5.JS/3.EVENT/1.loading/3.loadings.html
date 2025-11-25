@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        console.log("head > script의 끝");
+        console.log("헤딩끝: ",document.getElementById("title"));
+
+        window.onload = function(){
+            console.log("헤딩끝에 있는 윈도우온로더");
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("헤딩끝에있는 돔컨텐츠로디드1");
+        });
+    </script>
+</head>
+<body>
+    <script>
+        console.log("body 시작 > script의 끝");
+        console.log("바디시작: ",document.getElementById("title"));
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("헤딩끝에있는 돔컨텐츠로디드2");
+        });
+    </script>
+    <h1>나의 헤딩</h1>
+    <script>
+        console.log("body 끝 > script의 끝");
+        console.log("바디끝: ",document.getElementById("title"));
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("헤딩끝에있는 돔컨텐츠로디드3");
+        });
+    </script>
+</body>
+</html>

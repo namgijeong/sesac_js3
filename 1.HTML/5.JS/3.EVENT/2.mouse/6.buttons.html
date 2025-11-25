@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>다양한 마우스 버튼 테스트</title>
+</head>
+
+<body>
+    <h1 id="title">다양한 마우스 버튼 테스트</h1>
+    <script>
+        const title = document.getElementById('title');
+
+        //event
+        //발생한 이벤트 정보를 담아서..
+        //정보가 너무 많아서 객체에 담아서 준다
+
+        //마우스를 꾸욱할때
+        title.addEventListener('mousedown', (event) => {
+            console.log('마우스 다운???');
+            console.log("그게 뭔데?/", event);
+            console.log("그래서 어떤 버튼 클릭된건데???", event.button);
+
+            //     if (event.button == 0){
+            //         console.log("왼쪽 버튼이 클릭되었습니다.");
+            //     } else if (event.button == 1){
+            //         console.log("가운데 휠이 미들 클릭이라는걸 오늘 처음 알았습니다.");
+            //     }else if (event.button == 2){
+            //         console.log("오른쪽 버튼이 클릭되었습니다.");
+            //     }else{
+            //         console.log("이상한 버튼이 클릭되었습니다.");
+            //     }
+            // })
+
+            switch (event.button) {
+                case 0:
+                    console.log("왼쪽 버튼이 클릭되었습니다.");
+                    break;
+                case 1:
+                    console.log("가운데 휠이 미들 클릭이라는걸 오늘 처음 알았습니다.");
+                    break;
+                case 2:
+                    console.log("오른쪽 버튼이 클릭되었습니다.");
+                    break;
+                default:
+                    console.log("이상한 버튼이 클릭되었습니다.");
+                    break;
+            }
+        });
+
+        //마우스를 땔때
+        title.addEventListener('mouseup', () => {
+            console.log('마우스 업??');
+        })
+    </script>
+</body>
+
+</html>
