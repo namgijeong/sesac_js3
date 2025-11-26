@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이미지 갤러리 슬라이드 트랜지션 효과</title>
+    <style>
+        .gallery_container {
+            width: 50%;
+            height: 50vh;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .gallery {
+            width: 70%;
+            height: 100%;
+
+            overflow: hidden;
+        }
+
+        #img_wrapper {
+            width: 300%;
+            height: 100%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            transition-property: transform;
+            transition-duration: 1s;
+            transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        }
+
+        .img {
+            width: 33.3%;
+            height: 100%;
+
+            /* background-repeat: no-repeat;
+            background-size: 100% 100%;
+            background-position: center center; */
+
+            /* display: flex에서는 flex item(자식 div)이 기본적으로 부모 크기를 넘지 않도록 자동으로 줄어듦 */
+            /* 절대 줄어들지 마라 */
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* #img1 {
+            background-image: url('images/dog1.png');
+        }
+
+        #img2 {
+            background-image: url('images/dog2.png');
+        }
+
+        #img3 {
+            background-image: url('images/dog3.png');
+        } */
+
+        .button_container {
+            width: 15%;
+            height: 50px;
+
+            position: relative;
+            z-index: 2;
+        }
+
+        button {
+            width: 100%;
+            height: 100%;
+
+            background-color: lightblue;
+            border: 1px solid lightblue;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>이미지 갤러리 슬라이드 트랜지션 효과</h1>
+    <div class="gallery_container">
+        <div class="button_container">
+            <button>prev</button>
+        </div>
+        <div class="gallery">
+            <div id="img_wrapper">
+                <div id="img1" class="img">
+                    <img src="images/dog1.png" />
+                </div>
+                <div id="img2" class="img">
+                    <img src="images/dog2.png" />
+                </div>
+                <div id="img3" class="img">
+                    <img src="images/dog3.png" />
+                </div>
+            </div>
+
+            <!-- <img src="images/dog1.png"/>
+            <img src="images/dog2.png"/>
+            <img src="images/dog3.png"/> -->
+        </div>
+        <div class="button_container">
+            <button>next</button>
+        </div>
+    </div>
+
+</body>
+<script>
+    let imgDivs = document.querySelectorAll('#img_wrapper div');
+    let imgWrapper = document.getElementById('img_wrapper');
+    let buttons = document.querySelectorAll('.button_container button');
+    let prevButton = buttons[0];
+    let nextButton = buttons[1];
+    let currentIndex = 1;
+
+    let tmpLastImgDiv = imgDivs[imgDivs.length - 1].cloneNode(true);
+    imgWrapper.insertBefore(tmpLastImgDiv, imgDivs[0]);
+
+    let tmpFirstImgDiv = imgDivs[0].cloneNode(true);
+    imgWrapper.appendChild(tmpFirstImgDiv);
+
+    //동적 추가했으니 다시 width 갱신
+    imgDivs = document.querySelectorAll('#img_wrapper div');
+    imgDivs.forEach((imgDiv) => {
+        imgDiv.style.width = `${100 / imgDivs.length}%`;
+    })
+
+    img_wrapper.style.width = `${100 * imgDivs.length}%`;
+    //기본은 1이미지  3 123 1 형태
+    img_wrapper.style.transform = `translateX(${100 / imgDivs.length * -1}%)`;
+
+
+    // prevButton.addEventListener('click', () => {
+    //     console.log('prev click');
+
+    //     console.log(currentIndex);
+    //     //if (currentIndex == 0){
+    //     if (currentIndex == 1) {
+
+    //         let tmpLastImgDiv = imgDivs[imgDivs.length - 1].cloneNode(true);
+    //         imgWrapper.insertBefore(tmpLastImgDiv, imgDivs[0]);
+
+    //         // let tmpFirstImgDiv = imgDivs[0].cloneNode(true);
+    //         // imgWrapper.appendChild(tmpFirstImgDiv);
+
+    //         //동적 추가했으니 다시 width 갱신
+    //         imgDivs = document.querySelectorAll('#img_wrapper div');
+    //         imgDivs.forEach((imgDiv) => {
+    //             imgDiv.style.width = `${100 / imgDivs.length}%`;
+    //         })
+
+    //         img_wrapper.style.width = `${100 * imgDivs.length}%`;
+
+    //         //imgWrapper.style.transition = 'transform 1s cubic-bezier(0.075, 0.82, 0.165, 1)';
+    //         imgWrapper.style.transform = `translateX(${0}%)`;
+
+    //         //setTimeout 절대 쓰면 안 됨.
+    //         //transitionend 이벤트를 사용해야 한다.
+
+    //         let realTransformFunction = () => {
+
+    //             imgWrapper.style.transition = 'none';
+    //             currentIndex = imgDivs.length - 1;
+    //             console.log("transitionend currentIndex:" + currentIndex);
+    //             imgWrapper.style.transform = `translateX(${(100 / imgDivs.length) * (-currentIndex)}%)`;
+    //             imgWrapper.removeEventListener('transitionend', realTransformFunction);
+    //         }
+
+    //         imgWrapper.addEventListener('transitionend', realTransformFunction);
+
+    //         // imgWrapper.style.transition = 'none';
+    //         // currentIndex = imgDivs.length - 2;
+    //         // imgWrapper.style.transform = `translateX(${(100/imgDivs.length) * (-currentIndex)}%)`;
+
+    //         //이때 마지막 노드를 복사해서 일시적으로 만들어서 이동하는 과정 보여준후, 원래 마지막 노드로 안보이게 이동후 복사한거 없앤다.
+    //         // let tmpLastImgDiv = imgDivs[imgDivs.length - 1].cloneNode(true);
+    //         // imgWrapper.insertBefore(tmpLastImgDiv, imgDivs[0]);
+
+    //         // setTimeout(()=> {
+    //         //     imgWrapper.style.transform = `translateX(${0}%)`;
+    //         // }, 1000);
+    //         //imgWrapper.style.transform = `translateX(${0}%)`;
+
+    //         console.log(imgWrapper.style.transform);
+
+    //         // imgWrapper.style.transition = 'none';
+    //         // imgWrapper.style.transform = `translateX(${33.3*(-currentIndex)}%)`;
+    //         tmpLastImgDiv.remove();
+
+
+    //         //동적 추가했으니 다시 width 갱신
+    //         imgDivs = document.querySelectorAll('#img_wrapper div');
+    //         imgDivs.forEach((imgDiv) => {
+    //             imgDiv.style.width = `${100 / imgDivs.length}%`;
+    //         })
+
+    //         img_wrapper.style.width = `${100 * imgDivs.length}%`;
+
+    //         // //다시 트랜지션 효과 설정
+    //         //imgWrapper.style.transition = 'transform 1s cubic-bezier(0.075, 0.82, 0.165, 1)';            
+    //     }
+    //     else {
+    //         currentIndex -= 1;
+    //         console.log(currentIndex);
+    //         //왜냐하면 원래 위치 기준으로, 2번째 div는 왼쪽으로 이동해야 화면에 들어오기 때문
+    //         imgWrapper.style.transform = `translateX(${-(100 / imgDivs.length) * (currentIndex)}%)`;
+    //     }
+
+    // });
+
+
+    prevButton.addEventListener('click', () => {
+        console.log('prev click');
+        console.log(currentIndex);
+
+        //음수를 곱하는 이유 => translate는 항상 원래 위치0인 상태에서 시작하니까
+        if (currentIndex == 1) {
+            imgWrapper.style.transition = 'transform 1s cubic-bezier(0.075, 0.82, 0.165, 1)';
+            imgWrapper.style.transform = `translateX(${0}%)`;
+
+            setTimeout(() => {
+                currentIndex = imgDivs.length - 2;
+                imgWrapper.style.transition = 'none';
+                imgWrapper.style.transform = `translateX(${-(100 / imgDivs.length) * (currentIndex)}%)`;
+            }, 500);
+
+            //다시 트랜지션 효과 설정한답시고 이렇게 하면 setTimeout전에 실행되는거같아 효과없음
+            //imgWrapper.style.transition = 'transform 1s cubic-bezier(0.075, 0.82, 0.165, 1)';            
+        }
+        else {
+            currentIndex -= 1;
+            console.log(currentIndex);
+            imgWrapper.style.transition = 'transform 1s cubic-bezier(0.075, 0.82, 0.165, 1)';
+            //왜냐하면 원래 위치 기준으로, 2번째 div는 왼쪽으로 이동해야 화면에 들어오기 때문
+            imgWrapper.style.transform = `translateX(${-(100 / imgDivs.length) * (currentIndex)}%)`;
+        }
+
+    });
+
+    nextButton.addEventListener('click', () => {
+        console.log('next click');
+
+        //음수를 곱하는 이유 => translate는 항상 원래 위치0인 상태에서 시작하니까
+        if (currentIndex == imgDivs.length - 2) {
+            imgWrapper.style.transition = 'transform 1s cubic-bezier(0.075, 0.82, 0.165, 1)';
+            //기본은 1이미지  3 123 1 형태
+            img_wrapper.style.transform = `translateX(${-100 / (imgDivs.length) * (imgDivs.length - 1)}%)`;
+
+            setTimeout(() => {
+                currentIndex = 1;
+                imgWrapper.style.transition = 'none';
+                imgWrapper.style.transform = `translateX(${-(100 / imgDivs.length) * (currentIndex)}%)`;
+            }, 500);
+
+        }
+        else {
+            currentIndex += 1;
+            console.log(-33 * currentIndex);
+            imgWrapper.style.transition = 'transform 1s cubic-bezier(0.075, 0.82, 0.165, 1)';
+            imgWrapper.style.transform = `translateX(${-(100 / imgDivs.length) * currentIndex}%)`;
+        }
+
+    });
+
+</script>
+
+</html>

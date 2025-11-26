@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이미지 갤러리 슬라이드</title>
+    <style>
+        .gallery_container {
+            width: 50%;
+            height: 50vh;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .gallery {
+            width: 70%;
+            height: 100%;
+
+            overflow:hidden;
+        }
+
+        #img_wrapper {
+            width: 300%;
+            height: 100%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .img {
+            width: 33.3%;
+            height: 100%;
+
+            /* background-repeat: no-repeat;
+            background-size: 100% 100%;
+            background-position: center center; */
+
+            /* display: flex에서는 flex item(자식 div)이 기본적으로 부모 크기를 넘지 않도록 자동으로 줄어듦 */
+            /* 절대 줄어들지 마라 */
+            flex-shrink: 0;
+
+            display:flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* #img1 {
+            background-image: url('images/dog1.png');
+        }
+
+        #img2 {
+            background-image: url('images/dog2.png');
+        }
+
+        #img3 {
+            background-image: url('images/dog3.png');
+        } */
+
+        .button_container {
+            width: 15%;
+            height: 50px;
+
+            position: relative;
+            z-index: 2;
+        }
+
+        button {
+            width: 100%;
+            height: 100%;
+
+            background-color: lightblue;
+            border: 1px solid lightblue;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>이미지 갤러리 슬라이드</h1>
+    <div class="gallery_container">
+        <div class="button_container">
+            <button>prev</button>
+        </div>
+        <div class="gallery">
+            <div id="img_wrapper">
+                <div id="img1" class="img">
+                    <img src="images/dog1.png"/>
+                </div>
+                <div id="img2" class="img">
+                    <img src="images/dog2.png"/>
+                </div>
+                <div id="img3" class="img">
+                    <img src="images/dog3.png"/>
+                </div>
+            </div>
+
+            <!-- <img src="images/dog1.png"/>
+            <img src="images/dog2.png"/>
+            <img src="images/dog3.png"/> -->
+        </div>
+        <div class="button_container">
+            <button>next</button>
+        </div>
+    </div>
+
+</body>
+<script>
+    let imgDivs = document.querySelectorAll('#img_wrapper div');
+    let imgWrapper = document.getElementById('img_wrapper');
+    let buttons = document.querySelectorAll('.button_container button');
+    let prevButton = buttons[0];
+    let nextButton = buttons[1];
+    let currentIndex = 0;
+
+    prevButton.addEventListener('click', () => {
+        console.log('prev click');
+        
+        console.log(currentIndex);
+        if (currentIndex == 0){
+            currentIndex = imgDivs.length-1;
+            console.log(currentIndex);
+            console.log(33*-currentIndex);
+            imgWrapper.style.transform = `translateX(${33.3*(-currentIndex)}%)`;
+        }
+        else{
+            currentIndex -= 1;
+            console.log(currentIndex);
+            console.log(33*currentIndex);
+            //왜냐하면 원래 위치 기준으로, 2번째 div는 왼쪽으로 이동해야 화면에 들어오기 때문
+            imgWrapper.style.transform = `translateX(${-33.3*(currentIndex)}%)`;
+        }
+
+    });
+
+    nextButton.addEventListener('click', () => {
+        console.log('next click');
+        
+        if (currentIndex == imgDivs.length-1){
+            currentIndex = 0;
+            imgWrapper.style.transform = `translateX(${0}%)`;
+        }
+        else{
+            currentIndex += 1;
+            console.log(-33*currentIndex);
+            imgWrapper.style.transform = `translateX(${-33.3*currentIndex}%)`;
+        }
+
+    });
+
+</script>
+
+</html>

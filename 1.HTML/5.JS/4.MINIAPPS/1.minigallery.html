@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이미지 갤러리</title>
+    <style>
+        .gallery img{
+            width:100px;
+            height:100px;
+            margin:5px;
+            cursor:pointer;
+        }
+        #large-image{
+            display:none;
+            
+            margin:20px auto;
+            width:50%;
+            height:200px;
+        }
+    </style>
+</head>
+<body>
+    <h1>이미지 갤러리</h1>
+    <div class="gallery">
+        <img src="images/dog1.png"/>
+        <img src="images/dog2.png"/>
+        <img src="images/dog3.png"/>
+    </div>
+    <!-- 방법1 -->
+    <img id="large-image" alt="큰 이미지"/>
+</body>
+<script>
+    const largeImage = document.getElementById("large-image");
+    const originalImages = document.querySelectorAll(".gallery img");
+
+    originalImages.forEach((originalImage) => {
+        originalImage.addEventListener('click',(ev) => {
+            console.log(ev.target.src);
+            
+            // let splitedUrl = ev.target.src.split('/'); 
+            // console.log(splitedUrl);
+            // splitedUrl = ''+splitedUrl[splitedUrl.length-2] + '/' + splitedUrl[splitedUrl.length-1];
+            // console.log(splitedUrl);
+
+            largeImage.src = ev.target.src;
+            largeImage.style.display = 'block';
+        });
+    });
+</script>
+</html>

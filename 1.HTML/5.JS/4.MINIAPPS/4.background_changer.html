@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>배경색 랜덤 바꾸기- 정답</title>
+    <style>
+        body{
+            display:flex;
+            flex-direction: column;
+            /* flex 방향에 맞추어 센터 정렬 */
+            justify-content: center;
+            align-items: center;
+
+            height:100vh;
+        }
+
+        button{
+            /* 상하 좌우 */
+            padding:10px 20px;
+            font-size:18px;
+            margin-bottom:20px;
+        }
+
+        #colorCode{
+            font-size:36px;
+            font-weight: bold;
+            margin-top:20px;
+        }
+    </style>
+</head>
+<body>
+    <button id="changeColorBtn">배경색 바꾸기</button>
+    <div id="colorCode"></div>
+</body>
+<script>
+
+    function getRandomColor() {
+        const r = Math.floor(Math.random()*256);
+        const g = Math.floor(Math.random()*256);
+        const b = Math.floor(Math.random()*256);
+        return `rgb(${r}, ${g}, ${b})`;
+    }
+
+    function getRandomHexColor(){
+        const r = Math.floor(Math.random()*256);
+        const g = Math.floor(Math.random()*256);
+        const b = Math.floor(Math.random()*256);
+
+        //주의 2자리 hex값을 만들어야함
+        //안그러면 브라우저가 인식못한다. 5자리이면 해석할때 r이 2자리인지, g가 2자리인지...
+        //첫번째 인자 => 최종문자열 길이
+        //두번째 인자 => 부족한 길이를 채울 문자열
+        const hexR = r.toString(16).padStart(2,'0');
+        const hexG = g.toString(16).padStart(2,'0');
+        const hexB = b.toString(16).padStart(2,'0');
+        return `#${hexR}${hexG}${hexB}`;
+    }
+
+    document.getElementById('changeColorBtn').addEventListener('click', () => {
+        const newColor = getRandomHexColor();
+
+        //세피아 공식을 가지고 밝기를 구한후 글자 색을 바꿀수도 있다.
+        document.getElementById('colorCode').textContent = newColor;
+        document.body.style.backgroundColor = newColor;
+
+    });
+</script>
+</html>
