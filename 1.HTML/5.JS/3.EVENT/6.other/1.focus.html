@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="parent">
+        <input type="text" id="child" />
+    </div>
+    <script>
+        // 일부 이벤트들은 상위로 전파가 된다
+        // 그리고 일부는 전파가 되지 않음
+        // 잘 모르면 ?? 전파되는게 더 많음
+
+        // 이벤트 버블링 => 이벤트가 위로 전파된다
+        // focus,blur,mouseenter,mouseleave => 이벤트 버블링이 없는 이벤트
+        // focusin,focusout, mouseover, mouseout => 이벤트 버블링이 있는 이벤트
+
+        // document.getElementById('child').addEventListener('focusin', () => {
+        //     console.log('차일드 요소가 선택되었습니다');
+        // });
+
+        // document.getElementById('parent').addEventListener('focusin', () => {
+        //     console.log('부모 요소도 선택 되었습니다.');
+        // });
+
+        document.getElementById('child').addEventListener('focus', () => {
+            console.log('차일드 요소가 선택되었습니다');
+        });
+
+        document.getElementById('parent').addEventListener('focus', () => {
+            console.log('부모 요소도 선택 되었습니다.');
+        });
+    </script>
+</body>
+
+</html>
