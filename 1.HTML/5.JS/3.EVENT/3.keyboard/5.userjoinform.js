@@ -22,6 +22,8 @@ const sectionResultDivs = document.querySelectorAll('.section_result');
 const resultTextDivs = document.querySelectorAll('.section_result_text');
 const sectionInputDivs = document.querySelectorAll('.section_input');
 
+const submitButton = document.getElementById('submit_button');
+
 //전방탐색(lookahead) 패턴은 일치 영역을 발견해도 그 값을 반환하지 않는 패턴
 //'?='로 시작
 
@@ -58,6 +60,7 @@ userNickNameInput.addEventListener('blur', () => {
 
         sectionInputDivs[0].style.border = '1px solid green';
         userNickNameInput.style.width = '90%';
+
         userNickNameValid = true;
     }
 });
@@ -77,7 +80,7 @@ userPasswordInput.addEventListener('blur', () => {
 
         resultTextDivs[1].style.display = 'block';
 
-        userPasswordValid = true;
+        userPasswordValid = false;
     }
     else {
         resultTextDivs[1].style.display = 'none';
@@ -90,6 +93,7 @@ userPasswordInput.addEventListener('blur', () => {
 
         sectionInputDivs[1].style.border = '1px solid green';
         userPasswordInput.style.width = '90%';
+
         userPasswordValid = true;
 
     }
@@ -123,6 +127,7 @@ userNameInput.addEventListener('blur', () => {
 
         sectionInputDivs[2].style.border = '1px solid green';
         userNameInput.style.width = '90%';
+
         userNameValid = true;
     }
 });
@@ -155,11 +160,39 @@ userBirthdayInput.addEventListener('blur', () => {
 
         sectionInputDivs[3].style.border = '1px solid green';
         userBirthdayInput.style.width = '90%';
+
         userBirthdayValid = true;
     }
 });
 
 
 userInterestingInputs.forEach((userInterestingInput) => {
+    userInterestingInput.addEventListener('blur',() => {
+        if (userInterestingInput.checked){
+            userInterestingInputCounts += 1;
+        } else {
+            //아무것도 체크안한 상태에서 blur만 하면 -가 되므로
+            if (userInterestingInputCounts >=1){
+                userInterestingInputCounts -= 1;
+            }
+            
+        }
 
+        if(userInterestingInputCounts <1 || userInterestingInputCounts >3){
+             resultTextDivs[4].style.display = 'block';
+             userInterestingValid = false;
+        } else {
+             resultTextDivs[4].style.display = 'none';
+             userInterestingValid = true;
+        }
+        
+    });
+});
+
+submitButton.addEventListener('click', () => {
+    if (userNickNameValid && userPasswordValid && userNameValid && userBirthdayValid && userInterestingValid){
+        alert('등록되었습니다.');
+    } else {
+        alert('입력하지 않은 값들이 있어 등록되지 않습니다.');
+    }
 });

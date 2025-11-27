@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>todo</title>
+</head>
+
+<body>
+    <h1>투두리스트</h1>
+    <input type="text" id="new-todo" placeholder="할일을 입력하시오" />
+    <button id="add-todo">입력</button>
+
+    <ul id="todo-list">
+
+    </ul>
+
+    <script>
+        //1. 버튼 가져온다
+        const addBtn = document.getElementById('add-todo');
+        const newTodoDiv = document.getElementById('new-todo');
+        const todoList = document.getElementById('todo-list');
+
+        //2. 버튼 클릭 동작시킨다
+        addBtn.addEventListener('click', () => {
+            //3.입력 항목 가져온다
+            const newTodo = newTodoDiv.value;
+            console.log(newTodo);
+
+            //빈칸을 막는다
+            if (newTodo == '') {
+                return;
+            } else {
+                //4.새로운 li를 만든다
+                const new_li = document.createElement('li');
+                new_li.textContent = newTodo;
+
+                //5.ul에 추가한다
+                todoList.appendChild(new_li);
+
+                //입력후 입력칸 지운다.
+                newTodoDiv.value = '';
+            }
+
+        });
+
+        newTodoDiv.addEventListener('keydown', (ev) => {
+            
+            console.log(ev.key);
+            //입력박스에서 엔터 누를시 입력처리 과정 한다
+            if (ev.key == "Enter") {
+                //3.입력 항목 가져온다
+                const newTodo = newTodoDiv.value;
+                console.log(newTodo);
+
+                //빈칸을 막는다
+                if (newTodo == '') {
+                    return;
+                } else {
+                    //4.새로운 li를 만든다
+                    const new_li = document.createElement('li');
+                    new_li.textContent = newTodo;
+
+                    //5.ul에 추가한다
+                    todoList.appendChild(new_li);
+
+                    //입력후 입력칸 지운다.
+                    newTodoDiv.value = '';
+                }
+            }
+
+
+        });
+
+
+    </script>
+</body>
+
+</html>
