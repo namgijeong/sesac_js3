@@ -10,6 +10,14 @@ const userNameInput = document.getElementById('username');
 let userName;
 let userNameValid = false;
 
+const userBirthdayInput = document.getElementById('userbirthday');
+let userBirthday;
+let userBirthdayValid = false;
+
+const userInterestingInputs = document.querySelectorAll('.section_content_left input');
+let userInterestingInputCounts = 0;
+let userInterestingValid = false;
+
 const sectionResultDivs = document.querySelectorAll('.section_result');
 const resultTextDivs = document.querySelectorAll('.section_result_text');
 const sectionInputDivs = document.querySelectorAll('.section_input');
@@ -117,4 +125,41 @@ userNameInput.addEventListener('blur', () => {
         userNameInput.style.width = '90%';
         userNameValid = true;
     }
+});
+
+userBirthdayInput.addEventListener('blur', () => {
+    userBirthday = userBirthdayInput.value;
+    console.log(userBirthday);
+    if (userBirthday == ''){
+        sectionResultDivs[3].style.display = 'flex';
+        sectionResultDivs[3].innerHTML = `
+            <div class="section_result_img">
+                <i class="fa-solid fa-circle-exclamation" style="color:red;"></i>
+            </div>`;
+
+        sectionInputDivs[3].style.border = '1px solid red';
+        userBirthdayInput.style.width = '90%';
+
+        resultTextDivs[3].style.display = 'block';
+
+        userBirthdayValid = false;
+
+    } else {
+        resultTextDivs[3].style.display = 'none';
+
+        sectionResultDivs[3].style.display = 'block';
+        sectionResultDivs[3].innerHTML = `
+                <div class="section_result_img">
+                    <i class="fa-solid fa-check" style="color:green;"></i>
+                </div>`;
+
+        sectionInputDivs[3].style.border = '1px solid green';
+        userBirthdayInput.style.width = '90%';
+        userBirthdayValid = true;
+    }
+});
+
+
+userInterestingInputs.forEach((userInterestingInput) => {
+
 });
