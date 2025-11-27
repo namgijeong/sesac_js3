@@ -26,22 +26,37 @@
 
 <body>
     <h1>투두리스트</h1>
-    <input type="text" id="new-todo" placeholder="할일을 입력하시오" />
-    <button id="add-todo">입력</button>
+    <div>
+        <input type="text" id="new-todo" placeholder="할일을 입력하시오" />
+        <button id="add-todo">입력</button>
+    </div>
+
+    <div>
+        <button id="all_complete">모두 완료</button>
+        <button id="all_delete">모두 삭제</button>
+    </div>
+
+    <div>
+        <button id="part_complete">선택 완료</button>
+        <button id="part_delete">선택 삭제</button>
+    </div>
 
     <ul id="todo-list">
 
     </ul>
 
     <script>
-        //1. 버튼 가져온다
         const addBtn = document.getElementById('add-todo');
         const newTodoDiv = document.getElementById('new-todo');
+
+        const allComplete = document.getElementById('all_complete');
+        const allDelete = document.getElementById('all_delete');
+        const partComplete = document.getElementById('part_complete');
+        const partDelete = document.getElementById('part_delete');
+
         const todoList = document.getElementById('todo-list');
 
-
         addBtn.addEventListener('click', () => {
-
             //trim()을 통해서 앞뒤 원치않는 공백문자를 제거한다
             // === => js는 2와 "2"를 같은걸로 판단하기 때문에  ===을 써야한다
             //다른 모든 개발언어에서의 == 사실은 js에서는 === 였다
@@ -49,7 +64,7 @@
             console.log(newTodo);
 
             //새로 추가된 동적 li 태그들을 가져온다
-            const dynamicLitags = document.querySelectorAll('#todo-list li');
+            const dynamicLitags = document.querySelectorAll('#todo-list div li');
 
             //새로 추가된 동적 li 태그들의 내부 내용 배열을 만든다.
             let dynamicLitagsTextContent = [];
@@ -73,6 +88,9 @@
                 const new_div = document.createElement('div');
                 new_div.classList.add('li_container');
 
+                const checkboxInput = document.createElement('input');
+                checkboxInput.type = "checkbox";
+
                 const new_li = document.createElement('li');
                 new_li.textContent = newTodo;
 
@@ -87,6 +105,7 @@
                 updateBtn.addEventListener('click', (ev) => {
                     if (ev.target.textContent === '수정') {
                         const tmpInput = document.createElement('input');
+                        tmpInput.type = "text";
                         const currentLi = ev.target.parentNode.querySelector('li');
                         tmpInput.value = currentLi.textContent;
 
@@ -94,7 +113,7 @@
                         ev.target.textContent = '완료';
                     }
                     else {
-                        const currentInput = ev.target.parentNode.querySelector('input');
+                        const currentInput = ev.target.parentNode.querySelector('input[type="text"]');
 
                         if (currentInput.value.trim() == '') {
                             alert('입력내용이 있어야 수정완료가 됩니다.');
@@ -111,6 +130,7 @@
 
                 });
 
+                new_div.appendChild(checkboxInput);
                 new_div.appendChild(new_li);
                 new_div.appendChild(updateBtn);
                 new_div.appendChild(deleteBtn);
@@ -156,6 +176,31 @@
 
         });
 
+        allComplete.addEventListener('click', () => {
+            //동적으로 만들었던 체크박스들을 불러온다
+            const dynamicCheckboxes = document.querySelectorAll('#todo-list div input[type="checkbox"]');
+            const dynamicLitags = document.querySelectorAll('#todo-list div li');
+
+            //배열을 돌며 체크해버린다.
+            dynamicCheckboxes.forEach((dynamicCheckbox) => {
+                dynamicCheckbox.checked = true;
+            });
+
+            //동적으로 만든 li 태그들에 줄을 그어 버린다.
+            dynamicLitags.forEach((dynamicLitag) => {
+                dynamicLitag.classList.add('clear');
+            });
+        });
+
+        allDelete.addEventListener('click', () => {
+            //동적으로 만들었던 li의 부모태그 div들을 불러온다
+            const dynamicLiContainers = document.querySelectorAll('#todo-list div.li_container');
+
+            //동적으로 만든 li 태그들 원상복구
+            dynamicLiContainers.forEach((dynamicLiContainer) => {
+                dynamicLiContainer.remove();
+            });
+        });
 
     </script>
 </body>
