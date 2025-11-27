@@ -22,21 +22,22 @@
         const newTodoDiv = document.getElementById('new-todo');
         const todoList = document.getElementById('todo-list');
 
-        //2. 버튼 클릭 동작시킨다
+       
         addBtn.addEventListener('click', () => {
-            //3.입력 항목 가져온다
+            
+            //trim()을 통해서 앞뒤 원치않는 공백문자를 제거한다
+            // === => js는 2와 "2"를 같은걸로 판단하기 때문에  ===을 써야한다
+            //다른 모든 개발언어에서의 == 사실은 js에서는 === 였다
             const newTodo = newTodoDiv.value;
             console.log(newTodo);
 
             //빈칸을 막는다
-            if (newTodo == '') {
+            if (newTodo.trim() == '') {
                 return;
             } else {
-                //4.새로운 li를 만든다
                 const new_li = document.createElement('li');
                 new_li.textContent = newTodo;
 
-                //5.ul에 추가한다
                 todoList.appendChild(new_li);
 
                 //입력후 입력칸 지운다.
@@ -46,28 +47,26 @@
         });
 
         newTodoDiv.addEventListener('keydown', (ev) => {
-            
             console.log(ev.key);
             //입력박스에서 엔터 누를시 입력처리 과정 한다
             if (ev.key == "Enter") {
-                //3.입력 항목 가져온다
-                const newTodo = newTodoDiv.value;
-                console.log(newTodo);
+                // const newTodo = newTodoDiv.value;
+                // console.log(newTodo);
 
-                //빈칸을 막는다
-                if (newTodo == '') {
-                    return;
-                } else {
-                    //4.새로운 li를 만든다
-                    const new_li = document.createElement('li');
-                    new_li.textContent = newTodo;
+                // //빈칸을 막는다
+                // if (newTodo.trim() == '') {
+                //     return;
+                // } else {
+                //     const new_li = document.createElement('li');
+                //     new_li.textContent = newTodo;
 
-                    //5.ul에 추가한다
-                    todoList.appendChild(new_li);
+                //     todoList.appendChild(new_li);
 
-                    //입력후 입력칸 지운다.
-                    newTodoDiv.value = '';
-                }
+                //     //입력후 입력칸 지운다.
+                //     newTodoDiv.value = '';
+                // }
+
+                addBtn.click();
             }
 
 

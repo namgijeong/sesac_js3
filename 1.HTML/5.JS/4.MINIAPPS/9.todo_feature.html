@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>todo</title>
+    <style>
+        .clear {
+            text-decoration: line-through;
+        }
+
+        /*
+        .not_clear {
+            text-decoration: none;
+        }
+        */
+
+        .li_container {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>투두리스트</h1>
+    <input type="text" id="new-todo" placeholder="할일을 입력하시오" />
+    <button id="add-todo">입력</button>
+
+    <ul id="todo-list">
+
+    </ul>
+
+    <script>
+        //1. 버튼 가져온다
+        const addBtn = document.getElementById('add-todo');
+        const newTodoDiv = document.getElementById('new-todo');
+        const todoList = document.getElementById('todo-list');
+
+
+        addBtn.addEventListener('click', () => {
+
+            //trim()을 통해서 앞뒤 원치않는 공백문자를 제거한다
+            // === => js는 2와 "2"를 같은걸로 판단하기 때문에  ===을 써야한다
+            //다른 모든 개발언어에서의 == 사실은 js에서는 === 였다
+            const newTodo = newTodoDiv.value.trim();
+            console.log(newTodo);
+
+            //새로 추가된 동적 li 태그들을 가져온다
+            const dynamicLitags = document.querySelectorAll('#todo-list li');
+
+            //새로 추가된 동적 li 태그들의 내부 내용 배열을 만든다.
+            let dynamicLitagsTextContent = [];
+            dynamicLitags.forEach((dynamicLitag) => {
+                dynamicLitagsTextContent.push(dynamicLitag.textContent);
+            });
+
+            //빈칸을 막는다
+            if (newTodo === '') {
+                return;
+            }
+            else {
+                //중복방지를 한다
+                for (let i = 0; i < dynamicLitagsTextContent.length; i++) {
+                    if (newTodo === dynamicLitagsTextContent[i]) {
+                        return;
+                    }
+                }
+
+                //중복방지도 통과하면 
+                const new_div = document.createElement('div');
+                new_div.classList.add('li_container');
+
+                const new_li = document.createElement('li');
+                new_li.textContent = newTodo;
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = '삭제';
+                deleteBtn.addEventListener('click', (ev) => {
+                    ev.target.parentNode.remove();
+                });
+
+                const updateBtn = document.createElement('button');
+                updateBtn.textContent = '수정';
+                updateBtn.addEventListener('click', (ev) => {
+                    if (ev.target.textContent === '수정') {
+                        const tmpInput = document.createElement('input');
+                        const currentLi = ev.target.parentNode.querySelector('li');
+                        tmpInput.value = currentLi.textContent;
+
+                        ev.target.parentNode.replaceChild(tmpInput, currentLi);
+                        ev.target.textContent = '완료';
+                    }
+                    else {
+                        const currentInput = ev.target.parentNode.querySelector('input');
+
+                        if (currentInput.value.trim() == '') {
+                            alert('입력내용이 있어야 수정완료가 됩니다.');
+                            return;
+                        }
+                        else {
+                            const tmpLi = document.createElement('li');
+                            tmpLi.textContent = currentInput.value;
+
+                            ev.target.parentNode.replaceChild(tmpLi, currentInput);
+                            ev.target.textContent = '수정';
+                        }
+                    }
+
+                });
+
+                new_div.appendChild(new_li);
+                new_div.appendChild(updateBtn);
+                new_div.appendChild(deleteBtn);
+
+                todoList.appendChild(new_div);
+
+                //입력후 입력칸 지운다.
+                newTodoDiv.value = '';
+            }
+
+        });
+
+        newTodoDiv.addEventListener('keydown', (ev) => {
+            //console.log(ev.key);
+            //입력박스에서 엔터 누를시 입력처리 과정 한다
+            if (ev.key == "Enter") {
+                addBtn.click();
+            }
+
+
+        });
+
+        todoList.addEventListener('click', (ev) => {
+            let clickedTag = ev.target.tagName.toLowerCase();
+            if (clickedTag !== 'li') {
+                return;
+            }
+            else {
+                //방법1
+                // let currentClassStatus = ev.target.classList.contains('clear');
+                // if (currentClassStatus) {
+                //     ev.target.classList.remove('clear');
+                //     ev.target.classList.add('not-clear');
+                // }
+                // else {
+                //     ev.target.classList.remove('not-clear');
+                //     ev.target.classList.add('clear');
+                // }
+
+                //방법2. toggle로 class를 붙였다 떼다 할 수 있다
+                ev.target.classList.toggle('clear');
+            }
+
+        });
+
+
+    </script>
+</body>
+
+</html>
