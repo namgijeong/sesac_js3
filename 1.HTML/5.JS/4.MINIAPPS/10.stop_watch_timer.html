@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>stop watch timer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background-color: lightgray;
+        }
+
+        #total_container {
+            position: relative;
+
+            width: 50%;
+            height: 100vh;
+            margin: 0 auto;
+        }
+
+        #timer_container {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+
+            width: 100%;
+            height: 30%;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            background-color: white;
+            border: 1px solid white;
+            border-radius: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        #time_container {
+            width: 100%;
+            height: 40%;
+            margin-bottom: 20px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .time_text {
+            width: 20%;
+            height: 100%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .colon {
+            width: 5%;
+            height: 100%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #timer_button_container {
+            width: 100%;
+            height: 20%;
+            margin-bottom: 20px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-weight: 400;
+            font-size: 10px;
+        }
+
+        .timer_button{
+            width:20%;
+            height:100%;
+
+            background-color:lightblue;
+            border:1px solid lightblue;
+            color:white;
+        }
+
+        #start_button{
+            margin-right:20px;
+        }
+
+        #stop_button{
+            margin-right:20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="total_container">
+        <div id="timer_container">
+            <!-- 밀리초: ms  1000분의 1초 -->
+            <div id="time_container">
+                <div id="minute_text" class="time_text">분</div>
+                <div class="colon">:</div>
+                <div id="seconds_text" class="time_text">초</div>
+                <div class="colon">:</div>
+                <div id="ms_text" class="time_text">밀리초</div>
+            </div>
+            <div id="timer_button_container">
+                <button id="start_button" class="timer_button">Start</button>
+                <button id="stop_button" class="timer_button">Stop</button>
+                <button id="reset_button" class="timer_button">Reset</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="10.stop_watch_timer.js"></script>
+</html>
