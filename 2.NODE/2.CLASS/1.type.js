@@ -1,0 +1,18 @@
+//원시타입 => primitive type
+const a = 5;
+console.log(typeof a);
+
+const b = "hello";
+console.log(typeof b);
+
+//object 타입 => wrapper class => 원시 타입을 감싸 놓은...
+const c = new Number(5);
+console.log(typeof c);
+console.log(c instanceof Number);
+
+const d = new String("hello");
+console.log(typeof d);
+
+
+
+
