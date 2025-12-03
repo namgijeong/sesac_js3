@@ -10,7 +10,9 @@ class NameGenerator {
             "민준", "지후", "현우", "서우", "준서",
             "하온", "태윤", "태이", "시온", "태하",
             "유찬", "지안", "시안", "건우", "민서",
-            "승우", "하림", "민호", "재윤"
+            "승우", "하림", "민호", "재윤", "시율",
+            "태준", "하랑", "민석", "주호", "은성",
+
         ];
 
         this.femaleNames = [
@@ -23,7 +25,8 @@ class NameGenerator {
             "하율", "예솜", "이현", "채윤", "세아",
             "서연", "소이", "나은", "리아", "예서",
             "서우", "윤아", "연우", "로아", "은채",
-            "채은", "다윤", "해린", "아현", "미나"
+            "채은", "다윤", "해린", "아현", "미나",
+            "예림", "주은", "설아", "시윤", "연아"
         ];
 
         this.familyNames = [
@@ -40,16 +43,16 @@ class NameGenerator {
         return arr[Math.floor(Math.random() * arr.length)];
     }
 
-    makeRandomName(gender){
+    makeRandomName(gender) {
         let fullName = '';
-        switch(gender){
+        switch (gender) {
             case "Male":
                 fullName = this.pickRandom(this.familyNames) + this.pickRandom(this.maleNames);
                 break;
             case "Female":
                 fullName = this.pickRandom(this.familyNames) + this.pickRandom(this.femaleNames);
                 break;
-            default:       
+            default:
         }
 
         return fullName;
