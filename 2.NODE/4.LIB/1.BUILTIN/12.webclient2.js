@@ -11,6 +11,7 @@ const req = http.request(url, (res) => {
     console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
     
     res.setEncoding('utf8');
+    //응답 바디 데이터 받기 (stream 방식)
     res.on('data', (chunk) => {
         console.log(`BODY: ${chunk}`);
     });
