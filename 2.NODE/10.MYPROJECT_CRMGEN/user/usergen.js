@@ -1,11 +1,10 @@
 import GenderGenerator from "./gendergen.js";
 import NameGenerator from "./namegen.js";
-
 import AgeGenerator from "./agegen.js";
 import BirthdateGenerator from "./birthdategen.js";
 
 import AddressGenerator from "../common/addressgen.js";
-import UuidGenerator from "../common/uuid_gen.js";
+import UuidGenerator from "../common/uuidgen.js";
 
 class UserGenerator{
     constructor(){
