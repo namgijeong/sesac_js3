@@ -67,8 +67,4 @@ class NameGenerator {
 
 export default NameGenerator;
 
-let nameTest = new NameGenerator();
-console.log(nameTest.makeRandomName("Male"));
-console.log(nameTest.makeRandomName("Female"));
-
 
