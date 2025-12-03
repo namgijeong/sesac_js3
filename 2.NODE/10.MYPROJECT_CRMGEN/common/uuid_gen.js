@@ -9,5 +9,14 @@
 
 import { v4 as uuidv4 } from 'uuid';
 
-const myid = uuidv4()
-console.log('생성된 UUID: ', myid);
+class UuidGenerator{
+    constructor(){
+        this.id = uuidv4();
+    }
+
+    getRandomUuid(){
+        return this.id;
+    }
+}
+
+export default UuidGenerator;

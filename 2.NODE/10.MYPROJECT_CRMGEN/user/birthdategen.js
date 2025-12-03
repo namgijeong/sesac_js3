@@ -1,10 +1,13 @@
 class BirthdateGenerator{
     makeRandomBirthdate(age){
-        //10살에서 90살까지니까 => 2015 ~ 1935년
-        //let year = Math.floor(Math.random()*80) +1935;
+        //10살에서 90살까지니까 => 2016 ~ 1936년
+        //let year = Math.floor(Math.random()*80) +1936;
 
-        let year = Math.floor(Math.random()*(age-10)) +1935;
+        let year = 2025 - age;
+
         let month = Math.floor(Math.random()*12) + 1;
+        month =  month >= 10 ? month : month.toString().padStart(2,'0');
+
         let date = 1;
         
         switch(month){
@@ -23,12 +26,17 @@ class BirthdateGenerator{
             case 9:    
             case 11:
                 date = Math.floor(Math.random()*30) + 1;
-                break;
+                break;  
             default:        
         }
 
+        date =  date >= 10 ? date : date.toString().padStart(2,'0');
+        
         return `${year}-${month}-${date}`;
     }
 }
 
 export default BirthdateGenerator;
+
+// const test = new BirthdateGenerator();
+// console.log(test.makeRandomBirthdate(10));

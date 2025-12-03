@@ -101,7 +101,7 @@ class AddressGenerator {
 
         //로를 뽑는다
         let roadCandidates = this.regions[city][gu];
-        console.log(roadCandidates);
+        //console.log(roadCandidates);
         let road = this.pickRandomInArray(roadCandidates);
         //console.log(road);
 
@@ -111,6 +111,8 @@ class AddressGenerator {
 
         fullAddress = `${city} ${gu} ${road} ${roadNumber}`;
         //console.log(fullAddress);
+
+        return fullAddress;
     }
 }
 
