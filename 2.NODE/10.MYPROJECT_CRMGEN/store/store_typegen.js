@@ -1,4 +1,4 @@
-class TypeGenerator {
+class StoreTypeGenerator {
     constructor() {
         this.types = [
             "스타벅스",
@@ -24,4 +24,4 @@ class TypeGenerator {
     }
 }
 
-export default TypeGenerator;
+export default StoreTypeGenerator;

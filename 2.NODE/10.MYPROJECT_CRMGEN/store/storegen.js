@@ -1,4 +1,4 @@
-import TypeGenerator from "./typegen.js";
+import StoreTypeGenerator from "./store_typegen.js";
 import StoreNameGenerator from "./store_namegen.js";
 
 import AddressGenerator from "../common/addressgen.js";
@@ -6,7 +6,7 @@ import UuidGenerator from "../common/uuidgen.js";
 
 class StoreGenerator{
     constructor(){
-        this.type = new TypeGenerator().getRandomType();
+        this.type = new StoreTypeGenerator().getRandomType();
         this.address = new AddressGenerator().makeRandomAddress();
 
         this.storeName = new StoreNameGenerator().getRandomStoreName(this.type,this.address);
