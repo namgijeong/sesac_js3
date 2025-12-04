@@ -9,7 +9,6 @@ class BirthdateGenerator{
         month =  month >= 10 ? month : month.toString().padStart(2,'0');
 
         let date = 1;
-        
         switch(month){
             case 1:
             case 3:
@@ -29,7 +28,6 @@ class BirthdateGenerator{
                 break;  
             default:        
         }
-
         date =  date >= 10 ? date : date.toString().padStart(2,'0');
         
         return `${year}-${month}-${date}`;
