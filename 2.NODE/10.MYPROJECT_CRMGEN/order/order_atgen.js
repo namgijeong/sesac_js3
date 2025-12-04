@@ -27,6 +27,8 @@ class OrderAtGenerator {
                 break;
             default:
         }
+
+        month =  month >= 10 ? month : month.toString().padStart(2,'0');
         date = date >= 10 ? date : date.toString().padStart(2, '0');
 
         let hours = Math.floor(Math.random() * 24);

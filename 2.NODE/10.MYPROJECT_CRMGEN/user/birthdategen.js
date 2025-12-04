@@ -4,10 +4,8 @@ class BirthdateGenerator{
         //let year = Math.floor(Math.random()*80) +1936;
 
         let year = 2025 - age;
-
         let month = Math.floor(Math.random()*12) + 1;
-        month =  month >= 10 ? month : month.toString().padStart(2,'0');
-
+        
         let date = 1;
         switch(month){
             case 1:
@@ -28,6 +26,8 @@ class BirthdateGenerator{
                 break;  
             default:        
         }
+
+        month =  month >= 10 ? month : month.toString().padStart(2,'0');
         date =  date >= 10 ? date : date.toString().padStart(2,'0');
         
         return `${year}-${month}-${date}`;
