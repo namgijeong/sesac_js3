@@ -90,7 +90,7 @@ class ItemNameGenerator {
                 "Sourdough",
                 "Ciabatta",
                 "Rye",
-                "Whole Wheat",
+                "WholeWheat",
                 "Brioche",
                 "Focaccia",
                 "Bagel",
@@ -117,7 +117,8 @@ class ItemNameGenerator {
     }
 
     makeRandomItemName(type){
-        const wantedType = arr[type];
+        const wantedType = this.types[type];
+        //console.log(wantedType);
 
         let itemFullName = '';
         let itemName = this.pickRandomInArray(wantedType); 
@@ -126,3 +127,5 @@ class ItemNameGenerator {
         return itemFullName;
     }
 }
+
+export default ItemNameGenerator;

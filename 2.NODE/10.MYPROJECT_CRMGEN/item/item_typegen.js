@@ -17,8 +17,10 @@ class ItemTypeGenereator {
         return arr[Math.floor(Math.random() * arr.length)];
     }
 
-    getRandomItem(){
+    getRandomType(){
         this.type = this.pickRamdom(this.types);
+
+        return this.type;
     }
 
 
