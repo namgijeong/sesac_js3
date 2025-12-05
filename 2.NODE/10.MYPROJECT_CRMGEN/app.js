@@ -22,12 +22,59 @@ const args = process.argv.slice(2);
 console.log(args);
 const type = args[0];
 const lineNumber = Number(args[1]);
+const printType = args[2];
 
 function pickRandomId(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
 }
 
-async function makeRandomData(type, lineNumber) {
+function printData(type, printType) {
+    if (type === 'users') {
+        if (printType === 'csv') {
+            writeCsv('users', users);
+        }
+        else {
+            console.log(users);
+        }
+    }
+    else if (type === 'stores') {
+        if (printType === 'csv') {
+            writeCsv('stores', stores);
+        }
+        else {
+            console.log(stores);
+        }
+    }
+    else if (type === 'items') {
+        if (printType == 'csv') {
+            writeCsv('items', items);
+        }
+        else {
+            console.log(items);
+        }
+    }
+    else if (type === 'orders') {
+        if (printType == 'csv') {
+            writeCsv('orders', orders);
+        }
+        else {
+            console.log(orders);
+        }
+    }
+    else if (type === 'orderItems') {
+        if (printType == 'csv') {
+            writeCsv('orderItems', orderItems);
+        }
+        else {
+            console.log(orderItems);
+        }
+    }
+    else {
+        return;
+    }
+}
+
+async function makeRandomData(type, lineNumber, printType) {
     if (type === 'users') {
         for (let i = 0; i < lineNumber; i++) {
             const user = new UserGenerator().getRandomUser();
@@ -36,8 +83,6 @@ async function makeRandomData(type, lineNumber) {
 
             users.push(user);
         }
-
-        writeCsv('users', users);
     }
     else if (type === 'stores') {
         for (let i = 0; i < lineNumber; i++) {
@@ -47,8 +92,6 @@ async function makeRandomData(type, lineNumber) {
 
             stores.push(store);
         }
-
-        writeCsv('stores', stores);
     }
     else if (type == 'items') {
         for (let i = 0; i < lineNumber; i++) {
@@ -58,13 +101,10 @@ async function makeRandomData(type, lineNumber) {
 
             items.push(item);
         }
-
-        writeCsv('items', items);
     }
     else if (type === 'orders') {
         //stores,users가 전제조건
         if (stores.length == 0 || users.length == 0) {
-
             try {
                 users = await readCsv('users');
                 stores = await readCsv('stores');
@@ -92,12 +132,10 @@ async function makeRandomData(type, lineNumber) {
             orders.push(order);
         }
 
-        writeCsv('orders', orders);
     }
     else if (type === 'orderItems') {
         //orders, items가 전제조건
         if (orders.length == 0 || items.length == 0) {
-
             try {
                 orders = await readCsv('orders');
                 items = await readCsv('items');
@@ -118,15 +156,16 @@ async function makeRandomData(type, lineNumber) {
         });
 
         //console.log(orderItems);
-        writeCsv('orderItems', orderItems);
     }
     else {
         console.log('데이터 종류를 users, stores, items, orders, orderItems 중에서 선택하세요.');
     }
+
+    printData(type, printType)
 }
 
 
-makeRandomData(type, lineNumber);
+makeRandomData(type, lineNumber, printType);
 
 
 
