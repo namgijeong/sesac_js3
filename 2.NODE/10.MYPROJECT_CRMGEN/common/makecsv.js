@@ -1,7 +1,5 @@
 //외부모듈 npm i csv-writer 설치
 import { createObjectCsvWriter } from 'csv-writer';
-let fileName = '';
-let fileHeader;
 
 const headerUser = [
     { id: 'Id', title: 'userId' },
@@ -14,28 +12,31 @@ const headerUser = [
 const headerStore = [
     { id: 'Id', title: 'storeId' },
     { id: 'Name', title: 'storeName' },
-    { id: 'Type',title:'storeType'},
+    { id: 'Type', title: 'storeType' },
     { id: 'Address', title: 'storeAddress' },
 ];
 const headerItem = [
     { id: 'Id', title: 'itemId' },
     { id: 'Name', title: 'itemName' },
-    { id: 'Type',title:'itemType'},
+    { id: 'Type', title: 'itemType' },
     { id: 'UnitPrice', title: 'itemPrice' },
 ];
 const headerOrder = [
     { id: 'Id', title: 'orderId' },
     { id: 'OrderAt', title: 'orderAt' },
-    { id: 'StoreId',title:'storeId'},
+    { id: 'StoreId', title: 'storeId' },
     { id: 'UserId', title: 'userId' },
 ];
 const headerOrderItem = [
     { id: 'Id', title: 'orderItemId' },
     { id: 'OrderId', title: 'orderId' },
-    { id: 'ItemId',title:'itemId'},
+    { id: 'ItemId', title: 'itemId' },
 ];
 
 function writeCsv(type, data) {
+    let fileName = '';
+    let fileHeader;
+
     switch (type) {
         case 'users':
             fileName = 'users.csv';
@@ -57,11 +58,11 @@ function writeCsv(type, data) {
             fileName = 'orderItems.csv';
             fileHeader = headerOrderItem;
             break;
-        default:                  
+        default:
     }
 
     console.log(fileHeader);
-    
+
     const csvWriter = createObjectCsvWriter({
         path: fileName,
         header: fileHeader,

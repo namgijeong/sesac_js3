@@ -1,3 +1,4 @@
+//외부모듈 npm i csv-writer 설치
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const csvWriter = createCsvWriter({
     path: 'data2.csv',
