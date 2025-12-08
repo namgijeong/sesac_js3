@@ -21,6 +21,7 @@ app.get('/',(req,res) => {
 });
 
 //사진을 나오게 하고싶으면 
+//주의 맨위에다가 써넣으면, 이 public안에 현재 html이 있으므로 이것이 먼저 실행되서 내가 쓴 app.get sendFile이 실행되지 않음
 app.use(express.static('public'));
 
 app.listen(PORT, () => {
