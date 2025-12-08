@@ -1,5 +1,5 @@
-import StoreTypeGenerator from "./store_typegen.js";
-import StoreNameGenerator from "./store_namegen.js";
+import StoreTypeGenerator from "./storetype_gen.js";
+import StoreNameGenerator from "./storename_gen.js";
 
 import AddressGenerator from "../common/addressgen.js";
 import UuidGenerator from "../common/uuidgen.js";

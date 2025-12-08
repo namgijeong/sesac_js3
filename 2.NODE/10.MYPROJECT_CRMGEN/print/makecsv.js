@@ -1,5 +1,7 @@
 //외부모듈 npm i csv-writer 설치
 import { createObjectCsvWriter } from 'csv-writer';
+import pino from "pino";
+const logger = pino();
 
 const headerUser = [
     { id: 'Id', title: 'userId' },
@@ -61,7 +63,7 @@ function writeCsv(type, data) {
         default:
     }
 
-    console.log(fileHeader);
+    logger.info(fileHeader);
 
     const csvWriter = createObjectCsvWriter({
         path: fileName,

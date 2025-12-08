@@ -1,7 +1,7 @@
-import ItemTypeGenereator from "./item_typegen.js";
+import ItemTypeGenereator from "./itemtype_gen.js";
 
-import ItemNameGenerator from "./item_namegen.js";
-import ItemPriceGenerator from "./item_pricegen.js";
+import ItemNameGenerator from "./itemname_gen.js";
+import ItemPriceGenerator from "./itemprice_gen.js";
 
 import UuidGenerator from "../common/uuidgen.js";
 

@@ -1,7 +1,7 @@
-import GenderGenerator from "./gendergen.js";
-import NameGenerator from "./namegen.js";
-import AgeGenerator from "./agegen.js";
-import BirthdateGenerator from "./birthdategen.js";
+import GenderGenerator from "./usergender_gen.js";
+import NameGenerator from "./username_gen.js";
+import AgeGenerator from "./userage_gen.js";
+import BirthdateGenerator from "./userbirthdate_gen.js";
 
 import AddressGenerator from "../common/addressgen.js";
 import UuidGenerator from "../common/uuidgen.js";

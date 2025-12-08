@@ -1,10 +1,13 @@
-import UserGenerator from "./user/usergen.js";
-import StoreGenerator from "./store/storegen.js";
-import ItemGenerator from "./item/itemgen.js";
-import OrderGenerator from "./order/ordergen.js";
-import OrderItemGenerator from "./orderitem/orderitemgen.js";
-import writeCsv from "./common/makecsv.js";
-import readCsv from "./common/readcsv.js";
+import UserGenerator from "./user/user_gen.js";
+import StoreGenerator from "./store/store_gen.js";
+import ItemGenerator from "./item/item_gen.js";
+import OrderGenerator from "./order/order_gen.js";
+import OrderItemGenerator from "./orderitem/orderitem_gen.js";
+import writeCsv from "./print/makecsv.js";
+import readCsv from "./print/readcsv.js";
+
+import pino from "pino";
+const logger = pino();
 
 let users = [];
 let stores = [];
@@ -12,17 +15,49 @@ let items = [];
 let orders = [];
 let orderItems = [];
 
-//process.argv
-//=> Node.js 프로그램이 실행될 때 명령어 전체를 배열 형태로 담고 있는 값
-//node app.js => 이 명령어 잘라내기
-const args = process.argv.slice(2);
+function checkArgs() {
+    //process.argv
+    //=> Node.js 프로그램이 실행될 때 명령어 전체를 배열 형태로 담고 있는 값
+    //node app.js => 이 명령어 잘라내기
+    const args = process.argv.slice(2);
 
-//첫번째 인자 => 만들기 원하는 데이터
-//두번째 인자 => 갯수
-console.log(args);
-const type = args[0];
-const lineNumber = Number(args[1]);
-const printType = args[2];
+    //args의 길이를 검사하여 맞지 않으면 오류출력
+    if (args.length != 3) {
+        console.log(`'node app.js 데이터종류(users, stores, items, orders, orderItems) 갯수 출력형식(csv,console)' 순으로 입력해주세요.`);
+        return;
+    }
+
+    //첫번째 인자 => 만들기 원하는 데이터
+    //두번째 인자 => 갯수
+    //세번째 인자 => csv, console
+
+    const type = args[0];
+    const lineNumber = args[1];
+    let printType = args[2];
+
+    //0이하이면 오류출력
+    logger.info(lineNumber);
+    logger.info(isNaN(lineNumber));
+    //Number.isNaN() → 타입이 number 이면서 값이 NaN일 때만 true
+    //isNaN() → 숫자로 변환해보고 NaN이면 true
+    if (isNaN(lineNumber) || lineNumber <= 0) {
+        console.log('데이터 갯수를 1개 이상으로 입력해주세요.');
+        return;
+    }
+
+    //프린트 타입 검증
+    printType = printType.toLowerCase();
+    switch (printType) {
+        case 'csv':
+        case 'console':
+            break;
+        default:
+            console.log('csv 또는 console 형식으로만 입력해주세요');
+            return;
+    }
+    
+    makeRandomData(type, lineNumber, printType);
+}
 
 function pickRandomId(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
@@ -78,8 +113,6 @@ async function makeRandomData(type, lineNumber, printType) {
     if (type === 'users') {
         for (let i = 0; i < lineNumber; i++) {
             const user = new UserGenerator().getRandomUser();
-            //console.log(user);
-            //console.log(JSON.stringify(user));
 
             users.push(user);
         }
@@ -87,8 +120,6 @@ async function makeRandomData(type, lineNumber, printType) {
     else if (type === 'stores') {
         for (let i = 0; i < lineNumber; i++) {
             const store = new StoreGenerator().getRandomStore();
-            // console.log(store);
-            // console.log(JSON.stringify(store));
 
             stores.push(store);
         }
@@ -96,8 +127,6 @@ async function makeRandomData(type, lineNumber, printType) {
     else if (type == 'items') {
         for (let i = 0; i < lineNumber; i++) {
             const item = new ItemGenerator().getRandomItem();
-            // console.log(item);
-            // console.log(JSON.stringify(item));
 
             items.push(item);
         }
@@ -109,9 +138,8 @@ async function makeRandomData(type, lineNumber, printType) {
                 users = await readCsv('users');
                 stores = await readCsv('stores');
 
-                //console.log(users);
-                //console.log(stores);
-
+                logger.info(users);
+                logger.info(stores);
             } catch (err) {
                 console.log('stores, users 정보를 읽어오기 실패하였습니다.');
                 return;
@@ -125,8 +153,8 @@ async function makeRandomData(type, lineNumber, printType) {
             const randomUser = pickRandomId(users);
             const randomStoreId = randomStore.Id || randomStore.storeId;
             const randomUserId = randomUser.Id || randomUser.userId;
-            //console.log(randomStoreId);
-            //console.log(randomUserId);
+            logger.info(randomStoreId);
+            logger.info(randomUserId);
 
             const order = new OrderGenerator(randomStoreId, randomUserId).getRandomOrder();
             orders.push(order);
@@ -155,7 +183,7 @@ async function makeRandomData(type, lineNumber, printType) {
             orderItems.push(orderItem);
         });
 
-        //console.log(orderItems);
+        logger.info(orderItems);
     }
     else {
         console.log('데이터 종류를 users, stores, items, orders, orderItems 중에서 선택하세요.');
@@ -164,8 +192,8 @@ async function makeRandomData(type, lineNumber, printType) {
     printData(type, printType)
 }
 
+checkArgs();
 
-makeRandomData(type, lineNumber, printType);
 
 
 
