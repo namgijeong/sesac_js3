@@ -21,8 +21,12 @@ app.post('/login', (req, res) => {
         console.log(`온 데이터 모음: ${data}`);
         const params = new URLSearchParams(data);
         console.log(params);
+
+        //params.entries() => 키-값 쌍을 하나씩 내놓는 이터레이터
+        //Object.fromEntries(...) =>  "키-값 배열"로 구성된 데이터를 → 일반 JS 객체 { key: value }로 바꿔주는 함수
         const obj = Object.fromEntries(params.entries());
         console.log(obj);
+
         res.send(`<h1>당신의 id는 ${obj.id}이고 pw는 ${obj.pw}입니다.</h1>`)
     });
   
