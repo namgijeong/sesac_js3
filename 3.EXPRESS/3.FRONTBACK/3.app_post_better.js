@@ -12,6 +12,8 @@ const PORT = 3000;
 //extended:false => 확장 문법 안씀
 app.use(express.urlencoded({extended:false}));
 
+//index.html이면 자동으로 실행이 되는데
+//그게 아니면 브라우저에서 html파일 쳐서 들어가야함
 app.use(express.static('public'));
 
 app.post('/login', (req,res) => {

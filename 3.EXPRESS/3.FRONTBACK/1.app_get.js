@@ -3,6 +3,8 @@ const app = express();
 const PORT = 3000;
 
 //static 폴더를 설정해서 html 파일을 서빙하시오
+//index.html이면 자동으로 실행이 되는데
+//그게 아니면 브라우저에서 html파일 쳐서 들어가야함
 app.use(express.static('public'));
 
 app.get('/submit', (req, res) => {
