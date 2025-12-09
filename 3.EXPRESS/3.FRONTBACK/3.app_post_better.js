@@ -7,7 +7,7 @@ const PORT = 3000;
 
 //app.use(bodyParser.urlencoded());
 
-//for 데이터로부터 온걸 x-www-form-urlencoded라고 부름
+//form 데이터로부터 온걸 x-www-form-urlencoded라고 부름
 //이 미들웨어는? 사용자로부터 전달받은 위 mime 타입을 찾아서 req.body에 담아준다
 //extended:false => 확장 문법 안씀
 app.use(express.urlencoded({extended:false}));

@@ -28,16 +28,17 @@
         <div id="result"></div>
     </div>
     <script>
-        const requestURL = 'https://jsonplaceholder.typicode.com/posts';
+        const baseURL = 'https://jsonplaceholder.typicode.com/posts';
+       
         document.getElementById('createPost').addEventListener('click', () => {
-            console.log('버튼 눌림');
+            console.log('create 버튼 눌림');
             const myUser = {
                 title:'sesac',
                 body:'seoul',
                 userId:1,
             };
 
-            fetch(requestURL, {
+            fetch(baseURL, {
                 method:'POST',
                 //js객체 -> json 문자열
                 body:JSON.stringify(myUser),
@@ -46,7 +47,59 @@
                 }
             })
             .then(response => response.json()) //에러체크 귀찮아서 안했음..
-            .then(data => document.getElementById('result').innerText = JSON.stringify(data))
+            .then(data => {
+                console.log(data);
+                document.getElementById('result').innerText = JSON.stringify(data)
+            })
+            .catch(error => alert(error));
+        });
+
+        document.getElementById('readPost').addEventListener('click', () => {
+            console.log('read 버튼 눌림');
+        
+            fetch(`${baseURL}/1`)
+            .then(response => response.json()) //에러체크 귀찮아서 안했음..
+            .then(data => {
+                console.log(data);
+                document.getElementById('result').innerText = JSON.stringify(data)
+            })
+            .catch(error => alert(error));
+        });
+
+        document.getElementById('updatePost').addEventListener('click', () => {
+            console.log('update 버튼 눌림');
+        
+            fetch(`${baseURL}/1`,{
+                method: 'PUT',
+                body: JSON.stringify({
+                    id:1,
+                    title:'sesac',
+                    body:'seoul',
+                    userId:1,
+                }),
+                headers:{
+                    'Content-type':'application/json; charset=UTF-8',
+                }
+            })
+            .then(response => response.json()) //에러체크 귀찮아서 안했음..
+            .then(data => {
+                console.log(data);
+                document.getElementById('result').innerText = JSON.stringify(data)
+            })
+            .catch(error => alert(error));
+        });
+
+        document.getElementById('deletePost').addEventListener('click', () => {
+            console.log('deletePost 버튼 눌림');
+        
+            fetch(`${baseURL}/1`,{
+                method: 'DELETE',
+            })
+            .then(response => response.json()) //에러체크 귀찮아서 안했음..
+            .then(data => {
+                console.log(data);
+                document.getElementById('result').innerText = JSON.stringify(data)
+            })
             .catch(error => alert(error));
         });
     </script>
