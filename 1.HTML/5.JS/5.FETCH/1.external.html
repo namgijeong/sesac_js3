@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>남에게 정보 요청하기</h1>
+    <div id="result">
+
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('https://api.github.com/').then((resp) => {
+                console.log(resp);
+                if (!resp.ok){
+                    throw new Error('NW 요청에 실패했습니다.');
+                }
+                //결과를 json 형태로 받아온 자료구조로 반환해주시오
+                return resp.json();
+            }).then((data) => {  // 이 바로 위에 resp.json()의 결과가 나한테 data로 담겨서 옴
+                document.getElementById('result').innerHTML = 
+                '<p><strong>현재 사용자 url:</strong>' + data.current_user_url + '</p>' +
+                '<p><strong>코드검색 url:</strong>' + data.code_search_url + '</p>';
+            }).catch((error) => { // 잘못된 url을 넣어준 경우
+                document.getElementById('result').innerHTML = 
+                '<p style="color:red">데이터 요청에 실패했습니다</strong>' ;
+            });
+        });
+    </script>
+</body>
+</html>
