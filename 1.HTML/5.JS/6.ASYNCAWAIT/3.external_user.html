@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>사용자 조회</h1>
+    <input type="number" id="userId" placeholder="사용자ID를 입력하세요" />
+    <button id="loadContent">불러오기</button>
+    <div id="result">
+
+    </div>
+
+    <script>
+        document.getElementById('loadContent').addEventListener('click', async () => {
+            //console.log('버튼 클릭');
+            const userId = document.getElementById("userId").value;
+            let data;
+
+            try {
+                const response = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}`);
+                data = await checkResponseStatus(response);
+            } catch (err) {
+                console.log(err);
+                alert('요청한 사용자가 없습니다');
+            }
+
+            renderResponseToResult(data);
+
+        });
+
+        async function checkResponseStatus(response) {
+            // if (!response.ok) {
+            //     throw new Error('네트워크 오류');
+            // }
+            // //오류가 없으면 너의 바이트스트림을 json 객체로 변환해서 달라
+            // return response.json();
+
+            try {
+                data = await response.json();
+            } catch (err) {
+                console.log('파싱오류입니다.', err);
+            }
+
+            return data;
+        }
+
+        function renderResponseToResult(data) {
+            console.log('성공한 데이터는 여기에...', data);
+            document.getElementById('result').innerHTML = `
+                <p>이름: ${data.name}</p> 
+                <p>이메일: ${data.email}</p>
+                <p>전화번호: ${data.phone}</p>
+                <p>웹사이트: ${data.website}</p>
+            `;
+        }
+    </script>
+</body>
+
+</html>

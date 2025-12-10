@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <h1>남에게 요청해서 정보 받아와서 표현하기</h1>
+    <button id="loadContent">불러오기</button>
+    <div id="result">
+
+    </div>
+
+    <script>
+        //fetch의 then을 async, await로 바꾸기
+        document.getElementById('loadContent').addEventListener('click', async () => {
+            //console.log('버튼 클릭');
+
+            console.log('요청 시작함');
+            try {
+                const response = await axios.get('https://jsonplaceholder.typicode.com/posts/1')
+                console.log('응답왔음');
+
+                const data = response.data;
+                console.log('성공한 데이터는 여기에...', data);
+                
+                document.getElementById('result').innerHTML =
+                    `<p>타이틀: ${data.title}</p> <p>바디: ${data.body}</p>`;
+            } catch (error) {
+                console.log(error);
+                alert('error');
+            }
+
+            console.log('요청 끝');
+        });
+    </script>
+</body>
+
+</html>

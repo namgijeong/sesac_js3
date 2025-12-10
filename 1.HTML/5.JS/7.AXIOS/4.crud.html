@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>json placeholder typico사이트에 crud 해보기</h1>
+    <div>
+        <h3>포스트 생성하기</h3>
+        <button id="createPost">포스트 생성</button>
+    </div>
+    <div>
+        <h3>포스트 조회하기</h3>
+        <button id="post_id_prev">&lt;&lt;</button>
+        <input id="post_id" type="number" placeholder="조회아이디 입력" />
+        <button id="post_id_next">&gt;&gt;</button>
+        <button id="readPost">포스트 조회</button>
+    </div>
+    <div>
+        <h3>포스트 수정하기</h3>
+        <button id="updatePost">포스트 수정</button>
+    </div>
+    <div>
+        <h3>포스트 삭제하기</h3>
+        <button id="deletePost">포스트 삭제</button>
+    </div>
+    <div>
+        <h3>공통결과를 출력할 곳</h3>
+        <div id="result"></div>
+    </div>
+    <script>
+        const baseURL = 'https://jsonplaceholder.typicode.com/posts';
+
+        function createPost(post) {
+            fetch(baseURL, {
+                method: 'POST',
+                //js객체 -> json 문자열
+                body: JSON.stringify(post),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                }
+            })
+                //문자열에서 객체화를 해서 내가 원하는 정보를 추출후, 가공이 끝나면 문자화해서 화면에 출력    
+                //json() => 문자를 객체화
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    //객체 -> json 문자열
+                    document.getElementById('result').innerText = JSON.stringify(data)
+                })
+                .catch(error => alert(error));
+        }
+
+        document.getElementById('createPost').addEventListener('click', () => {
+            console.log('create 버튼 눌림');
+            const myPost = {
+                title: 'sesac',
+                body: 'seoul',
+                userId: 1,
+            };
+
+            createPost(myPost);
+        });
+
+        let prevClickValid = true;
+
+        function readPost(postId) {
+            fetch(`${baseURL}/${postId}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    document.getElementById('result').innerText = JSON.stringify(data);
+                })
+                .catch(error => alert(error));
+        }
+
+        document.getElementById('readPost').addEventListener('click', () => {
+            console.log('read 버튼 눌림');
+
+            const inputDiv = document.getElementById('post_id');
+            const inputValue = inputDiv.value;
+            if (inputValue <= 1) {
+                prevClickValid = false;
+            } else{
+                prevClickValid = true;
+            }
+
+            if (inputValue >= 1 ){
+                readPost(inputValue);
+            } else{
+                console.log("1이상 입력해주세요.");
+            }
+            
+        });
+
+        document.getElementById('post_id_prev').addEventListener('click', () => {
+            const inputDiv = document.getElementById('post_id');
+            let inputValue = Number(inputDiv.value);
+
+            if (inputValue <= 1){
+                prevClickValid = false;
+            }
+            else {
+                prevClickValid = true;
+            }
+
+            if (prevClickValid){
+                inputValue -= 1;
+                inputDiv.value = inputValue;
+            }
+           
+        });
+
+        document.getElementById('post_id_next').addEventListener('click', () => {
+            const inputDiv = document.getElementById('post_id');
+            let inputValue = Number(inputDiv.value);
+            inputValue += 1;
+            inputDiv.value = inputValue;
+        });
+
+        function updatePost(post) {
+            fetch(`${baseURL}/1`, {
+                method: 'PUT',
+                body: JSON.stringify(post),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    document.getElementById('result').innerText = JSON.stringify(data)
+                })
+                .catch(error => alert(error));
+        }
+
+        document.getElementById('updatePost').addEventListener('click', () => {
+            console.log('update 버튼 눌림');
+
+            const myUpdatePost = {
+                id: 1,
+                title: 'sesac',
+                body: 'seoul',
+                userId: 1,
+            }
+            updatePost(myUpdatePost);
+        });
+
+        function deletePost(postId) {
+            fetch(`${baseURL}/${postId}`, {
+                method: 'DELETE',
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    document.getElementById('result').innerText = JSON.stringify(data)
+                })
+                .catch(error => alert(error));
+        }
+
+        document.getElementById('deletePost').addEventListener('click', () => {
+            console.log('deletePost 버튼 눌림');
+
+            deletePost(1);
+        });
+    </script>
+</body>
+
+</html>
