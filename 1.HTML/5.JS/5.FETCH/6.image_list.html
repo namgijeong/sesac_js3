@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Random Dog Breed Image</h1>
+    <span>Choose a breed:</span>
+    <select id="breedList">
+
+    </select>
+    <span>Choose a sub-breed:</span>
+    <select id="breedListSub">
+
+    </select>
+    <button id="fetchButton">사진 가져오기</button>
+
+    <div id="imageContainer">
+    </div>
+    <script>
+        const selectTag = document.getElementById('breedList');
+        const selectTagSub = document.getElementById('breedListSub');
+        const baseUrl = 'https://dog.ceo/api';
+
+        settingBreedList();
+        simpleStyle();
+
+        function settingBreedList(){
+            fetch(`${baseUrl}/breeds/list/all`)
+            .then(response => response.json())
+            .then(data => {
+                const Bigkeys = Object.keys(data.message);
+                console.log(Bigkeys);
+
+                let bigOptionTagsString = '';
+                let subOptionTagsString = '';
+                for (let Bigkey of Bigkeys){
+                    const subValues = data.message[Bigkey];
+
+                    // for (let subValue of subValues){
+                    //     subOptionTagsString += `<option value="${subValue}">${subValue}</option>`;
+                    // }
+
+                    bigOptionTagsString += `<option value="${Bigkey}">${Bigkey}</option>`;
+                }
+
+                const bigOptionTags = selectTag.querySelectorAll('option');
+                
+                selectTag.innerHTML = bigOptionTagsString;
+            })
+        }
+
+        function simpleStyle(){
+             document.getElementById('fetchButton').addEventListener('click', () => {
+                let bigCategory = selectTag.value;
+                fetch(`${baseUrl}/breed/${bigCategory}/images/random`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const imageContainer = document.getElementById('imageContainer');
+                        imageContainer.innerHTML = `<img src="${data.message}" style="width:200px;"/>`;
+                    }); 
+
+             });        
+        }
+    </script>
+</body>
+
+</html>
