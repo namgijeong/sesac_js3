@@ -11,12 +11,13 @@
     <h1>Random Dog Breed Image</h1>
     <span>Choose a breed:</span>
     <select id="breedList">
-
     </select>
+
     <span>Choose a sub-breed:</span>
     <select id="breedListSub">
-
+        <option value="" disabled selected>소분류</option>
     </select>
+
     <button id="fetchButton">사진 가져오기</button>
 
     <div id="imageContainer">
@@ -29,42 +30,59 @@
         settingBreedList();
         simpleStyle();
 
-        function settingBreedList(){
+        function settingBreedList() {
             fetch(`${baseUrl}/breeds/list/all`)
-            .then(response => response.json())
-            .then(data => {
-                const Bigkeys = Object.keys(data.message);
-                console.log(Bigkeys);
+                .then(response => response.json())
+                .then(data => {
+                    const Bigkeys = Object.keys(data.message);
+                    console.log(Bigkeys);
 
-                let bigOptionTagsString = '';
-                let subOptionTagsString = '';
-                for (let Bigkey of Bigkeys){
-                    const subValues = data.message[Bigkey];
+                    let bigOptionTagsString = `<option value="" disabled selected>대분류</option>`;
+                    for (let Bigkey of Bigkeys) {
+                        bigOptionTagsString += `<option value="${Bigkey}">${Bigkey}</option>`;
+                    }
+                    selectTag.innerHTML = bigOptionTagsString;
 
-                    // for (let subValue of subValues){
-                    //     subOptionTagsString += `<option value="${subValue}">${subValue}</option>`;
-                    // }
+                    selectTag.addEventListener('change', (e) => {
+                        const subValues = data.message[e.target.value];
+                        console.log(subValues);
+                        let subOptionTagsString = '';
+                        if (subValues.length == 0) {
+                            subOptionTagsString += `<option value="None">None</option>`;
+                        }
+                        for (let subValue of subValues) {
+                            subOptionTagsString += `<option value="${subValue}">${subValue}</option>`;
+                        }
+                        selectTagSub.innerHTML = subOptionTagsString;
+                    });
 
-                    bigOptionTagsString += `<option value="${Bigkey}">${Bigkey}</option>`;
-                }
-
-                const bigOptionTags = selectTag.querySelectorAll('option');
-                
-                selectTag.innerHTML = bigOptionTagsString;
-            })
+                });
         }
 
-        function simpleStyle(){
-             document.getElementById('fetchButton').addEventListener('click', () => {
+        function simpleStyle() {
+            document.getElementById('fetchButton').addEventListener('click', () => {
                 let bigCategory = selectTag.value;
-                fetch(`${baseUrl}/breed/${bigCategory}/images/random`)
+                let subCategory = selectTagSub.value;
+                let searchUrl = '';
+
+                if (bigCategory == ''){
+                   alert('종류를 선택하시오');
+                   return; 
+                }
+                else if (subCategory == '' || subCategory == 'None') {
+                    searchUrl = `${baseUrl}/breed/${bigCategory}/images/random`;
+                } else {
+                    searchUrl = `${baseUrl}/breed/${bigCategory}/${subCategory}/images/random`;
+                }
+
+                fetch(searchUrl)
                     .then(response => response.json())
                     .then(data => {
                         const imageContainer = document.getElementById('imageContainer');
                         imageContainer.innerHTML = `<img src="${data.message}" style="width:200px;"/>`;
-                    }); 
+                    });
 
-             });        
+            });
         }
     </script>
 </body>
