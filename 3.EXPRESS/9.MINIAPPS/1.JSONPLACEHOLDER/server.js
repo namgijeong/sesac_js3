@@ -14,24 +14,29 @@ app.use(express.static('public'));
 app.use(express.json());
 
 app.get('/api/posts', (req, res) => {
+    if (posts.length == 0) {
+        res.json({ status: 'error', message: '현재 게시글이 존재하지 않습니다.' });
+        return;
+    }
     //알아서 나의 헤더에 application/json을 담아서 보내준다.
-    res.json(posts);
+    res.json({ status: 'ok', message: posts });
 });
 
 app.get('/api/post/:id', (req, res) => {
     const postId = Number(req.params.id);
-    const postsFiltered = posts.filter(post => post.id === postId);
+    //const postsFiltered = posts.filter(post => post.id === postId);
 
     //알아서 나의 헤더에 application/json을 담아서 보내준다.
-    res.json(postsFiltered);
+    //res.json(postsFiltered);
 
     //find를 쓰는게 더 좋다
-    //send로도 객체를 보낼수있다한다
-    // const post = posts.find(p => p.id == postId);
-    // if(!post){
-    //     return res.send({"status":"원하는 항목은 없습니다."});
-    // }
-    // res.json(post);
+    //send로도 객체를 보낼수있다한다 res.send({"status":"원하는 항목은 없습니다."});
+    const post = posts.find(p => p.id == postId);
+    if (!post) {
+        res.json({ status: 'error', message: '해당 게시글 아이디가 존재하지 않습니다.' });
+        return;
+    }
+    res.json({ status: 'ok', message: post });
 
 });
 
@@ -68,13 +73,13 @@ app.put('/api/post/:id', (req, res) => {
     };
 
     let postIdValid = false;
-    posts.forEach((post, index) => {
-        if (post.id === postId) {
+    for (let i = 0; i < posts.length; i++) {
+        if (posts[i].id === postId) {
             postIdValid = true;
-            posts[index] = newPost;
+            posts[i] = newPost;
+            break;
         }
-
-    });
+    }
 
     console.log(posts);
 
@@ -90,26 +95,20 @@ app.put('/api/post/:id', (req, res) => {
 app.delete('/api/post/:id', (req, res) => {
     const postId = Number(req.params.id);
 
-    let postIdValid = false;
-    posts.forEach((post, index) => {
-        if (post.id === postId) {
-            postIdValid = true;
-        }
-
+    const postIndex = posts.findIndex(post => {
+        return post.id === postId
     });
 
-    if (postIdValid == false) {
-        console.log(posts);
+    if (postIndex == -1) {
         res.json({ status: 'error', message: '해당 게시글 아이디가 존재하지 않습니다.' });
         return;
     }
-
-    posts = posts.filter(post => {
-        return post.id !== postId
-    });
-
+    
+    //원본배열 변경됨
+    posts.splice(postIndex,1);
     console.log(posts);
     res.json({ status: 'ok', message: '정상적으로 삭제되었습니다.' });
+
 });
 
 

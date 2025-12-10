@@ -5,43 +5,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="./index.css" />
 </head>
 
 <body>
-    <h1>CRUD Test</h1>
+    <div id="total_container">
+        <div id="main_container">
+            <h1>CRUD Test</h1>
 
-    <h2>1.Get All (전체 조회)</h2>
-    <button id="get_all">Get All</button><br />
+            <div class="sub_container">
+                <h2>1.Get All (전체 조회)</h2>
+                <button id="get_all">Get All</button>
+            </div>
 
-    <h2>2.Get One (단건 조회)</h2>
-    <label for="post_id">ID:</label>
-    <input id="post_id" type="number" placeholder="게시글 번호" />
-    <button id="get_post">Get One</button><br />
+            <div class="sub_container">
+                <h2>2.Get One (단건 조회)</h2>
+                <div class="input_container">
+                    <label for="post_id">ID:</label>
+                    <input id="post_id" type="number" placeholder="게시글 번호" />
+                    <button id="get_post">Get One</button>
+                </div>
+            </div>
 
-    <h2>3.Create (생성)</h2>
-    <label for="create_post_title">Title:</label>
-    <textarea id="create_post_title" placeholder="등록할 제목"></textarea><br />
-    <label for="create_post_content">Body:</label>
-    <textarea id="create_post_content" placeholder="등록할 내용"></textarea><br />
-    <button id="create_post">Create</button><br />
+            <div class="sub_container">
+                <h2>3.Create (생성)</h2>
+                <div class="textarea_container">
+                    <label for="create_post_title">Title:</label>
+                    <textarea id="create_post_title" placeholder="등록할 제목"></textarea>
+                </div>
+                <div class="textarea_container">
+                    <label for="create_post_content">Body:</label>
+                    <textarea id="create_post_content" placeholder="등록할 내용"></textarea>
+                </div>
+                <div class="input_container">
+                    <button id="create_post">Create</button>
+                </div>
+            </div>
 
-    <h2>4.Update (수정 - PUT)</h2>
-    <label for="update_post_id">ID:</label>
-    <input id="update_post_id" type="number" placeholder="게시글 번호" /><br />
-    <label for="update_post_title">Title:</label>
-    <textarea id="update_post_title" placeholder="수정할 제목"></textarea><br />
-    <label for="update_post_content">Body:</label>
-    <textarea id="update_post_content" placeholder="수정할 내용"></textarea><br />
-    <button id="update_post">Update</button><br />
 
-    <h2>5.Delete (삭제)</h2>
-    <label for="delete_post_id">ID:</label>
-    <input id="delete_post_id" type="number" placeholder="게시글 번호" /><br />
-    <button id="delete_post">Delete</button><br />
+            <div class="sub_container">
+                <h2>4.Update (수정 - PUT)</h2>
+                <div class="input_container">
+                    <label for="update_post_id">ID:</label>
+                    <input id="update_post_id" type="number" placeholder="게시글 번호" /><br />
+                </div>
+                <div class="textarea_container">
+                    <label for="update_post_title">Title:</label>
+                    <textarea id="update_post_title" placeholder="수정할 제목"></textarea><br />
+                </div>
+                <div class="textarea_container">
+                    <label for="update_post_content">Body:</label>
+                    <textarea id="update_post_content" placeholder="수정할 내용"></textarea><br />
+                </div>
+                <div class="input_container">
+                    <button id="update_post">Update</button>
+                </div>
+            </div>
 
-    <div id="result">
+            <div class="sub_container">
+                <h2>5.Delete (삭제)</h2>
+                <div class="input_container">
+                    <label for="delete_post_id">ID:</label>
+                    <input id="delete_post_id" type="number" placeholder="게시글 번호" /><br />
+                    <button id="delete_post">Delete</button>
+                </div>
+            </div>
 
+            <h2>Response/Output</h2>
+            <div id="result">
+
+            </div>
+        </div>
     </div>
+
 </body>
 <script>
     const resultDiv = document.getElementById('result');
@@ -63,11 +99,19 @@
             console.log(data);
 
             let responseString = '';
-            data.forEach((one) => {
-                responseString += `<p><strong>아이디: </strong> ${one.id}</p>`;
-                responseString += `<p><strong>타이틀: </strong> ${one.title}</p>`;
-                responseString += `<p><strong>바디: </strong> ${one.body}</p>`;
-            });
+            if (data.status == 'error') {
+                responseString += `${data.message}`;
+                resultDiv.classList.add('red_text');
+            } else {
+                data.message.forEach((one) => {
+                    responseString += `<div class='post'>`;
+                    responseString += `<p><strong>아이디: </strong> ${one.id}</p>`;
+                    responseString += `<p><strong>타이틀: </strong> ${one.title}</p>`;
+                    responseString += `<p><strong>바디: </strong> ${one.body}</p>`;
+                    responseString += `</div>`;
+                });
+                resultDiv.classList.remove('red_text');
+            }
 
             resultDiv.innerHTML = responseString;
 
@@ -84,13 +128,16 @@
             console.log(data);
 
             let responseString = '';
-            if (data.length == 0) {
-                responseString = `<p>해당 아이디 글이 존재하지 않습니다.</p>`;
+            if (data.status == 'error') {
+                responseString += `${data.message}`;
+                resultDiv.classList.add('red_text');
             } else {
-                responseString += `<p><strong>아이디: </strong> ${data[0].id}</p>`;
-                responseString += `<p><strong>타이틀: </strong> ${data[0].title}</p>`;
-                responseString += `<p><strong>바디: </strong> ${data[0].body}</p>`;
-
+                responseString += `<div class='post'>`;
+                responseString += `<p><strong>아이디: </strong> ${data.message.id}</p>`;
+                responseString += `<p><strong>타이틀: </strong> ${data.message.title}</p>`;
+                responseString += `<p><strong>바디: </strong> ${data.message.body}</p>`;
+                responseString += `</div>`;
+                resultDiv.classList.remove('red_text');
             }
 
             resultDiv.innerHTML = responseString;
@@ -124,6 +171,11 @@
             let responseString = '';
             responseString = data.message;
 
+            if (data.status == 'error') {
+                resultDiv.classList.add('red_text');
+            } else {
+                resultDiv.classList.remove('red_text');
+            }
             resultDiv.innerHTML = responseString;
 
         } catch (err) {
@@ -156,6 +208,11 @@
             let responseString = '';
             responseString = data.message;
 
+            if (data.status == 'error') {
+                resultDiv.classList.add('red_text');
+            } else {
+                resultDiv.classList.remove('red_text');
+            }
             resultDiv.innerHTML = responseString;
 
         } catch (err) {
@@ -165,7 +222,7 @@
 
     document.getElementById('delete_post').addEventListener('click', async () => {
         const deletePostId = deletePostIdInput.value;
-         try {
+        try {
             const response = await fetch(`/api/post/${deletePostId}`, {
                 method: 'DELETE',
             });
@@ -175,6 +232,11 @@
             let responseString = '';
             responseString = data.message;
 
+            if (data.status == 'error') {
+                resultDiv.classList.add('red_text');
+            } else {
+                resultDiv.classList.remove('red_text');
+            }
             resultDiv.innerHTML = responseString;
 
         } catch (err) {
