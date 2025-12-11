@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
@@ -35,24 +36,17 @@
     <script>
         const baseURL = 'https://jsonplaceholder.typicode.com/posts';
 
-        function createPost(post) {
-            fetch(baseURL, {
-                method: 'POST',
-                //js객체 -> json 문자열
-                body: JSON.stringify(post),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                }
-            })
-                //문자열에서 객체화를 해서 내가 원하는 정보를 추출후, 가공이 끝나면 문자화해서 화면에 출력    
-                //json() => 문자를 객체화
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    //객체 -> json 문자열
-                    document.getElementById('result').innerText = JSON.stringify(data)
-                })
-                .catch(error => alert(error));
+        async function createPost(post) {
+            try {
+                const response = await axios.post(baseURL, post)
+                const data = response.data;
+
+                console.log(data);
+                //객체 -> json 문자열
+                document.getElementById('result').innerText = JSON.stringify(data)
+            } catch (err) {
+                alert(err);
+            }
         }
 
         document.getElementById('createPost').addEventListener('click', () => {
@@ -68,14 +62,16 @@
 
         let prevClickValid = true;
 
-        function readPost(postId) {
-            fetch(`${baseURL}/${postId}`)
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    document.getElementById('result').innerText = JSON.stringify(data);
-                })
-                .catch(error => alert(error));
+        async function readPost(postId) {
+            try {
+                const response = await axios.get(`${baseURL}/${postId}`);
+                const data = response.data;
+
+                console.log(data);
+                document.getElementById('result').innerText = JSON.stringify(data);
+            } catch (err) {
+                alert(err);
+            }
         }
 
         document.getElementById('readPost').addEventListener('click', () => {
@@ -83,36 +79,31 @@
 
             const inputDiv = document.getElementById('post_id');
             const inputValue = inputDiv.value;
-            if (inputValue <= 1) {
-                prevClickValid = false;
-            } else{
-                prevClickValid = true;
-            }
 
-            if (inputValue >= 1 ){
+            if (inputValue >= 1) {
                 readPost(inputValue);
-            } else{
+            } else {
                 console.log("1이상 입력해주세요.");
             }
-            
+
         });
 
         document.getElementById('post_id_prev').addEventListener('click', () => {
             const inputDiv = document.getElementById('post_id');
             let inputValue = Number(inputDiv.value);
 
-            if (inputValue <= 1){
+            if (inputValue <= 1) {
                 prevClickValid = false;
             }
             else {
                 prevClickValid = true;
             }
 
-            if (prevClickValid){
+            if (prevClickValid) {
                 inputValue -= 1;
                 inputDiv.value = inputValue;
             }
-           
+
         });
 
         document.getElementById('post_id_next').addEventListener('click', () => {
@@ -122,20 +113,17 @@
             inputDiv.value = inputValue;
         });
 
-        function updatePost(post) {
-            fetch(`${baseURL}/1`, {
-                method: 'PUT',
-                body: JSON.stringify(post),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                }
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    document.getElementById('result').innerText = JSON.stringify(data)
-                })
-                .catch(error => alert(error));
+        async function updatePost(post) {
+            try {
+                const response = await axios.put(`${baseURL}/1`, post);
+
+                const data = response.data
+                console.log(data);
+
+                document.getElementById('result').innerText = JSON.stringify(data)
+            } catch (err) {
+                alert(err);
+            }
         }
 
         document.getElementById('updatePost').addEventListener('click', () => {
@@ -150,16 +138,16 @@
             updatePost(myUpdatePost);
         });
 
-        function deletePost(postId) {
-            fetch(`${baseURL}/${postId}`, {
-                method: 'DELETE',
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    document.getElementById('result').innerText = JSON.stringify(data)
-                })
-                .catch(error => alert(error));
+        async function deletePost(postId) {
+            try {
+                const response = await axios.delete(`${baseURL}/${postId}`);
+                const data = response.data;
+
+                console.log(data);
+                document.getElementById('result').innerText = JSON.stringify(data)
+            } catch (err) {
+                alert(err);
+            }
         }
 
         document.getElementById('deletePost').addEventListener('click', () => {
