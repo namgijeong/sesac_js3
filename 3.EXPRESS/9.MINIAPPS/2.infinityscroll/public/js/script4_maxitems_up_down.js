@@ -115,6 +115,11 @@ window.addEventListener("scroll", async () => {
 
     end = totalStartIndex;
     start = totalStartIndex - itemsPerLoad;
+
+    //ex totalStartIndex가 6인 경우, 빼면 음수가 나온다.
+    if (start < 0) {
+        start = 0;
+    }
     
     const data = await getItemsFromTo(start, end);
     scrollUp(data);

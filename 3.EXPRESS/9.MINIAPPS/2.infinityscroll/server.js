@@ -5,7 +5,7 @@ const PORT = 3000;
 
 //가상 데이터 생성
 const data = Array.from({length:1000}, (_, i) => `Item ${i+1}`);
-console.log(data);
+//console.log(data);
 
 app.use(express.static('public'));
 
