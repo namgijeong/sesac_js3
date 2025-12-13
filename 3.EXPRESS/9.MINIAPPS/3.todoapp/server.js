@@ -8,7 +8,7 @@ let todos = [
   {
     id: 1,
     todo: "숙제하기",
-    completed: false,
+    completed: true,
   },
   {
     id: 2,

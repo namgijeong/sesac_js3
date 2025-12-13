@@ -11,22 +11,25 @@ const todoList = document.getElementById("todo-list");
 const baseUrl = `/api/todo`;
 let todos = [];
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async() => {
   console.log("DOM 로딩 완료");
 
   //로딩되자마자 서버로부터 todos를 조회후 dom에 그린다
-  requestTodos();
+  await requestTodos();
 });
 
-//todos 데이터를 불러오기
+//서버에서 todos 데이터를 불러와 todos변수에 저장
 async function requestTodos() {
   const response = await fetch(baseUrl);
   const data = await response.json();
+  todos = data;
 
+  todoList.innerHTML = '';
   data.forEach((oneData) => {
     renderTodos(oneData);
   });
 }
+
 
 //todos 목록을 그리기
 function renderTodos(newTodo) {
@@ -97,35 +100,46 @@ function renderTodos(newTodo) {
   todoList.appendChild(new_div);
 }
 
-addBtn.addEventListener("click", () => {
+
+//서버에서 todo 데이터 추가하기
+async function postTodo(todo) {
+  const response = await fetch(baseUrl, {
+    method: "POST",
+    body: JSON.stringify({todo:todo}),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    },
+  });
+
+  const data = await response.json();
+  if (data.status == 'ok'){
+    await requestTodos();
+  } else {
+    todoList.innerHTML = 'todo 추가가 실패하였습니다';
+  }
+}
+
+
+addBtn.addEventListener("click", async () => {
   //trim()을 통해서 앞뒤 원치않는 공백문자를 제거한다
   // === => js는 2와 "2"를 같은걸로 판단하기 때문에  ===을 써야한다
   //다른 모든 개발언어에서의 == 사실은 js에서는 === 였다
   const newTodo = newTodoDiv.value.trim();
   console.log(newTodo);
 
-  //새로 추가된 동적 li 태그들을 가져온다
-  const dynamicLitags = document.querySelectorAll("#todo-list div li");
-
-  //새로 추가된 동적 li 태그들의 내부 내용 배열을 만든다.
-  let dynamicLitagsTextContent = [];
-  dynamicLitags.forEach((dynamicLitag) => {
-    dynamicLitagsTextContent.push(dynamicLitag.textContent);
-  });
-
   //빈칸을 막는다
   if (newTodo === "") {
     return;
   } else {
     //중복방지를 한다
-    for (let i = 0; i < dynamicLitagsTextContent.length; i++) {
-      if (newTodo === dynamicLitagsTextContent[i]) {
+    for (let i = 0; i < todos.length; i++) {
+      if (newTodo === todos[i].todo) {
         return;
       }
     }
 
-    //중복방지도 통과하면
-    //renderTodos(newTodo);
+    //중복방지도 통과하면 서버에 데이터를 추가한다
+    await postTodo(newTodo);
   }
 });
 
@@ -142,18 +156,7 @@ todoList.addEventListener("click", (ev) => {
   if (clickedTag !== "li") {
     return;
   } else {
-    //방법1
-    // let currentClassStatus = ev.target.classList.contains('clear');
-    // if (currentClassStatus) {
-    //     ev.target.classList.remove('clear');
-    //     ev.target.classList.add('not-clear');
-    // }
-    // else {
-    //     ev.target.classList.remove('not-clear');
-    //     ev.target.classList.add('clear');
-    // }
-
-    //방법2. toggle로 class를 붙였다 떼다 할 수 있다
+    //toggle로 class를 붙였다 떼다 할 수 있다
     ev.target.classList.toggle("clear");
   }
 });
