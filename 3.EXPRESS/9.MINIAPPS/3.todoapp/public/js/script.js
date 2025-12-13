@@ -42,16 +42,16 @@ function renderTodos(newTodo) {
   const checkboxInput = document.createElement("input");
   checkboxInput.type = "checkbox";
 
-  if (newTodo.completed) {
-    checkboxInput.checked = true;
-  } else {
-    checkboxInput.checked = false;
-  }
-
   const new_li = document.createElement("li");
 
   //여기에 todo데이터를 넣는다
   new_li.textContent = newTodo.todo;
+
+  if (newTodo.completed) {
+    new_li.classList.add('clear');
+  } else {
+    new_li.classList.remove('clear');
+  }
 
   const deleteBtn = document.createElement("button");
   deleteBtn.classList.add("delete", "item-button");
@@ -97,6 +97,8 @@ function renderTodos(newTodo) {
   new_div.appendChild(updateBtn);
   new_div.appendChild(deleteBtn);
 
+  //div에다가 todo id 번호를 매긴다 => HTML Data Attributes
+  new_div.dataset.todoId = newTodo.id;
   todoList.appendChild(new_div);
 }
 
@@ -119,6 +121,20 @@ async function postTodo(todo) {
   }
 }
 
+//서버에 todo 완료여부 수정 
+async function completeTodo(id){
+  const response = await fetch(`${baseUrl}/${id}/completed`,{
+    method:'PUT',
+  });
+  const data = await response.json();
+
+  if (data.status === 'ok'){
+    await requestTodos();
+  } else {
+    todoList.innerHTML = 'todo 완료여부 수정이 실패하였습니다';
+  }
+}
+
 
 addBtn.addEventListener("click", async () => {
   //trim()을 통해서 앞뒤 원치않는 공백문자를 제거한다
@@ -138,7 +154,7 @@ addBtn.addEventListener("click", async () => {
       }
     }
 
-    //중복방지도 통과하면 서버에 데이터를 추가한다
+    //중복방지도 통과하면 서버에 데이터를 추가하고, get요청으로 전역변수 업데이트
     await postTodo(newTodo);
   }
 });
@@ -158,6 +174,11 @@ todoList.addEventListener("click", (ev) => {
   } else {
     //toggle로 class를 붙였다 떼다 할 수 있다
     ev.target.classList.toggle("clear");
+
+    //서버에 해당 id 데이터를 보낸후, 다시 get요청으로 전역변수 업데이트
+    let currentTodoId = ev.target.parentNode.dataset.todoId;
+    console.log(currentTodoId);
+    completeTodo(currentTodoId);
   }
 });
 
@@ -176,6 +197,10 @@ allComplete.addEventListener("click", () => {
   //동적으로 만든 li 태그들에 줄을 그어 버린다.
   dynamicLitags.forEach((dynamicLitag) => {
     dynamicLitag.classList.add("clear");
+
+    //서버에 해당 id 데이터를 보낸후, 다시 get요청으로 전역변수 업데이트
+    //let currentTodoId = ev.target.parentNode.dataset.todoId;
+    //completeTodo(currentTodoId);
   });
 });
 

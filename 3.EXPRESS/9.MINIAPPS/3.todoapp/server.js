@@ -31,8 +31,8 @@ app.get("/api/todo", (req, res) => {
 app.post("/api/todo", (req, res) => {
   console.log("todo 생성해달라고 요청함");
   console.log(`요청의 바디 ${JSON.stringify(req.body)}`);
-  const newTodo = { id: idCounter++, todo: req.body.todo, completed: false };
 
+  const newTodo = { id: idCounter++, todo: req.body.todo, completed: false };
   console.log(newTodo);
   todos.push(newTodo);
 
@@ -47,7 +47,28 @@ app.delete("/api/todo/:id", (req, res) => {
 app.put("/api/todo/:id/completed", (req, res) => {
   console.log("todo 수정해달라고 요청함");
   //id를 찾아서 completed를 toggle
+  const todoId = Number(req.params.id);
+
+  const findTodoIndex = todos.findIndex((todo) => todo.id === todoId);
+
+  if (findTodoIndex == -1) {
+    res.json({ status: "error" });
+    return;
+  }
+
+  todos[findTodoIndex] = {
+    id: todos[findTodoIndex].id,
+    todo: todos[findTodoIndex].todo,
+    completed: !todos[findTodoIndex].completed,
+  };
+  //console.log(todos[findTodoIndex]);
+  console.log(todos);
+
+  res.json({ status: "ok" });
 });
+
+//전체완료
+//선택완료 해당 todos들을 완료로
 
 app.listen(PORT, () => {
   console.log("Server is ready at http://localhost:3000");
