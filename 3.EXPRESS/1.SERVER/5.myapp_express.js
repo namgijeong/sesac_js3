@@ -43,7 +43,7 @@ const myapp = {
         const stack = [...this.middlewares, ...routeHandlers];
         let index = 0;
 
-        //라우터 처리한다 요청한 라우트가 없으면 404 반호나
+        //라우터 처리한다 요청한 라우트가 없으면 404 반환
         const next = () => {
             //누군가 미들웨어에서 응답을 해버리면 거기서 종료
             if (res.writableEnded) return; 
@@ -87,14 +87,17 @@ myapp.use(headerMiddleware);
 // 라우터 등록
 function rootHandler(context) {
     context.res.end('Hello from /');
+    console.log('root handler 끝');
 }
 
 function userHandler(context) {
     context.res.end('Hello from /user');
+    console.log('user handler 끝');
 }
 
 function adminHandler(context) {
     context.res.end('Hello from /admin');
+    console.log('admin handler 끝');
 }
 
 function userMiddleware(context, next){
@@ -154,6 +157,7 @@ myapp.register('/admin', adminRealAuthMiddleware, adminHandler);
 function printRouteStacks(app){
     console.log('=== 내 라우트 실행 순서 살펴보기 ====');
 
+    //Object.entries() => 객체의 열거 가능한(enumerable) 속성들을 [키, 값] 쌍의 배열로 변환
     for (const [route, handlers] of Object.entries(app.routes)){
         const stack = [...app.middlewares , ...handlers];
 

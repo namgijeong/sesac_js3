@@ -3,15 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>투두 리스트</h1>
-    <input type="text" id="new-todo" placeholder="할일을 입력하세요"/>
-    <button id="add-todo">추가</button>
-    <ul id="todo-list">
+    <title>todo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    </ul>
-    <script src="js/script.js"></script>    
+        #total_container {
+            position: relative;
+
+            margin: 0 auto;
+            width: 50%;
+            height: 100vh;
+        }
+
+        #todo_container {
+            position: absolute;
+            top: 70%;
+            transform: translateY(-70%);
+
+            width: 100%;
+            height: 70%;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #new_todo_container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            width: 100%;
+            height: 8%;
+
+            margin-bottom: 10px;
+        }
+
+        #new-todo {
+            width: 80%;
+            height: 90%;
+            padding: 10px;
+            /* margin-right:10px; */
+
+            border: 1px solid lightblue;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        #add-todo {
+            width: 15%;
+            height: 90%;
+
+            border: 1px solid lightblue;
+            border-radius: 5px;
+            background-color: lightblue;
+            color: white;
+        }
+
+        .button_container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            width: 100%;
+            height: 5%;
+
+            margin-bottom: 10px;
+        }
+
+        #all_button_container button {
+            border: 1px solid blue;
+            background-color: blue;
+        }
+
+        .button_container button:first-child {
+            margin-right: 10px;
+        }
+
+        .button_container button {
+            width: 15%;
+            height: 100%;
+
+            border: 1px solid lightblue;
+            border-radius: 5px;
+            background-color: lightblue;
+            color: white;
+        }
+
+        #todo-list {
+            width: 100%;
+            height: 80%;
+        }
+
+        .li_container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            width: 100%;
+            height: 20px;
+            margin-bottom: 10px;
+        }
+
+        .checkbox_container {
+            width: 10%;
+            height: 100%;
+        }
+
+        .checkbox_container input[type="checkbox"] {
+            width: 100%;
+            height: 100%; 
+        }
+
+        li {
+            list-style-type: none;
+
+            width: 65%;
+            height: 100%;
+            line-height:20px;
+        }
+        input[type="text"]{
+            width: 65%;
+            height: 100%;
+
+            outline: none;
+        }
+
+        .item-button {
+            width: 10%;
+            height: 100%;
+
+            border: 1px solid lightblue;
+            border-radius: 5px;
+            background-color: lightblue;
+            color: white;
+        }
+
+        .delete{
+            background-color: blue;
+            border:1px solid blue;
+        }
+
+        .clear {
+            text-decoration: line-through;
+        }
+
+        /*
+        .not_clear {
+            text-decoration: none;
+        }
+        */
+    </style>
+</head>
+
+<body>
+    <div id="total_container">
+        <div id="todo_container">
+            <h1>투두리스트</h1>
+            <div id="new_todo_container">
+                <input type="text" id="new-todo" placeholder="할일을 입력하시오" />
+                <button id="add-todo">입력</button>
+            </div>
+
+            <div id="all_button_container" class="button_container">
+                <button id="all_complete">모두 완료</button>
+                <button id="all_delete">모두 삭제</button>
+            </div>
+
+            <div id="part_button_container" class="button_container">
+                <button id="part_complete">선택 완료</button>
+                <button id="part_delete">선택 삭제</button>
+            </div>
+
+            <ul id="todo-list">
+
+            </ul>
+        </div>
+    </div>
+
 </body>
+<script src="./js/script.js"></script>
 </html>
