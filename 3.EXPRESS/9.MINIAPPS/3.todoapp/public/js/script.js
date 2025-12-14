@@ -57,6 +57,10 @@ function renderTodos(newTodo) {
   deleteBtn.textContent = "삭제";
   deleteBtn.addEventListener("click", (ev) => {
     ev.target.parentNode.remove();
+
+    const deleteId = ev.target.parentNode.dataset.todoId;
+    //삭제할 아이디를 서버에 주고, get을 호출하여 전역변수 갱신
+    deleteTodo(deleteId);
   });
 
   const updateBtn = document.createElement("button");
@@ -148,13 +152,13 @@ async function completeTodos() {
 }
 
 //서버에 선택 todo들 완료로 수정
-async function someCompleteTodos(todosId){
-  const response = await fetch(`/app/todos/some/completed`,{
+async function someCompleteTodos(todosId) {
+  const response = await fetch(`/app/todos/some/completed`, {
     method: "PUT",
-    body:JSON.stringify({todosId:todosId}),
-    headers:{
+    body: JSON.stringify({ todosId: todosId }),
+    headers: {
       "Content-Type": "application/json; charset=UTF-8",
-    }
+    },
   });
   const data = await response.json();
 
@@ -162,7 +166,54 @@ async function someCompleteTodos(todosId){
     await requestTodos();
   } else {
     todoList.innerHTML = "선택한 todo 완료로 수정이 실패하였습니다.";
-  } 
+  }
+}
+
+//서버에 todo데이터 삭제
+async function deleteTodo(id) {
+  const response = await fetch(`${baseUrl}/${id}`, {
+    method: "DELETE",
+  });
+  const data = await response.json();
+
+  if (data.status === "ok") {
+    await requestTodos();
+  } else {
+    todoList.innerHTML = "해당 todo 삭제가 실패하였습니다.";
+  }
+}
+
+//서버에 todo 전체 삭제
+async function deleteTodos() {
+  const response = await fetch(`/api/todos`, {
+    method: "DELETE",
+  });
+  const data = await response.json();
+
+  if (data.status === "ok") {
+    await requestTodos();
+    todoList.innerHTML = "현재 게시글이 존재하지 않습니다.";
+  } else {
+    todoList.innerHTML = "모든 todo 삭제가 실패하였습니다.";
+  }
+}
+
+//서버에 todo 선택 삭제
+async function someDeleteTodos(todosId) {
+  const response = await fetch(`/api/todos/some`, {
+    method: "DELETE",
+    body: JSON.stringify({ todosId: todosId }),
+    headers: {
+      "Content-Type": "application/json; charset=UTF-8",
+    },
+  });
+  const data = await response.json();
+
+  if (data.status === "ok") {
+    await requestTodos();
+  } else {
+    todoList.innerHTML = "선택한 todo 삭제가 실패하였습니다.";
+  }
 }
 
 addBtn.addEventListener("click", async () => {
@@ -185,6 +236,8 @@ addBtn.addEventListener("click", async () => {
 
     //중복방지도 통과하면 서버에 데이터를 추가하고, get요청으로 전역변수 업데이트
     await postTodo(newTodo);
+
+    newTodoDiv.value='';
   }
 });
 
@@ -220,11 +273,11 @@ allComplete.addEventListener("click", async () => {
     dynamicLitag.classList.add("clear");
   });
 
-  //서버에 해당 id 데이터를 보낸후, 다시 get요청으로 전역변수 업데이트
+  //서버에 완료 요청후, 다시 get요청으로 전역변수 업데이트
   await completeTodos();
 });
 
-allDelete.addEventListener("click", () => {
+allDelete.addEventListener("click", async () => {
   //동적으로 만들었던 li의 부모태그 div들을 불러온다
   const dynamicDivContainers = document.querySelectorAll(
     "#todo-list div.li_container"
@@ -233,6 +286,9 @@ allDelete.addEventListener("click", () => {
   dynamicDivContainers.forEach((dynamicDivContainer) => {
     dynamicDivContainer.remove();
   });
+
+  //서버에 삭제 요청을 한후, 다시 get요청으로 전역변수 업데이트
+  await deleteTodos();
 });
 
 partComplete.addEventListener("click", () => {
@@ -246,7 +302,7 @@ partComplete.addEventListener("click", () => {
   //체크박스가 체크되어있다면, 부모노드를 통하여 li 태그를 찾는다
   dynamicCheckboxes.forEach((dynamicCheckbox) => {
     let currentLi = dynamicCheckbox.parentNode.parentNode.querySelector("li");
-    
+
     if (dynamicCheckbox.checked) {
       currentLi.classList.add("clear");
 
@@ -269,11 +325,18 @@ partDelete.addEventListener("click", () => {
     '#todo-list div input[type="checkbox"]'
   );
 
+  let todosId = [];
   //체크되어있다면, 해당부모 노드 div를 찾기
   dynamicCheckboxes.forEach((dynamicCheckbox) => {
     if (dynamicCheckbox.checked) {
       let currentDivContainer = dynamicCheckbox.parentNode.parentNode;
+      let currentTodoId = currentDivContainer.dataset.todoId;
+
       currentDivContainer.remove();
+      todosId.push(currentTodoId);
     }
   });
+
+  //배열에 담은 todo id들을 서버에 보낸후, 다시 get 요청으로 전역변수 업데이트
+  someDeleteTodos(todosId);
 });

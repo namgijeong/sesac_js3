@@ -40,11 +40,6 @@ app.post("/api/todo", (req, res) => {
   res.json({ status: "ok" });
 });
 
-app.delete("/api/todo/:id", (req, res) => {
-  console.log("todo 삭제해달라고 요청함");
-  //todos.filter를 통해서 비교해본다
-});
-
 app.put("/api/todo/:id/completed", (req, res) => {
   console.log("todo 수정해달라고 요청함");
   //id를 찾아서 completed를 toggle
@@ -70,7 +65,7 @@ app.put("/api/todo/:id/completed", (req, res) => {
 
 //전체완료
 app.put("/app/todos/completed", (req, res) => {
-  todos.map((todo) => {
+  todos = todos.map((todo) => {
     todo.completed = true;
   });
   console.log(todos);
@@ -95,6 +90,46 @@ app.put(`/app/todos/some/completed`, (req, res) => {
     todos[findTodoIndex].completed = true;
   });
 
+  res.json({ status: "ok" });
+});
+
+app.delete("/api/todo/:id", (req, res) => {
+  console.log("todo 삭제해달라고 요청함");
+  const deleteId = Number(req.params.id);
+
+  //todos.filter를 통해서 비교해본다
+  todos = todos.filter(todo => todo.id !== deleteId);
+
+  res.json({ status: "ok" });
+});
+
+//전체삭제
+app.delete("/api/todos",(req, res) => {
+  todos = [];
+  idCounter = 1;
+
+  res.json({ status: "ok" });
+});
+
+//선택삭제
+app.delete("/api/todos/some", (req, res) => {
+  //id가 담긴 배열
+  const todosId = req.body.todosId;
+  console.log(todosId);
+  
+  //id에 맞는 실제 인덱스를 찾아 해당 배열 데이터를 삭제
+  todosId.forEach((todoId) => {
+    let findTodoIndex = todos.findIndex((todo) => todo.id === Number(todoId));
+
+    if (findTodoIndex == -1) {
+      res.json({ status: "error" });
+      return;
+    }
+
+    todos.splice(findTodoIndex, 1);
+  });
+  console.log(todos);
+  
   res.json({ status: "ok" });
 });
 
