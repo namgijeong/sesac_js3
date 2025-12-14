@@ -11,7 +11,7 @@ const todoList = document.getElementById("todo-list");
 const baseUrl = `/api/todo`;
 let todos = [];
 
-document.addEventListener("DOMContentLoaded", async() => {
+document.addEventListener("DOMContentLoaded", async () => {
   console.log("DOM 로딩 완료");
 
   //로딩되자마자 서버로부터 todos를 조회후 dom에 그린다
@@ -24,12 +24,11 @@ async function requestTodos() {
   const data = await response.json();
   todos = data;
 
-  todoList.innerHTML = '';
+  todoList.innerHTML = "";
   data.forEach((oneData) => {
     renderTodos(oneData);
   });
 }
-
 
 //todos 목록을 그리기
 function renderTodos(newTodo) {
@@ -48,9 +47,9 @@ function renderTodos(newTodo) {
   new_li.textContent = newTodo.todo;
 
   if (newTodo.completed) {
-    new_li.classList.add('clear');
+    new_li.classList.add("clear");
   } else {
-    new_li.classList.remove('clear');
+    new_li.classList.remove("clear");
   }
 
   const deleteBtn = document.createElement("button");
@@ -102,39 +101,69 @@ function renderTodos(newTodo) {
   todoList.appendChild(new_div);
 }
 
-
 //서버에서 todo 데이터 추가하기
 async function postTodo(todo) {
   const response = await fetch(baseUrl, {
     method: "POST",
-    body: JSON.stringify({todo:todo}),
+    body: JSON.stringify({ todo: todo }),
     headers: {
       "Content-type": "application/json; charset=UTF-8",
     },
   });
 
   const data = await response.json();
-  if (data.status == 'ok'){
+  if (data.status == "ok") {
     await requestTodos();
   } else {
-    todoList.innerHTML = 'todo 추가가 실패하였습니다';
+    todoList.innerHTML = "todo 추가가 실패하였습니다";
   }
 }
 
-//서버에 todo 완료여부 수정 
-async function completeTodo(id){
-  const response = await fetch(`${baseUrl}/${id}/completed`,{
-    method:'PUT',
+//서버에 todo 완료여부 수정
+async function completeTodo(id) {
+  const response = await fetch(`${baseUrl}/${id}/completed`, {
+    method: "PUT",
   });
   const data = await response.json();
 
-  if (data.status === 'ok'){
+  if (data.status === "ok") {
     await requestTodos();
   } else {
-    todoList.innerHTML = 'todo 완료여부 수정이 실패하였습니다';
+    todoList.innerHTML = "todo 완료여부 수정이 실패하였습니다";
   }
 }
 
+//서버에 todos 모두 완료로 수정
+async function completeTodos() {
+  const response = await fetch(`/app/todos/completed`, {
+    method: "PUT",
+  });
+  const data = await response.json();
+
+  if (data.status === "ok") {
+    await requestTodos();
+  } else {
+    todoList.innerHTML = "모든 todo 완료로 수정이 실패하였습니다.";
+  }
+}
+
+//서버에 선택 todo들 완료로 수정
+async function someCompleteTodos(todosId){
+  const response = await fetch(`/app/todos/some/completed`,{
+    method: "PUT",
+    body:JSON.stringify({todosId:todosId}),
+    headers:{
+      "Content-Type": "application/json; charset=UTF-8",
+    }
+  });
+  const data = await response.json();
+
+  if (data.status === "ok") {
+    await requestTodos();
+  } else {
+    todoList.innerHTML = "선택한 todo 완료로 수정이 실패하였습니다.";
+  } 
+}
 
 addBtn.addEventListener("click", async () => {
   //trim()을 통해서 앞뒤 원치않는 공백문자를 제거한다
@@ -167,7 +196,7 @@ newTodoDiv.addEventListener("keydown", (ev) => {
   }
 });
 
-todoList.addEventListener("click", (ev) => {
+todoList.addEventListener("click", async (ev) => {
   let clickedTag = ev.target.tagName.toLowerCase();
   if (clickedTag !== "li") {
     return;
@@ -178,30 +207,21 @@ todoList.addEventListener("click", (ev) => {
     //서버에 해당 id 데이터를 보낸후, 다시 get요청으로 전역변수 업데이트
     let currentTodoId = ev.target.parentNode.dataset.todoId;
     console.log(currentTodoId);
-    completeTodo(currentTodoId);
+
+    await completeTodo(currentTodoId);
   }
 });
 
-allComplete.addEventListener("click", () => {
-  //동적으로 만들었던 체크박스들을 불러온다
-  const dynamicCheckboxes = document.querySelectorAll(
-    '#todo-list  input[type="checkbox"]'
-  );
+allComplete.addEventListener("click", async () => {
   const dynamicLitags = document.querySelectorAll("#todo-list  li");
-
-  //배열을 돌며 체크해버린다.
-  dynamicCheckboxes.forEach((dynamicCheckbox) => {
-    dynamicCheckbox.checked = true;
-  });
 
   //동적으로 만든 li 태그들에 줄을 그어 버린다.
   dynamicLitags.forEach((dynamicLitag) => {
     dynamicLitag.classList.add("clear");
-
-    //서버에 해당 id 데이터를 보낸후, 다시 get요청으로 전역변수 업데이트
-    //let currentTodoId = ev.target.parentNode.dataset.todoId;
-    //completeTodo(currentTodoId);
   });
+
+  //서버에 해당 id 데이터를 보낸후, 다시 get요청으로 전역변수 업데이트
+  await completeTodos();
 });
 
 allDelete.addEventListener("click", () => {
@@ -221,17 +241,26 @@ partComplete.addEventListener("click", () => {
     '#todo-list  input[type="checkbox"]'
   );
 
+  let todosId = [];
+
   //체크박스가 체크되어있다면, 부모노드를 통하여 li 태그를 찾는다
   dynamicCheckboxes.forEach((dynamicCheckbox) => {
     let currentLi = dynamicCheckbox.parentNode.parentNode.querySelector("li");
+    
     if (dynamicCheckbox.checked) {
       currentLi.classList.add("clear");
+
+      let currentTodoId = currentLi.parentNode.dataset.todoId;
+      todosId.push(currentTodoId);
     }
     //체크를 바꾸고 다시 누르는 경우도 있으니까
     else {
       currentLi.classList.remove("clear");
     }
   });
+
+  //배열에 담은 todo id들을 서버에 보낸후, 다시 get 요청으로 전역변수 업데이트
+  someCompleteTodos(todosId);
 });
 
 partDelete.addEventListener("click", () => {
