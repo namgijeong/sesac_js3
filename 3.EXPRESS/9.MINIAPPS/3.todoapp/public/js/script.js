@@ -88,6 +88,9 @@ function renderTodos(newTodo) {
 
         ev.target.parentNode.replaceChild(tmpLi, currentInput);
         ev.target.textContent = "수정";
+
+        //서버에 데이터 수정을 요청후, get을 호출하여 전역변수 갱신
+        updateTodoContent(ev.target.parentNode.dataset.todoId, tmpLi.textContent);
       }
     }
   });
@@ -213,6 +216,24 @@ async function someDeleteTodos(todosId) {
     await requestTodos();
   } else {
     todoList.innerHTML = "선택한 todo 삭제가 실패하였습니다.";
+  }
+}
+
+//서버에 todo 내용 수정
+async function updateTodoContent(id, content){
+  const response = await fetch(`${baseUrl}/${id}`,{
+    method:'PUT',
+    body:JSON.stringify({content}),
+    headers: {
+      "Content-Type": "application/json; charset=UTF-8",
+    },
+  });
+
+  const data = await response.json();
+  if (data.status === "ok") {
+    await requestTodos();
+  } else {
+    alert('todo 내용 수정에 실패하였습니다.');
   }
 }
 
