@@ -20,8 +20,7 @@ function init_database() {
   //각행을 ;로 잘라서 빈행(undefined,null)으로 나오는걸 방지
   //const statements = sql.split(";").filter(Boolean);
   const statements = sql.split(";");
-
-  //insert 여러번 실행방지
+  
   //db.transaction은 성공하면 commit,실패하면 rollback
   //   db.transaction(() => {
   //     for (const statement of statements) {
@@ -29,6 +28,7 @@ function init_database() {
   //     }
   //   });
 
+  //insert 여러번 실행방지
   try {
     for (const statement of statements) {
       db.exec(statement);
