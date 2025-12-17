@@ -37,13 +37,21 @@ async function do_db_working(){
 
   const rows = await new Promise((resolve, reject) => {
     const results = [];
-    db.each('SELECT * FROM users', (err, row) => {
+
+    //db.each는 콜백을 두개 받는애였다. row 하나하나, 그리고 다 끝났을때...
+    // db.each('SELECT * FROM users', (err, row) => {
+    //   if (err) reject(err);
+    //   else results.push(row);
+    // }, (err, count) => {
+    //   if (err) reject(err);
+    //   else resolve(results);
+    // });  
+
+    //db.all을 통해서 콜백 하나로 처리
+    db.all('SELECT * FROM users', (err, rows) => {
       if (err) reject(err);
-      else results.push(row);
-    }, (err, count) => {
-      if (err) reject(err);
-      else resolve(results);
-    });  
+      else resolve(rows);
+    })
     
   })
 
