@@ -86,17 +86,18 @@ LIMIT 20
 GROUP BY  에서 컬럼 두개를 쌍으로 묶어서 해도 된다
 예시 중복상품 주문한것
 order orderid, item의 itemname을 묶어서 orderid가 같아도 itemname 이름이 다르면 다른것으로 취급
-하나의 영수증에 커피도 시키고 케이크도 시키고
+하나의 영수증에 커피도 시키고 케이크도 시키고 
+테이블 특성상 커피2잔 이런식으로 안되는데??
 */
 -- SELECT
---   o.id AS order_id,
+--   o.orderid AS order_id,
 --   o.orderAt,
---   i.name AS item_name,
+--   i.itemname AS item_name,
 --   COUNT(*) AS qty
 -- FROM orders o
--- JOIN order_items oi ON o.id = oi.orderId
--- JOIN items i        ON oi.itemId = i.id
--- GROUP BY o.id, i.name
+-- JOIN orderitems oi ON o.orderid = oi.orderId
+-- JOIN items i        ON oi.itemId = i.itemid
+-- GROUP BY o.orderid, i.itemname
 -- ORDER BY o.orderAt
 -- LIMIT 20;
 
@@ -111,3 +112,87 @@ order orderid, item의 itemname을 묶어서 orderid가 같아도 itemname 이�
 -- HAVING COUNT(*) >= 2
 -- )
 -- ;
+
+/*1. 특정 사용자가 주문한 주문 목록 시간*/
+-- SELECT o.orderid, o.orderat , u.userid, u.username
+-- FROM orders o
+-- JOIN users u
+-- ON o.userid = u.userid
+-- WHERE o.userid = 'c423f39d-dc05-4640-a108-5070745fec39'
+--;
+
+/*2. 특정 사용자가 주문한 상점명과 상품명 */
+-- SELECT o.orderid, u.userid, u.username , s.storename, i.itemname
+-- FROM orders o
+-- JOIN users u
+-- ON o.userid = u.userid
+-- JOIN stores s
+-- ON o.storeid = s.storeid
+-- JOIN orderitems item
+-- ON o.orderid = item.orderid
+-- JOIN items i
+-- ON item.itemid = i.itemid
+-- WHERE o.userid = '3fbc65e3-dcf3-4cb7-958e-406fbd46035a'
+--;
+
+/*3.특정 사용자가 주문한 유닉한 상품명의 목록*/
+-- SELECT DISTINCT  i.itemname
+-- FROM orders o
+-- JOIN users u
+-- ON o.userid = u.userid
+-- JOIN stores s
+-- ON o.storeid = s.storeid
+-- JOIN orderitems item
+-- ON o.orderid = item.orderid
+-- JOIN items i
+-- ON item.itemid = i.itemid
+-- WHERE o.userid = '3fbc65e3-dcf3-4cb7-958e-406fbd46035a'
+--;
+
+/*4. 특정 사용자가 주문한 매출액의 합산 */
+-- SELECT sum(i.itemprice)
+-- FROM orders o
+-- JOIN users u
+-- ON o.userid = u.userid
+-- JOIN orderitems item
+-- ON o.orderid = item.orderid
+-- JOIN items i
+-- ON item.itemid = i.itemid
+-- WHERE o.userid = '3fbc65e3-dcf3-4cb7-958e-406fbd46035a'
+--;
+
+/*5. 상점별 월간 통계 매출액 GROUP BY s.storeid*/
+SELECT sum(i.itemprice), s.storeid, strftime('%Y', o.orderat) AS year , strftime('%m', o.orderat) AS month
+FROM stores s
+JOIN orders o
+ON s.storeid = o.storeid
+JOIN orderitems oi
+ON o.orderid = oi.orderid
+JOIN items i
+ON oi.itemid = i.itemid
+GROUP BY s.storeid, year, month;
+
+-- SELECT sum(i.itemprice), s.storeid, strftime('%Y', o.orderat) AS year 
+-- FROM stores s
+-- JOIN orders o
+-- ON s.storeid = o.storeid
+-- JOIN orderitems oi
+-- ON o.orderid = oi.orderid
+-- JOIN items i
+-- ON oi.itemid = i.itemid
+-- GROUP BY s.storeid, year;
+
+/*6. 특정 사용자가 방문한 상점의 빈도가 높은 순대로 상위 5개*/
+SELECT COUNT(*) AS visit_count , s.storeid 
+FROM users u
+JOIN orders o
+ON u.userid = o.userId
+JOIN stores s
+ON o.storeid = s.storeid 
+WHERE u.userid = '3fbc65e3-dcf3-4cb7-958e-406fbd46035a'
+GROUP BY s.storeid
+ORDER BY visit_count
+LIMIT 5
+;
+
+/*7. 구매한 매출액의 합산이 가장 높은 사용자 10명, 각각의 매출액*/
