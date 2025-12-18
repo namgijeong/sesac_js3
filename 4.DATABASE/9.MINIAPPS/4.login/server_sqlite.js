@@ -7,9 +7,17 @@ const port = 3000;
 
 const { connectDB, runQuery, allQuery, getQuery } = require("./sqlite_library");
 
+//db 초기화 예시
+// function init_db(){
+//   db.seialize(() => {
+//     db.run(`CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT)`);
+
+//   });
+// }
+
 //db 초기화
 (async () => {
-  connectDB('users.db');
+  connectDB("users.db");
 
   await runQuery(
     `CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT)`
@@ -24,9 +32,9 @@ const { connectDB, runQuery, allQuery, getQuery } = require("./sqlite_library");
   ];
 
   //한번만 넣고 그만 넣자...
-  for (const user of users) {
-    await runQuery(insertStm, [user.username, user.password]);
-  }
+  // for (const user of users) {
+  //   await runQuery(insertStm, [user.username, user.password]);
+  // }
 })();
 
 //form-urlencoded  변환
@@ -42,6 +50,11 @@ app.post("/login", async (req, res) => {
   const user = await getQuery(
     `SELECT * FROM users WHERE username=? AND password=?`, [username, password]
   );
+
+  //위험한 SQL 인젝션이 되니 이렇게 하지 말것
+  // const user = await getQuery(
+  //   `SELECT * FROM users WHERE username='${username}' AND password='${password}'`
+  // );
 
   if (user) {
     res.send("로그인 성공");

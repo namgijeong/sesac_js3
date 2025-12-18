@@ -3,7 +3,6 @@ let db;
 
 function connectDB(dbname) {
   db = new sqlite3.Database(dbname);
-  re
 }
 
 function runQuery(query, params = []) {
