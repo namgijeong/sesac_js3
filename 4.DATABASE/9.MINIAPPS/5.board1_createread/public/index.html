@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+    />
+    <title>게시판</title>
+    <style>
+      /* bootstrap 적용효과  
+        .form-control 
+        => input, textarea를 가로 100%
+        기본 padding, border, border-radius 적용
+        포커스 시 파란색 outline/shadow
+        
+        .form-group
+        => margin 한 번에 적용
+        레이아웃 한 번에 제어
+        상태(에러/성공) 한 번에 표현 가능
+
+        .btn => 버튼 기본 스타일
+        .btn-primary => 파란색(primary color) 버튼
+        
+        .row 
+        => Grid 시스템의 한 줄(row)
+        내부에 .col-*이 들어오면 자동으로 가로 정렬
+        좌우 negative margin 적용
+
+        Bootstrap Grid는 12칸 기준 시스템
+        .col-12 => 한 줄(row)을 12칸으로 나눈 것 중 그 12칸을 전부 쓰는 컬럼
+        */
+      * {
+        font-family: "Open Sans", sans-serif;
+      }
+      .wrap {
+        margin: auto;
+        width: 900px;
+      }
+      .input-container {
+        padding: 20px;
+        background-color: #dedede;
+      }
+      .form-group {
+        margin: 10px;
+        width: 90%;
+      }
+      .card-id {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="input-container">
+        <div class="form-group">
+          <h1>메모장</h1>
+        </div>
+        <div class="form-group">
+          <input
+            class="form-control"
+            id="input-title"
+            placeholder="제목을 입력하세요"
+          />
+        </div>
+        <div class="form-group">
+          <textarea
+            class="form-control"
+            id="input-text"
+            rows="2"
+            placeholder="내용을 입력하세요"
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <button onclick="uploadPost()" class="btn btn-primary">
+            저장하기
+          </button>
+        </div>
+      </div>
+
+      <!-- 아래는 결과가 보여질곳 -->
+      <div id="card-list" class="row"></div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
