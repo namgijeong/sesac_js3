@@ -278,42 +278,24 @@ ORDER BY purchased DESC
 LIMIT 5
 ;
 
--- SELECT t.Name, count(t.Name) AS "PurchaseCount" 
--- FROM tracks t 
--- JOIN invoice_items l 
--- ON l.TrackId =t.Trackid 
--- GROUP BY t.Trackid 
--- ORDER BY PurchaseCount DESC 
--- LIMIT 5;
-
--- SELECT t.Name, count(t.Name) AS "PurchaseCount" 
--- FROM tracks t 
--- JOIN invoice_items l 
--- ON l.TrackId =t.Trackid 
--- GROUP BY t.Name 
--- ORDER BY PurchaseCount DESC 
--- LIMIT 5;
-
-
--- SELECT * FROM tracks WHERE name = "The Trooper";
 
 /*26. 가장 많이 팔린 3명의 아티스트를 보여주는 쿼리*/
-SELECT  art.name, a.title
-FROM
-(
-SELECT t.name, count(l.Quantity) AS "PurchaseCount" , t.albumid 
-FROM tracks t 
-JOIN invoice_items l 
-ON l.TrackId =t.Trackid 
-GROUP BY t.trackid
-) p
-JOIN albums a
-ON a.albumid = p.albumid
-JOIN artists  art
-ON art.artistid = a.artistid
-ORDER BY PurchaseCount DESC
-LIMIT 3
-;
+-- SELECT DISTINCT art.name, a.title
+-- FROM
+-- (
+-- SELECT t.name, count(i.Quantity) AS "PurchaseCount" , t.albumid 
+-- FROM tracks t 
+-- JOIN invoice_items i 
+-- ON i.TrackId =t.Trackid 
+-- GROUP BY t.trackid
+-- ) p
+-- JOIN albums a
+-- ON a.albumid = p.albumid
+-- JOIN artists  art
+-- ON art.artistid = a.artistid
+-- ORDER BY PurchaseCount DESC
+-- LIMIT 3
+-- ;
 
 -- SELECT "Artist Name", "Total Earned" 
 -- FROM 
@@ -327,3 +309,25 @@ LIMIT 3
 -- ) 
 -- ORDER BY "Total Earned" DESC 
 -- LIMIT 3;
+
+SELECT
+  art.Name AS ArtistName,
+  SUM(i.Quantity) AS TotalSales
+FROM artists art
+JOIN albums a        ON a.ArtistId = art.ArtistId
+JOIN tracks t        ON t.AlbumId = a.AlbumId
+JOIN invoice_items i ON i.TrackId = t.TrackId
+GROUP BY art.ArtistId
+ORDER BY TotalSales DESC
+LIMIT 3;
+
+/*27. a query that shows the most purchased Media Type.*/
+
+SELECT
+  SUM(i.Quantity) AS TotalSales, m.mediatypeid, m.name
+FROM media_types m
+JOIN tracks t        ON m.mediatypeid = t.mediatypeid
+JOIN invoice_items i ON i.TrackId = t.TrackId
+GROUP BY m.mediatypeid
+ORDER BY TotalSales DESC
+LIMIT 1;
