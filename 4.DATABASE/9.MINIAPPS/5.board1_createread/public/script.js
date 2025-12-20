@@ -12,6 +12,7 @@ function makeCard(id, title, message) {
   //기존에 있던 DOM의 차일드에 추가하기
 
   const card = document.createElement("div");
+  card.classList.add('col-12');
   card.innerHTML = `
         <div class="card" id="card_${id}">
             <div class="card-body">
@@ -87,9 +88,9 @@ function modifyPost(id) {
   //   <p class="btn btn-info" onclick="modifyPost(${id})">수정</p>
 
   const tmpTitleInput = document.createElement("input");
-  tmpTitleInput.classList.add("card-title");
+  tmpTitleInput.classList.add('form-control','tmp-control-input');
   const tmpTextTextarea = document.createElement("textarea");
-  tmpTextTextarea.classList.add("card-text");
+  tmpTextTextarea.classList.add('form-control','tmp-control-textarea');
   const tmpUpdateBtn = document.createElement("p");
   tmpUpdateBtn.textContent = '수정완료';
   tmpUpdateBtn.classList.add("btn", "btn-info");
