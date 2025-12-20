@@ -13,7 +13,7 @@ const db = new Database();
 app.get('/api/list', (req,res) => {
     console.log('목록 조회');
 
-    const sql = 'SELECT * FROM boards';
+    const sql = 'SELECT * FROM board';
     const rows = db.executeQuery(sql);
     console.log(rows);
 
@@ -40,10 +40,15 @@ app.delete('/api/delete/:id', (req,res) => {
     res.json({result:'success'});
 });
 
-app.put('/api/modify', (req,res) => {
+app.put('/api/modify/:id', (req,res) => {
     console.log('글 수정');
+    const {title,message} = req.body;
+    const id = Number(req.params.id);
 
-    
+    const sql = `UPDATE board SET title=? , message=? WHERE id=?`;
+    db.execute(sql,[title,message,id]);
+
+    res.json({result:'success'});
 });
 
 app.listen(port, () => {

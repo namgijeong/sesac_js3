@@ -73,9 +73,50 @@ function deletePost(id) {
     });
 }
 
-function modifyPost() {
+function modifyPost(id) {
   // DOM 으로 수정할 위치 가져오기
   // 기존에 글 있던 곳을, 글을 입력하는곳의 DOM 으로 바꾸기
+  const cardDiv = document.getElementById(`card_${id}`);
+  //  <div class="card" id="card_${id}"></div>
+  const cardBody = cardDiv.getElementsByClassName(`card-body`)[0];
+  const cardTitleP = cardBody.getElementsByClassName(`card-title`)[0];
+  //   <p class="card-title">${title}</p>
+  const cardTextP = cardBody.getElementsByClassName(`card-text`)[0];
+  //  <p class="card-text">${message}</p>
+  const cardUpdateBtn = cardBody.getElementsByClassName(`btn-info`)[0];
+  //   <p class="btn btn-info" onclick="modifyPost(${id})">수정</p>
+
+  const tmpTitleInput = document.createElement("input");
+  tmpTitleInput.classList.add("card-title");
+  const tmpTextTextarea = document.createElement("textarea");
+  tmpTextTextarea.classList.add("card-text");
+  const tmpUpdateBtn = document.createElement("p");
+  tmpUpdateBtn.textContent = '수정완료';
+  tmpUpdateBtn.classList.add("btn", "btn-info");
+
+  cardBody.replaceChild(tmpTitleInput, cardTitleP);
+  cardBody.replaceChild(tmpTextTextarea, cardTextP);
+  cardBody.replaceChild(tmpUpdateBtn, cardUpdateBtn);
+
   // 저장을 누르면??
   //  fetch(글수정).then(성공확인).then(불러오기(=카드만들기))
+  tmpUpdateBtn.addEventListener("click", () => {
+    fetch(`/api/modify/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: tmpTitleInput.value,
+        message: tmpTextTextarea.value,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.result == "success") {
+          alert("수정 완료");
+          location.reload();
+        } else {
+          alert("수정 실패");
+        }
+      });
+  });
 }
