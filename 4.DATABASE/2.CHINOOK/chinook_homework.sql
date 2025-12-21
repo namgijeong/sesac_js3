@@ -331,3 +331,30 @@ JOIN invoice_items i ON i.TrackId = t.TrackId
 GROUP BY m.mediatypeid
 ORDER BY TotalSales DESC
 LIMIT 1;
+
+/*앨범에 따른 트랙조회*/
+SELECT t.name AS trackname, a.title AS albumname
+FROM albums a
+JOIN tracks t
+ON a.albumid = t.albumid
+WHERE a.title LIKE '%Alcohol Fueled%';
+
+/*트랙에 따른 앨범 조회*/
+SELECT t.name AS trackname, a.title AS albumname
+FROM albums a
+JOIN tracks t
+ON a.albumid = t.albumid
+WHERE t.name LIKE '%Balls to the Wall%';
+
+/*장르에 따른 트랙조회*/
+SELECT g.name AS genrename, t.name AS trackname
+FROM genres g
+JOIN tracks t
+ON g.genreid = t.genreid
+Where g.name = 'Metal'
+;
+
+/*모든 장르조회*/
+-- SELECT * 
+-- FROM genres;
+
