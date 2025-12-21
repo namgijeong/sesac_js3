@@ -14,7 +14,7 @@
       #total_container {
         position: relative;
 
-        width: 80%;
+        width: 70%;
         height: 100vh;
         margin: 0 auto;
       }
@@ -67,6 +67,8 @@
         부모 안에 있어도 overflow 계산 대상
         */
         transform: translateY(2px);
+
+        text-align: center;
       }
 
       #genre_search {
@@ -100,7 +102,7 @@
       }
 
       .result_column > div {
-        position:relative;
+        position: relative;
 
         width: 50%;
         height: 100%;
@@ -112,14 +114,14 @@
         top: 0;
         left: 0;
 
-        display:inline-block;
-        width:5px;
-        height:50px;
+        display: inline-block;
+        width: 5px;
+        height: 50px;
         content: "";
         background-color: skyblue;
       }
 
-      .result_content{
+      .result_content {
         width: 100%;
         height: 50px;
 
@@ -129,22 +131,28 @@
         gap: 20px;
       }
 
-      .genre_name , .genre_track{
-        position:relative;
-
+      .genre_name,
+      .genre_track {
+        position: relative;
         width: 50%;
         height: 100%;
+        padding:10px;
+
         text-align: center;
         line-height: 50px;
+
+        white-space: nowrap; /* 줄바꿈 금지 */
+        overflow: hidden; /* 넘친 부분 숨김 */
+        text-overflow: ellipsis; /* ... 표시 */
       }
       .genre_track::before {
         position: absolute;
         top: 0;
-        left: 0;
+        left: 0px;
 
-        display:inline-block;
-        width:5px;
-        height:50px;
+        display: inline-block;
+        width: 5px;
+        height: 50px;
         content: "";
         background-color: skyblue;
       }
@@ -155,7 +163,9 @@
       <div id="search_container">
         <div id="title">장르에 따른 노래(트랙) 검색</div>
         <div id="input_container">
-          <select id="genre_select"></select>
+          <select id="genre_select">
+            <option value="" disabled selected>장르</option>
+          </select>
           <button id="genre_search">검색</button>
         </div>
         <div id="result_container">
@@ -163,12 +173,15 @@
             <div>장르</div>
             <div>노래(트랙)</div>
           </div>
-          <div class="result_content">
-            <div class="genre_name">pop</div>
-            <div class="genre_track">ssssssssssssssssss</div>
+          <div id="result_content_container">
+            <!-- <div class="result_content">
+                <div class="genre_name">pop</div>
+                <div class="genre_track">ssssssssssssssssss</div>
+              </div> -->
           </div>
         </div>
       </div>
     </div>
   </body>
+  <script src="./script.js"></script>
 </html>
