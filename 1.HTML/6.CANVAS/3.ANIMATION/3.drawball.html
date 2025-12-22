@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      canvas {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="aniCanvas" width="400" height="200"></canvas>
+
+    <script>
+      const canvas = document.getElementById("aniCanvas");
+      const context = canvas.getContext("2d");
+
+      const ball = {
+        x: 50,
+        y: 50,
+        radius: 10,
+        dx:1,
+        dy:1,
+      };
+
+      function drawball() {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        context.beginPath();
+        context.arc(ball.x, ball.y, ball.radius, 0, 2 * Math.PI);
+        context.fillStyle = "#0095DD";
+        context.fill();
+        context.closePath();
+
+        ball.x += ball.dx;
+        ball.y += ball.dy;
+
+        if (ball.y > canvas.height- ball.radius || ball.y < ball.radius){
+          ball.dy = - ball.dy;
+        }
+
+        if (ball.x > canvas.width - ball.radius || ball.x < ball.radius){
+          ball.dx = - ball.dx;
+        }
+
+        //내 PC 주사율에 맞춰서 여러번 호출
+        requestAnimationFrame(drawball);
+      }
+
+      drawball();
+    </script>
+  </body>
+</html>

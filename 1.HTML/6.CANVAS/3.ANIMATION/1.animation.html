@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      canvas {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="aniCanvas" width="400" height="200"></canvas>
+
+    <script>
+      const canvas = document.getElementById("aniCanvas");
+      const context = canvas.getContext("2d");
+      const size = 50;
+      let x = 0;
+
+      function draw() {
+        //캔바스 크기만큼 지우기
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        context.fillStyle = "#FF0000";
+        context.fillRect(x, 50, size, size);
+
+        x += 50;
+
+        console.log("현재 그리는곳:", x);
+
+        //내 pc의 주사율에 맞춰서 함수를 호출한다
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    </script>
+  </body>
+</html>
