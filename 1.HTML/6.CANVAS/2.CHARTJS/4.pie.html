@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div>
+      <canvas id="myChart" width="400" height="200"></canvas>
+    </div>
+
+    <script>
+      const ctx = document.getElementById("myChart");
+
+      //1.데이터 정의(data)
+      const data = {
+        labels: ["아이스크림", "과일", "야채"],
+        datasets: [
+          {
+            label: "나의 매장 매출 비중",
+            data: [300, 50, 100],
+            backgroundColor: [
+              "rgb(255, 99, 132)",
+              "rgb(54, 162, 235)",
+              "rgb(255, 205, 86)",
+            ],
+            hoverOffset: 4,
+          },
+        ],
+      };
+
+      //2. 차트 설정 정의(config)
+      const config = {
+        type: "pie",
+        data: data,
+        options:{
+          //내가 원하는 width , height를 넣어도 기본적으로 원하는데로 변하지 않기때문에 options로 설정
+            responsive:false,
+        }
+      };
+
+      //3.그린다
+      const pieChart = new Chart(ctx, config);
+    </script>
+  </body>
+</html>

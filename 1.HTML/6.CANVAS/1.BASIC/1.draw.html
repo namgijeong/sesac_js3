@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas{
+            border:1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas" width="400px" height="200px"></canvas>
+
+    <script>
+        const canvas = document.getElementById('myCanvas');
+        //2d 그림 그릴 공간을 가져옴
+        const context = canvas.getContext('2d');
+
+        //1.사각형 그리기
+        //칠하기
+        context.fillStyle='#ff0000';
+        //x,y,width, height
+        context.fillRect(50,50,100,80);
+        //선
+        context.strokeStyle='blue';
+        context.strokeRect(50,100,100,80);
+
+        //2. 라인 그리기
+        context.strokeStyle='#00FF00';
+        context.lineWidth = 2;
+        //시작합니다
+        context.beginPath();
+        //시작점 위치
+        context.moveTo(200,50);
+        //끝점 위치
+        context.lineTo(300,130);
+        //실제로 그리기
+        context.stroke();
+        //끝났습니다
+        context.closePath();
+
+        context.strokeStyle='#00FF00';
+        context.lineWidth = 2;
+        //시작합니다
+        context.beginPath();
+        //시작점 위치
+        context.moveTo(200,60);
+        //끝점 위치
+        context.lineTo(300,140);
+        //실제로 그리기
+        context.stroke();
+        //끝났습니다
+        context.closePath();
+
+        //3.원 그리기 => degree가 아닌 radian
+        //arc(x,y,radius, startAngle, endAngle, counterclockwise)
+        context.fillStyle='#00FF00';
+        context.beginPath();
+        context.arc(350,50,30,0,2*Math.PI); //2PI => 360
+        //내용채우기
+        context.fill();
+        context.closePath();
+
+        context.fillStyle='#0000FF';
+        context.beginPath();
+        context.arc(350,150,30,0,Math.PI); //2PI => 360
+        //내용채우기
+        context.fill();
+        context.closePath();
+
+    </script>    
+</body>
+</html>

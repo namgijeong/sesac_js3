@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas{
+            border:1px dashed red;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas" width="400" height="200"></canvas>
+    <script>
+        // const canvas = document.getElementById('myCanvas');
+        // const context= canvas.getContext('2d');
+
+        const context = document.getElementById('myCanvas').getContext('2d');
+        
+        function drawText(x, y, text, font, style){
+            context.font = font;
+            context.fillStyle = style;
+            //(글자, x, y)
+            context.fillText(text, x, y);
+        }
+
+        drawText(20,40, 'Hello, Canvas!','30px Arial','red');
+        drawText(20,80, 'Hello, SESAC!','20px Times New Roman','blue');
+        drawText(20,120, 'Hello, Morning!','italic 26px Verdana','red');
+        drawText(20,160, 'Goodbye!','bold 30px Impact','red');
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas{
+            border:1px dashed blue;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas" width="400" height="200"></canvas>
+    <script>
+        // const canvas = document.getElementById('myCanvas');
+        // const context= canvas.getContext('2d');
+
+        const ctx = document.getElementById('myCanvas').getContext('2d');
+
+        ctx.beginPath();
+        ctx.moveTo(300,100);
+
+        const startAngle = 0.2 * Math.PI;
+        //radian 단위
+        const endAngle = 1.8 * Math.PI;
+
+        ctx.arc(300,100,50,startAngle, endAngle);
+        //다시 센터로 연결해서 입 만들려고
+        ctx.lineTo(300,100);
+
+        ctx.fillStyle='yellow';
+        ctx.fill();
+
+        ctx.strokeStyle='black';
+        ctx.stroke();
+
+        ctx.closePath();
+
+        //얼굴 그리기
+        ctx.beginPath();
+        ctx.arc(75,75,50,0,Math.PI*2, true);
+        //이때 펜을 원의 중심에서 반지름만큼 옮겨야 원에서 직선형태인 것이 그려지지 않음
+        ctx.moveTo(55,60);
+        ctx.arc(50,60,5,0,Math.PI*2);
+        ctx.moveTo(105,60);
+        ctx.arc(100,60,5,0,Math.PI*2);
+        ctx.moveTo(105,90);
+        ctx.arc(75,90,30,0,Math.PI); 
+
+        ctx.stroke();
+        ctx.closePath();
+    </script>
+</body>
+</html>
