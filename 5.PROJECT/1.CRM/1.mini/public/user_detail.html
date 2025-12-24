@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <h1>사용자 상세 테이블</h1>
+    <div class="container">
+      <table class="table table-striped table-bordered table-hover">
+        <thead id="table-header"></thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <!-- html에서 js 불러올때 나의 현재경로에 요청을 함 -->
+    <!-- backend endpoint users/user_detail.js 로 요청하기 때문에 / 필요. /를쓰면 정상적으로 요청 => localhost:3000/user_detail.js -->
+    <script src="/user_detail.js"></script>
+    <!-- <script src="./user_detail.js"></script> -->
+    <!-- <script src="user_detail.js"></script> -->
+  </body>
+</html>

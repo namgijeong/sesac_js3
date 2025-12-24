@@ -37,8 +37,11 @@
 
     <!-- 경보 + 닫기버튼 -->
     <div class="container my-4">
+        <!-- alert-dismissible = “닫을 수 있는 alert라는 표시(스타일/상태)” -->
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             닫을 수 있는 알림 메시지입니다.
+            <!-- btn-close는 닫기 모양 버튼 생성 -->
+             <!-- data-bs-dismiss="alert" => [data-bs-dismiss] 속성을 가진 요소에 클릭 이벤트를 붙인다 -->
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </div>
