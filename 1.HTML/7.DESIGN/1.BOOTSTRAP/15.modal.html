@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <h1>modal</h1>
+    <!--  modal 사용시 주의사항
+    Modals use position: fixed, which can sometimes be a bit particular about its rendering. 
+    Whenever possible, place your modal HTML in a top-level position to avoid potential interference from other elements. 
+    You’ll likely run into issues when nesting a .modal within another fixed element.
+     -->
+
+     <!--
+     data-bs-toggle="modal" => Bootstrap JS에:“이 버튼은 modal 컴포넌트를 토글한다”
+     data-bs-target="#staticBackdrop" => 열릴 모달의 id => 버튼 ↔ 모달 연결
+     modal => 모달 기본 스타일 => position, overlay 포함
+     fade => 열고 닫을 때 부드러운 애니메이션
+     data-bs-backdrop="static" => 배경 클릭으로 모달 닫기 금지
+     data-bs-keyboard="false" => ESC 키로 닫기 금지
+
+     modal-dialog => 모달 창 크기와 위치를 담당
+     modal-dialog-scrollable => 내용이 길면 body만 스크롤 header/footer 고정
+
+     data-bs-dismiss="modal" => 클릭 시 가장 가까운 modal 닫기
+     -->
+
+    <!-- Button trigger modal -->
+    <button
+      type="button"
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#staticBackdrop"
+    >
+      Launch static backdrop modal
+    </button>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="staticBackdrop"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">
+              Modal title
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">...</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Understood</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
