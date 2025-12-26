@@ -1,86 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-      crossorigin="anonymous"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+        crossorigin="anonymous"
     />
-  </head>
-  <body>
+</head>
+<body>
     <h1>상단 메뉴바 - navbar</h1>
 
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <nav class="navbar navbar-expand-sm bg-body-tertiary">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">우리집</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">남의집</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
+    <!-- 
+        navbar-expand-{breakpoint}
+    → breakpoint 이상(≥)에서 메뉴 펼쳐짐
+    → 그 미만에서는 collapse 상태 
+
+    bg-body-tertiary => 더 연한/구분용 배경
+    container-fluid => 항상 100% width
+
+    navbar-toggler => 작은 화면에서 collapse된 navbar 메뉴를 토글(열기/닫기)하는 버튼
+    type="button"=> 폼 제출 방지용
+    data-bs-toggle="collapse" => 클릭 시 열기 ↔ 닫기 동작 수행 => .collapse 요소에
+    data-bs-target="#navbarSupportedContent" => 어떤 요소를 열고/닫을지 지정, id="navbarSupportedContent" 를 가진 요소가 대상
+    navbar-toggler-icon" => 실제 햄버거 아이콘 => CSS background-image로 렌더링됨
+
+    collapse => 접히는 영역 , navbar-toggler 버튼에 의해 열리고 닫힘, 작은 화면에서는 숨김 => =>collapse는 Bootstrap JS에 내장된 컴포넌트 이름
+    navbar-collapse => 내부 아이템들을 가로 정렬 / 정렬 보정
+
+    navbar-nav => navbar용 메뉴 리스트, 기본적으로 가로 정렬
+    nav-item => navbar 안의 메뉴 항목 컨테이너
+    nav-link => 메뉴 링크 스타일
+    active => 현재 페이지 강조
+
+    nav-item dropdown => 이 nav-item이 드롭다운을 포함함
+    dropdown-toggle => 화살표 표시 => 클릭 가능한 토글임을 표시
+    data-bs-toggle="dropdown" => Bootstrap JS에 “이건 드롭다운이다”
+
+    dropdown-menu => 드롭다운 박스 스타일
+    dropdown-item => 드롭다운 내부 아이템
+    dropdown-divider => 메뉴 구분선
+
+    form-control => Bootstrap 입력 필드 스타일
+    type="search" => iOS / Android에서: 엔터 키가 “검색(Search)”로 바뀜 , 사용자 경험이 좋아짐
+    -->
+
+    <!-- <nav class="navbar navbar-expand-lg bg-body-tertiary"> -->
+    <nav class="navbar navbar-expand-md bg-body-tertiary">
+    <!-- <nav class="navbar navbar-expand-sm bg-body-tertiary"> -->
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
                 aria-expanded="false"
-              >
-                드롭다운메뉴
-              </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">햄버거</a></li>
-                <li><a class="dropdown-item" href="#">스테이크</a></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="#">음료수1</a></li>
-                <li><a class="dropdown-item" href="#">음료수2</a></li>
-                <li>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-            </li>
-          </ul>
-          <form class="d-flex" role="search">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button class="btn btn-outline-success" type="submit">
-              Search
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
             </button>
-          </form>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">우리집</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">남의집</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a
+                            class="nav-link dropdown-toggle"
+                            href="#"
+                            role="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                        >
+                            드롭다운메뉴
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">햄버거</a></li>
+                            <li><a class="dropdown-item" href="#">스테이크</a></li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><a class="dropdown-item" href="#">음료수1</a></li>
+                            <li><a class="dropdown-item" href="#">음료수2</a></li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><a class="dropdown-item" href="#">디저트1</a></li>
+                            <li><a class="dropdown-item" href="#">디저트2</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
         </div>
-      </div>
     </nav>
 
     <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-      crossorigin="anonymous"
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"
     ></script>
-  </body>
+</body>
 </html>
