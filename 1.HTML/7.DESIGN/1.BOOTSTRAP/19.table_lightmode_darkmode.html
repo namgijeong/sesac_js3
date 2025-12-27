@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>lightmode and darkmode</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <!-- 1. 주석 없이 CSS 없을때의 본모습 보기 -->
+    <!-- 2. 주석 풀고 디자인 들어간걸 보기 -->
+    <!-- 3. 아래 CSS 싹 지우고 BS로 전환해보기 -->
+    <!-- 4. BS로 전환시 아마도 라이트테마 디자인.. 그래서 다크테마도 만들어보기 (두파일 따로) -->
+    <!-- 5. 우측상단에 버튼 넣고 라이트/다크 전환하기 -->
+
+    <style></style>
+  </head>
+  <body class="">
+    <!-- 
+    | 클래스           | 의미          |
+    | ------------- | ----------- |
+    | `flex-grow-0` | 커지지 않음      |
+    | `flex-grow-1` | 남는 공간 전부 차지 |
+ -->
+
+    <nav
+      class="container text-center text-nowrap mb-3 d-flex justify-content-center align-items-center"
+    >
+      <div class="flex-grow-1"></div>
+      <ul class="list-group list-group-horizontal">
+        <a class="list-group-item list-group-item-action" href="#">User</a>
+        <a class="list-group-item list-group-item-action" href="#">Order</a>
+        <a class="list-group-item list-group-item-action" href="#"
+          >Order Item</a
+        >
+        <a class="list-group-item list-group-item-action" href="#">Item</a>
+        <a class="list-group-item list-group-item-action" href="#">Store</a>
+      </ul>
+      <div class="flex-grow-1 d-flex justify-content-end">
+        <button
+          id="change_mode"
+          type="button"
+          class="btn btn-sm btn-outline-primary"
+        >
+          다크 모드
+        </button>
+      </div>
+    </nav>
+
+    <main class="container text-center mb-3">
+      <table
+        class="table table-responsive-sm table-bordered table-hover align-middle"
+      >
+        <thead class="">
+          <tr>
+            <th>Column 1</th>
+            <th>Column 2</th>
+            <th>Column 3</th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider">
+          <tr>
+            <td>Data 1</td>
+            <td>Data 2</td>
+            <td>Data 3</td>
+          </tr>
+          <tr>
+            <td>Data 4</td>
+            <td>Data 5</td>
+            <td>Data 6</td>
+          </tr>
+          <tr>
+            <td>Data 7</td>
+            <td>Data 8</td>
+            <td>Data 9</td>
+          </tr>
+          <tr>
+            <td>Data 10</td>
+            <td>Data 11</td>
+            <td>Data 12</td>
+          </tr>
+          <tr>
+            <td>Data 13</td>
+            <td>Data 14</td>
+            <td>Data 15</td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+
+    <div class="pagination justify-content-center">
+      <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      const changeButton = document.getElementById("change_mode");
+      const bodyDiv = document.body;
+      const listGroupItems = document.getElementsByClassName("list-group-item");
+      const table = document.getElementsByTagName("table")[0];
+      const pageLinks = document.getElementsByClassName("page-link");
+
+      changeButton.addEventListener("click", () => {
+        if (changeButton.textContent.includes("다크")) {
+            changeButton.textContent = "라이트 모드";
+        } else {
+            changeButton.textContent = "다크 모드";
+        }
+
+        bodyDiv.classList.toggle('text-white');
+        bodyDiv.classList.toggle('bg-dark');
+
+        Array.from(listGroupItems).forEach((listGroupItem) => {
+          listGroupItem.classList.toggle("text-white");
+          listGroupItem.classList.toggle("bg-dark");
+        });
+
+        table.classList.toggle('table-dark');
+
+        Array.from(pageLinks).forEach((pageLink) => {
+          pageLink.classList.toggle("text-white");
+          pageLink.classList.toggle("bg-dark");
+        });
+      });
+    </script>
+  </body>
+</html>
