@@ -34,19 +34,21 @@ app.get("/users/:id", (req, res) => {
 app.get("/api/users", (req, res) => {
   //LIKE '%%'로 하면 모두 다 검색한다는 뜻
   const searchName = req.query.name || "";
-  const pageNum = req.query.page || 1;
+  const pageNum = parseInt(req.query.page) || 1;
   const itemsPerPage = 20; // 고정=> 하지만 좋은건 아님
   let totalPages = 0;
 
   const totalCountQuery = `SELECT COUNT(userId) AS count FROM users WHERE userName LIKE ?`;
   const row = db.prepare(totalCountQuery).get([`%${searchName}%`]);
   console.log(row);
+  
   const searchCount = row.count;
   totalPages = Math.ceil(searchCount / itemsPerPage);
+  const startIndex = 0 + (pageNum - 1) * itemsPerPage; 
 
-  const usersQuery = `SELECT * FROM users WHERE userName LIKE ? LIMIT ?`;
+  const usersQuery = `SELECT * FROM users WHERE userName LIKE ? LIMIT ? OFFSET ?`;
   try {
-    const rows = db.prepare(usersQuery).all([`%${searchName}%`, itemsPerPage]);
+    const rows = db.prepare(usersQuery).all([`%${searchName}%`, itemsPerPage, startIndex]);
     
     res.json({ totalPages: totalPages, data: rows });
 

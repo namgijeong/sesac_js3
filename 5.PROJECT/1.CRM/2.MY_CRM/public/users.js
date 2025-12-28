@@ -1,42 +1,75 @@
+const currentPaginationSize = 10;
+const searchName = document.getElementById("search-name");
+
 document.addEventListener("DOMContentLoaded", () => {
   //검색 버튼 활성화
   const searchBtn = document.getElementById("search-button");
-  const searchName = document.getElementById("search-name");
 
   searchBtn.addEventListener("click", () => {
-    fetchUsers(searchName.value);
+    fetchUsers(searchName.value, 1);
   });
 
   //사용자를 가져올거야
-  fetchUsers("");
+  fetchUsers("", 1);
 });
 
-function fetchUsers(name) {
+function fetchUsers(name,currentPage) {
   //만약 스페이스는 %20으로 바꿔줌
-  const queryString = `?name=${encodeURIComponent(name)}&page=1`;
+  const queryString = `?name=${encodeURIComponent(name)}&page=${currentPage}`;
   fetch(`/api/users${queryString}`)
     .then((response) => response.json())
     .then((data) => {
       renderTable(data.data);
 
       //페이지네이션을 그려라
-      renderPagination(data.totalPages);
+      renderPagination(data.totalPages, currentPage);
     });
 }
 
-function renderPagination(totalPages){
+function renderPagination(totalPages, currentPage){
     const pagination = document.getElementById('pagination');
-
     pagination.innerHTML = '';
+
+    const currenBlockNumber = Math.ceil(currentPage / currentPaginationSize);
+    let endPageNumber = currenBlockNumber * currentPaginationSize;
+    let startPageNumber = endPageNumber - currentPaginationSize + 1;
+    let totalEndPage = totalPages;
+
+    let prevBlock = true;
+    let nextBlock = true;
+
+    if (startPageNumber <= 1){
+        startPageNumber = 1;
+        prevBlock = false;
+    }
+    if (endPageNumber >= totalEndPage){
+        endPageNumber = totalEndPage;
+        nextBlock = false;
+    }
 
     let myPages = '<nav><ul class="pagination">';
 
-    for (let i = 1; i <= totalPages; i++){
-        myPages += `<li class="page-item"><a class="page-link href="#"> ${i} </a></li>`;
+    if (prevBlock === true){
+        myPages += `<li class="page-item" data-number="${startPageNumber-1}"><a class="page-link" data-number="${startPageNumber-1}" href="#">&lt;&lt;</a></li>`;
+    }
+
+    for (let i = startPageNumber; i <= endPageNumber; i++){
+        myPages += `<li class="page-item" data-number="${i}"><a class="page-link" data-number="${i}" href="#"> ${i} </a></li>`;
+    }
+
+    if (nextBlock === true){
+        myPages += `<li class="page-item" data-number="${endPageNumber+1}"><a class="page-link" data-number="${endPageNumber+1}" href="#">&gt;&gt;</a></li>`;
     }
 
     myPages += '</ul></nav>';
     pagination.innerHTML = myPages;
+
+    const paginationUl = document.getElementsByClassName('pagination')[0];
+    paginationUl.addEventListener('click',(ev) => {
+        const clickedNumber = ev.target.dataset.number;
+
+        fetchUsers(searchName.value, clickedNumber);
+    });
 }
 
 function renderTable(data) {
