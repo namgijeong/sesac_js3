@@ -5,6 +5,7 @@
 *.docx
 *.pptx
 *.xlsx
+*.csv
 
 #node 모듈들 제외
 node_modules/
