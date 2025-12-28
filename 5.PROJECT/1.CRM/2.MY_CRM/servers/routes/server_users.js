@@ -1,37 +1,34 @@
 const express = require("express");
-const morgan = require("morgan");
 const Database = require("better-sqlite3");
 const path = require("path");
 
-const PORT = 3000;
 const db_file = "../mycrm_db.db";
 
-const app = express();
+// express.Router()는 라우트들을 묶기 위한 독립적인 라우팅 객체
+// 즉,
+// app처럼 get / post / put / delete를 가질 수 있고
+// 근데 서버를 띄우는 역할은 안 함
+
+const router = express.Router();
 const db = new Database(db_file);
 
-app.use(morgan("dev"));
-//이 경로를 기준으로 js 파일을 찾아 서빙할 수 있다
-app.use(express.static(path.join(__dirname, "../public")));
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
 
 /******************
  * 사용자 요청 페이지 전달
  ******************/
-app.get("/", (req, res) => {
+router.get("/", (req, res) => {
   console.log("루트 파일 주소는", __dirname);
-  res.sendFile(path.join(__dirname, "../public", "users.html"));
+  res.sendFile(path.join(__dirname, "../../public", "users.html"));
 });
 
-app.get("/users/:id", (req, res) => {
-  const userId = req.params;
-  res.sendFile(path.join(__dirname, "../public", "user_detail.html"));
+router.get("/users/:id", (req, res) => {
+  res.sendFile(path.join(__dirname, "../../public", "user_detail.html"));
 });
 
 /******************
  * 백엔드 API 요청
  ******************/
-app.get("/api/users", (req, res) => {
+router.get("/api/users", (req, res) => {
   //LIKE '%%'로 하면 모두 다 검색한다는 뜻
   const searchName = req.query.name || "";
   const pageNum = parseInt(req.query.page) || 1;
@@ -58,7 +55,7 @@ app.get("/api/users", (req, res) => {
   }
 });
 
-app.get("/api/users/:id", (req, res) => {
+router.get("/api/users/:id", (req, res) => {
   const userId = req.params.id;
   console.log(userId);
   const userQuery = "SELECT * FROM users WHERE userId=?";
@@ -80,6 +77,4 @@ app.get("/api/users/:id", (req, res) => {
 
 });
 
-app.listen(PORT, () => {
-  console.log(`Sever is ready at ${PORT}`);
-});
+module.exports = router;
