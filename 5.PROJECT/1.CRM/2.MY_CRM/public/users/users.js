@@ -1,21 +1,22 @@
 const currentPaginationSize = 10;
 const searchName = document.getElementById("search-name");
+const searchGender = document.getElementById('search-gender');
 
 document.addEventListener("DOMContentLoaded", () => {
   //검색 버튼 활성화
   const searchBtn = document.getElementById("search-button");
 
   searchBtn.addEventListener("click", () => {
-    fetchUsers(searchName.value, 1);
+    fetchUsers(searchName.value, searchGender.value, 1);
   });
 
-  //사용자를 가져올거야
-  fetchUsers("", 1);
+  //검색어를 설정하지 않았을때 기본값 
+  fetchUsers("", "all", 1);
 });
 
-function fetchUsers(name,currentPage) {
+function fetchUsers(name,gender, currentPage) {
   //만약 스페이스는 %20으로 바꿔줌
-  const queryString = `?name=${encodeURIComponent(name)}&page=${currentPage}`;
+  const queryString = `?name=${encodeURIComponent(name)}&gender=${encodeURIComponent(gender)}&page=${currentPage}`;
   fetch(`/api/users${queryString}`)
     .then((response) => response.json())
     .then((data) => {
@@ -68,7 +69,7 @@ function renderPagination(totalPages, currentPage){
     paginationUl.addEventListener('click',(ev) => {
         const clickedNumber = ev.target.dataset.number;
 
-        fetchUsers(searchName.value, clickedNumber);
+        fetchUsers(searchName.value, searchGender.value, clickedNumber);
     });
 }
 

@@ -31,21 +31,23 @@ router.get("/users/:id", (req, res) => {
 router.get("/api/users", (req, res) => {
   //LIKE '%%'로 하면 모두 다 검색한다는 뜻
   const searchName = req.query.name || "";
+  const searchGender = req.query.gender === "all" ? "%%" : req.query.gender;
+  console.log("gender", searchGender);
   const pageNum = parseInt(req.query.page) || 1;
   const itemsPerPage = 20; // 고정=> 하지만 좋은건 아님
   let totalPages = 0;
 
-  const totalCountQuery = `SELECT COUNT(userId) AS count FROM users WHERE userName LIKE ?`;
-  const row = db.prepare(totalCountQuery).get([`%${searchName}%`]);
+  const totalCountQuery = `SELECT COUNT(userId) AS count FROM users WHERE userName LIKE ? AND userGender LIKE ?`;
+  const row = db.prepare(totalCountQuery).get([`%${searchName}%`, `${searchGender}`]);
   console.log(row);
   
   const searchCount = row.count;
   totalPages = Math.ceil(searchCount / itemsPerPage);
   const startIndex = 0 + (pageNum - 1) * itemsPerPage; 
 
-  const usersQuery = `SELECT * FROM users WHERE userName LIKE ? LIMIT ? OFFSET ?`;
+  const usersQuery = `SELECT * FROM users WHERE userName LIKE ? AND userGender LIKE ? LIMIT ? OFFSET ?`;
   try {
-    const rows = db.prepare(usersQuery).all([`%${searchName}%`, itemsPerPage, startIndex]);
+    const rows = db.prepare(usersQuery).all([`%${searchName}%`, `${searchGender}`, itemsPerPage, startIndex]);
     
     res.json({ totalPages: totalPages, data: rows });
 

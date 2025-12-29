@@ -11,7 +11,10 @@
       crossorigin="anonymous"
     />
     <style>
-      
+      #search-gender{
+        width:30%;
+        display:inline-block;
+      }
     </style>
   </head>
   <body>
@@ -21,6 +24,11 @@
 
     <div class="container mb-2">
         <input type="text" id="search-name" placeholder="사용자 이름 검색">
+        <select id="search-gender" class="form-select">
+            <option value="all" selected>남성/여성</option>
+            <option value="Male" >남성</option>
+            <option value="Female" >여성</option>
+        </select>
         <button id="search-button">검색</button>
     </div>
     <div class="container">
