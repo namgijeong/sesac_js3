@@ -87,7 +87,7 @@ function renderTable(data) {
 
     headers.forEach((h) => {
       //원하는거 제거
-      if (h != "Address") {
+      if (h != "userAddress") {
         const one_th = document.createElement("th");
         one_th.textContent = h;
         headerRow.appendChild(one_th);
@@ -107,7 +107,7 @@ function renderTable(data) {
       });
 
       for (const [key, value] of Object.entries(row)) {
-        if (key != "Address") {
+        if (key != "userAddress") {
           const one_td = document.createElement("td");
           one_td.textContent = value;
           bodyRow.appendChild(one_td);

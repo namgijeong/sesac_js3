@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const path = require("path");
 const usersRouter = require("./routes/server_users.js");
+const storesRouter = require("./routes/server_stores.js");
 const PORT = 3000;
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use("/", usersRouter);
+app.use("/", storesRouter);
 
 app.listen(PORT, () => {
   console.log(`Sever is ready at ${PORT}`);
