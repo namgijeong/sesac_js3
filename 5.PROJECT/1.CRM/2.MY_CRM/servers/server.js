@@ -4,6 +4,7 @@ const path = require("path");
 const usersRouter = require("./routes/server_users.js");
 const storesRouter = require("./routes/server_stores.js");
 const itemsRouter = require("./routes/server_items.js");
+const ordersRouter = require("./routes/server_orders.js");
 const PORT = 3000;
 
 const app = express();
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use("/", usersRouter);
 app.use("/", storesRouter);
 app.use("/", itemsRouter);
+app.use("/", ordersRouter);
 
 app.listen(PORT, () => {
   console.log(`Sever is ready at ${PORT}`);
