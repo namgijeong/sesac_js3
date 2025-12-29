@@ -30,13 +30,13 @@ router.get("/orders/:id", (req, res) => {
  ******************/
 router.get("/api/orders", (req, res) => {
   //LIKE '%%'로 하면 모두 다 검색한다는 뜻
-  const searchName = req.query.name || "";
+  const searchId = req.query.id || "";
   const pageNum = parseInt(req.query.page) || 1;
   const itemsPerPage = 20; // 고정=> 하지만 좋은건 아님
   let totalPages = 0;
 
   const totalCountQuery = `SELECT COUNT(orderId) AS count FROM orders WHERE orderId LIKE ?`;
-  const row = db.prepare(totalCountQuery).get([`%${searchName}%`]);
+  const row = db.prepare(totalCountQuery).get([`%${searchId}%`]);
   console.log(row);
   
   const searchCount = row.count;
@@ -45,7 +45,7 @@ router.get("/api/orders", (req, res) => {
 
   const ordersQuery = `SELECT * FROM orders WHERE orderId LIKE ? LIMIT ? OFFSET ?`;
   try {
-    const rows = db.prepare(ordersQuery).all([`%${searchName}%`, itemsPerPage, startIndex]);
+    const rows = db.prepare(ordersQuery).all([`%${searchId}%`, itemsPerPage, startIndex]);
     
     res.json({ totalPages: totalPages, data: rows });
 
@@ -58,17 +58,17 @@ router.get("/api/orders", (req, res) => {
 router.get("/api/orders/:id", (req, res) => {
   const orderId = req.params.id;
   console.log(orderId);
-  const orderQuery = "SELECT oi.orderItemId AS orderItemId, oi.orderId AS orderId, oi.itemId AS itemId, i.itemName AS itemName FROM orders o JOIN orderItems oi ON o.orderId = oi.orderId JOIN items i ON o.itemId = i.itemId WHERE orderId=?";
-  let row;
+  const orderQuery = "SELECT oi.orderItemId AS orderItemId, oi.orderId AS orderId, oi.itemId AS itemId, i.itemName AS itemName FROM orders o JOIN orderItems oi ON o.orderId = oi.orderId JOIN items i ON oi.itemId = i.itemId WHERE o.orderId=?";
+  let rows;
   try{
-    row = db.prepare(orderQuery).get([orderId]);
+    rows = db.prepare(orderQuery).all([orderId]);
 
-     if (!row) {
+     if (!rows) {
       console.error("주문 조회 실패:", err);
       return res.status(404).json({ error: "주문 조회에 실패하였습니다." });
     }
 
-    res.json(row);
+    res.json(rows);
 
   } catch (err){
     console.error("주문 조회 실패:", err);
