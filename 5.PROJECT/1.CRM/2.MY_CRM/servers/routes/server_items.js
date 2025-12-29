@@ -16,26 +16,26 @@ const db = new Database(db_file);
 /******************
  * 사용자 요청 페이지 전달
  ******************/
-router.get("/stores", (req, res) => {
+router.get("/items", (req, res) => {
   console.log("루트 파일 주소는", __dirname);
-  res.sendFile(path.join(__dirname, "../../public/stores", "stores.html"));
+  res.sendFile(path.join(__dirname, "../../public/items", "items.html"));
 });
 
-router.get("/stores/:id", (req, res) => {
-  res.sendFile(path.join(__dirname, "../../public/stores", "store_detail.html"));
+router.get("/items/:id", (req, res) => {
+  res.sendFile(path.join(__dirname, "../../public/items", "item_detail.html"));
 });
 
 /******************
  * 백엔드 API 요청
  ******************/
-router.get("/api/stores", (req, res) => {
+router.get("/api/items", (req, res) => {
   //LIKE '%%'로 하면 모두 다 검색한다는 뜻
   const searchName = req.query.name || "";
   const pageNum = parseInt(req.query.page) || 1;
   const itemsPerPage = 20; // 고정=> 하지만 좋은건 아님
   let totalPages = 0;
 
-  const totalCountQuery = `SELECT COUNT(storeId) AS count FROM stores WHERE storeName LIKE ?`;
+  const totalCountQuery = `SELECT COUNT(itemId) AS count FROM items WHERE itemName LIKE ?`;
   const row = db.prepare(totalCountQuery).get([`%${searchName}%`]);
   console.log(row);
   
@@ -43,36 +43,36 @@ router.get("/api/stores", (req, res) => {
   totalPages = Math.ceil(searchCount / itemsPerPage);
   const startIndex = 0 + (pageNum - 1) * itemsPerPage; 
 
-  const storesQuery = `SELECT * FROM stores WHERE storeName LIKE ? LIMIT ? OFFSET ?`;
+  const itemsQuery = `SELECT * FROM items WHERE itemName LIKE ? LIMIT ? OFFSET ?`;
   try {
-    const rows = db.prepare(storesQuery).all([`%${searchName}%`, itemsPerPage, startIndex]);
+    const rows = db.prepare(itemsQuery).all([`%${searchName}%`, itemsPerPage, startIndex]);
     
     res.json({ totalPages: totalPages, data: rows });
 
   } catch (err) {
-    console.error("가게 조회 실패:", err);
-    return res.status(500).json({ error: "가게 조회에 실패하였습니다." });
+    console.error("상품 조회 실패:", err);
+    return res.status(500).json({ error: "상품 조회에 실패하였습니다." });
   }
 });
 
-router.get("/api/stores/:id", (req, res) => {
-  const storeId = req.params.id;
-  console.log(storeId);
-  const storeQuery = "SELECT * FROM stores WHERE storeId=?";
+router.get("/api/items/:id", (req, res) => {
+  const itemId = req.params.id;
+  console.log(itemId);
+  const itemQuery = "SELECT * FROM items WHERE itemId=?";
   let row;
   try{
-    row = db.prepare(storeQuery).get([storeId]);
+    row = db.prepare(itemQuery).get([itemId]);
 
      if (!row) {
-      console.error("가게 조회 실패:", err);
-      return res.status(404).json({ error: "가게 조회에 실패하였습니다." });
+      console.error("상품 조회 실패:", err);
+      return res.status(404).json({ error: "상품 조회에 실패하였습니다." });
     }
 
     res.json(row);
 
   } catch (err){
-    console.error("가게 조회 실패:", err);
-    return res.status(500).json({ error: "가게 조회에 실패하였습니다." });
+    console.error("상품 조회 실패:", err);
+    return res.status(500).json({ error: "상품 조회에 실패하였습니다." });
   }
 
 });
