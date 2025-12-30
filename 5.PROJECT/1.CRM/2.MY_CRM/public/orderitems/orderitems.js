@@ -6,17 +6,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchBtn = document.getElementById("search-button");
 
   searchBtn.addEventListener("click", () => {
-    fetchOrders(searchId.value, 1);
+    fetchOrderItems(searchId.value, 1);
   });
 
   //검색어를 설정하지 않았을때 기본값
-  fetchOrders("", 1);
+  fetchOrderItems("", 1);
 });
 
-function fetchOrders(id, currentPage) {
+function fetchOrderItems(id, currentPage) {
   //만약 스페이스는 %20으로 바꿔줌
   const queryString = `?id=${encodeURIComponent(id)}&page=${currentPage}`;
-  fetch(`/api/orders${queryString}`)
+  fetch(`/api/orderitems${queryString}`)
     .then((response) => response.json())
     .then((data) => {
       renderTable(data.data);
@@ -76,7 +76,7 @@ function renderPagination(totalPages, currentPage) {
   paginationUl.addEventListener("click", (ev) => {
     const clickedNumber = ev.target.dataset.number;
 
-    fetchOrders(searchId.value, clickedNumber);
+    fetchOrderItems(searchId.value, clickedNumber);
   });
 }
 
@@ -102,17 +102,24 @@ function renderTable(data) {
 
     data.forEach((row) => {
       const bodyRow = document.createElement("tr");
-
-      //해당 row에다가 이벤트
-      bodyRow.addEventListener("click", () => {
-        console.log("해당 줄 클릭됨");
-        //브라우저 창에 주소를 넣어서 이동하는 방법
-        window.location = `/orderitems/${row.orderId}`;
-      });
-
+      
       for (const [key, value] of Object.entries(row)) {
         const one_td = document.createElement("td");
         one_td.textContent = value;
+        
+        //order id 상세페이지로
+        if (key === 'orderId'){
+          one_td.addEventListener('click',() => {
+            //window.location = `/orders/${value}`;
+          });
+          one_td.classList.add('go_detail','text-primary');
+        } else if (key === 'itemId'){ //item id 상세페이지로
+          one_td.addEventListener('click',() => {
+            window.location = `/items/${value}`;
+          });
+          one_td.classList.add('go_detail', 'text-primary');
+        }
+
         bodyRow.appendChild(one_td);
       }
 

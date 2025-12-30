@@ -11,16 +11,18 @@
       crossorigin="anonymous"
     />
     <style>
-    
+      .go_detail{
+        cursor:pointer;
+      }
     </style>
   </head>
   <body>
     <div class="container mb-4">
-        <h1>상품 테이블</h1>
+        <h1>주문에 따른 상품 테이블</h1>
     </div>
 
     <div class="container mb-2">
-        <input type="text" id="search-name" placeholder="상품 이름 검색">
+        <input type="text" id="search-id" placeholder="주문 아이디 검색">
         <button id="search-button">검색</button>
     </div>
     <div class="container">
@@ -39,6 +41,6 @@
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
-    <script src="/items/items.js"></script>
+    <script src="/orderitems/orderitems.js"></script>
   </body>
 </html>

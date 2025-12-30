@@ -2,8 +2,8 @@ const orderId = window.location.pathname.split("/").pop();
 // console.log(window.location);
 // console.log(window.location.pathname);
 
-function fetchOrderDetail() {
-  fetch(`/api/orders/${orderId}`)
+function fetchOrderItemDetail() {
+  fetch(`/api/orderitems/${orderId}`)
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
@@ -43,4 +43,4 @@ function renderTable(data) {
   });
 }
 
-fetchOrderDetail();
+fetchOrderItemDetail();
