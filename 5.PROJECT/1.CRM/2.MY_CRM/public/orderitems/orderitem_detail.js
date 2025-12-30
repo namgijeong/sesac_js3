@@ -36,6 +36,21 @@ function renderTable(data) {
     for (const [key, value] of Object.entries(row)) {
       const one_td = document.createElement("td");
       one_td.textContent = value;
+
+       //order id 상세페이지로
+      if (key === "orderId") {
+        one_td.addEventListener("click", () => {
+          window.location = `/orders/${value}`;
+        });
+        one_td.classList.add("go_detail", "text-primary");
+      } else if (key === "itemId") {
+        //item id 상세페이지로
+        one_td.addEventListener("click", () => {
+          window.location = `/items/${value}`;
+        });
+        one_td.classList.add("go_detail", "text-primary");
+      }
+
       bodyRow.appendChild(one_td);
     }
 

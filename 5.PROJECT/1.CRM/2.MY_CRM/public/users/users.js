@@ -105,6 +105,7 @@ function renderTable(data) {
         //브라우저 창에 주소를 넣어서 이동하는 방법
         window.location = `/users/${row.userId}`;
       });
+      bodyRow.classList.add('go_detail');
 
       for (const [key, value] of Object.entries(row)) {
         if (key != "userAddress") {

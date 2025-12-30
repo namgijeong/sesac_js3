@@ -21,7 +21,9 @@ router.get("/orders", (req, res) => {
   res.sendFile(path.join(__dirname, "../../public/orders", "orders.html"));
 });
 
-
+router.get("/orders/:id", (req, res) => {
+  res.sendFile(path.join(__dirname, "../../public/orders", "order_detail.html"));
+});
 
 /******************
  * 백엔드 API 요청
@@ -53,6 +55,26 @@ router.get("/api/orders", (req, res) => {
   }
 });
 
+router.get("/api/orders/:id", (req, res) => {
+  const orderId = req.params.id;
+  console.log(orderId);
+  const orderQuery = "SELECT * FROM orders WHERE orderId LIKE ?";
+  let rows;
+  try{
+    rows = db.prepare(orderQuery).get([orderId]);
 
+     if (!rows) {
+      console.error("주문 조회 실패:", err);
+      return res.status(404).json({ error: "주문 조회에 실패하였습니다." });
+    }
+
+    res.json(rows);
+
+  } catch (err){
+    console.error("주문 조회 실패:", err);
+    return res.status(500).json({ error: "주문 조회에 실패하였습니다." });
+  }
+
+});
 
 module.exports = router;

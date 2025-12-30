@@ -110,7 +110,7 @@ function renderTable(data) {
         //order id 상세페이지로
         if (key === 'orderId'){
           one_td.addEventListener('click',() => {
-            //window.location = `/orders/${value}`;
+            window.location = `/orders/${value}`;
           });
           one_td.classList.add('go_detail','text-primary');
         } else if (key === 'itemId'){ //item id 상세페이지로
