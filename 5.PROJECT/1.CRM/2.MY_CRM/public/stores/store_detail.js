@@ -2,13 +2,12 @@ const storeId = window.location.pathname.split("/").pop();
 // console.log(window.location);
 // console.log(window.location.pathname);
 
-
 function fetchStoreDetail() {
   fetch(`/api/stores/${storeId}`)
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
-      renderTable(data)
+      renderTable(data);
     });
 }
 
@@ -24,9 +23,11 @@ function renderTable(data) {
   const headerRow = document.createElement("tr");
 
   headers.forEach((h) => {
-    const one_th = document.createElement("th");
-    one_th.textContent = h;
-    headerRow.appendChild(one_th);
+    if (h != "storeId") {
+      const one_th = document.createElement("th");
+      one_th.textContent = h;
+      headerRow.appendChild(one_th);
+    }
   });
 
   tableHeader.appendChild(headerRow);
@@ -34,13 +35,14 @@ function renderTable(data) {
   const bodyRow = document.createElement("tr");
 
   for (const [key, value] of Object.entries(data)) {
-    const one_td = document.createElement("td");
-    one_td.textContent = value;
-    bodyRow.appendChild(one_td);
+    if (key != "storeId") {
+      const one_td = document.createElement("td");
+      one_td.textContent = value;
+      bodyRow.appendChild(one_td);
+    }
   }
 
   tableBody.appendChild(bodyRow);
 }
-
 
 fetchStoreDetail();
