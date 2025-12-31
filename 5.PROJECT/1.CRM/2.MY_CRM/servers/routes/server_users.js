@@ -103,4 +103,65 @@ router.get("/api/users_orders/:id", (req, res) => {
 
 });
 
+
+router.get("/api/users_stores_top5/:id", (req, res) => {
+  const userId = req.params.id;
+  console.log(userId);
+  const userStoreTop5Query = `
+  SELECT COUNT(*) AS visitCount, s.storeName AS storeName
+  FROM users u
+  JOIN orders o
+  ON u.userId = o.userId
+  JOIN stores s
+  ON o.storeId = s.storeId 
+  WHERE u.userId = ?
+  GROUP BY s.storeId
+  ORDER BY visitCount DESC
+  LIMIT 5
+  `;
+  let rows;
+  try{
+    //없으면 빈배열 반환
+    rows = db.prepare(userStoreTop5Query).all([userId]);
+
+    res.json(rows);
+
+  } catch (err){
+    console.error("사용자의 자주 방문한 매장 top5 조회 실패:", err);
+    return res.status(500).json({ error: "사용자의 자주 방문한 매장 top5 조회에 실패하였습니다." });
+  }
+
+});
+
+router.get("/api/users_items_top5/:id", (req, res) => {
+  const userId = req.params.id;
+  console.log(userId);
+  const userItemTop5Query = `
+  SELECT COUNT(i.itemId) AS purchasedCount , i.itemName AS itemName
+  FROM users u
+  JOIN orders o
+  ON u.userid = o.userId
+  JOIN orderItems oi
+  ON o.orderId = oi.orderId
+  JOIN items i
+  ON oi.itemId = i.itemId
+  WHERE u.userid = ?
+  GROUP BY i.itemId
+  ORDER BY purchasedCount DESC
+  LIMIT 5
+  `;
+  let rows;
+  try{
+    //없으면 빈배열 반환
+    rows = db.prepare(userItemTop5Query).all([userId]);
+
+    res.json(rows);
+
+  } catch (err){
+    console.error("사용자의 자주 주문한 상품 top5 조회 실패:", err);
+    return res.status(500).json({ error: "사용자의 자주 주문한 상품 top5 조회에 실패하였습니다." });
+  }
+
+});
+
 module.exports = router;

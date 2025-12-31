@@ -20,6 +20,24 @@ function fetchUserOrderDetail() {
     });
 }
 
+function fetchUserStoreTop5Detail() {
+  fetch(`/api/users_stores_top5/${userId}`)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      renderUserStoreTop5List(data);
+    });
+}
+
+function fetchUserItemTop5Detail() {
+  fetch(`/api/users_items_top5/${userId}`)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      renderUserItemTop5List(data);
+    });
+}
+
 function renderUserTable(data) {
   const tableHeader = document.getElementById("user-table-header");
   const tableBody = document.getElementById("user-table-body");
@@ -105,5 +123,39 @@ function renderUserOrderTable(data) {
   }
 }
 
+function renderUserStoreTop5List(data) {
+  const ulTag = document.getElementById("user-store-top5");
+
+  ulTag.innerHTML = "";
+
+  if (data.length > 0) {
+    data.forEach((row) => {
+      const liTag = document.createElement("li");
+      liTag.textContent = `${row.storeName} (${row.visitCount}번 방문)`;
+      ulTag.appendChild(liTag);
+    });
+  } else {
+    ulTag.innerHTML = "---표시할 데이터가 없습니다.---";
+  }
+}
+
+function renderUserItemTop5List(data) {
+  const ulTag = document.getElementById("user-item-top5");
+
+  ulTag.innerHTML = "";
+
+  if (data.length > 0) {
+    data.forEach((row) => {
+      const liTag = document.createElement("li");
+      liTag.textContent = `${row.itemName} (${row.purchasedCount}번 주문)`;
+      ulTag.appendChild(liTag);
+    });
+  } else {
+    ulTag.innerHTML = "---표시할 데이터가 없습니다.---";
+  }
+}
+
 fetchUserDetail();
 fetchUserOrderDetail();
+fetchUserStoreTop5Detail();
+fetchUserItemTop5Detail();

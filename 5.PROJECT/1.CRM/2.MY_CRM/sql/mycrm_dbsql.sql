@@ -200,7 +200,22 @@ JOIN stores s
 ON o.storeid = s.storeid 
 WHERE u.userid = '3fbc65e3-dcf3-4cb7-958e-406fbd46035a'
 GROUP BY s.storeid
-ORDER BY visit_count
+ORDER BY visit_count DESC
+LIMIT 5
+;
+
+/*6-1. 특정 사용자의 자주 주문한 상품명 상위 5개*/
+SELECT COUNT(i.itemId) AS purchasedCount , i.itemName
+FROM users u
+JOIN orders o
+ON u.userid = o.userId
+JOIN orderItems oi
+ON o.orderId = oi.orderId
+JOIN items i
+ON oi.itemId = i.itemId
+WHERE u.userid = '3fbc65e3-dcf3-4cb7-958e-406fbd46035a'
+GROUP BY i.itemId
+ORDER BY purchasedCount DESC
 LIMIT 5
 ;
 
