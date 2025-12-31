@@ -10,6 +10,11 @@
       integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
       crossorigin="anonymous"
     />
+    <style>
+      .go_detail{
+        cursor:pointer;
+      }
+    </style>
   </head>
   <body>
     <div id="header">
@@ -20,9 +25,18 @@
     </div>
 
     <div class="container mb-4">
+      <h3>사용자 정보</h3>
       <table class="table table-striped table-bordered table-hover">
-        <thead id="table-header"></thead>
-        <tbody id="table-body"></tbody>
+        <thead id="user-table-header"></thead>
+        <tbody id="user-table-body"></tbody>
+      </table>
+    </div>
+
+     <div class="container mb-4">
+      <h3>주문 정보</h3>
+      <table class="table table-striped table-bordered table-hover">
+        <thead id="user-order-table-header"></thead>
+        <tbody id="user-order-table-body"></tbody>
       </table>
     </div>
 

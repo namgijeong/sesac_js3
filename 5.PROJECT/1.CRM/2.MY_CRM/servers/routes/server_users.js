@@ -79,4 +79,28 @@ router.get("/api/users/:id", (req, res) => {
 
 });
 
+
+router.get("/api/users_orders/:id", (req, res) => {
+  const userId = req.params.id;
+  console.log(userId);
+  const userOrderQuery = `
+  SELECT orderId AS orderId, orderAt AS 'purchased date' , storeId AS 'purchased location'
+  FROM orders 
+  WHERE userId = ?
+  ORDER BY orderAt DESC
+  `;
+  let rows;
+  try{
+    //없으면 빈배열 반환
+    rows = db.prepare(userOrderQuery).all([userId]);
+
+    res.json(rows);
+
+  } catch (err){
+    console.error("사용자의 주문 조회 실패:", err);
+    return res.status(500).json({ error: "사용자의 주문 조회에 실패하였습니다." });
+  }
+
+});
+
 module.exports = router;
