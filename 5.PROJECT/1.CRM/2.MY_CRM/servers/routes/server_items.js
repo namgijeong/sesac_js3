@@ -77,4 +77,32 @@ router.get("/api/items/:id", (req, res) => {
 
 });
 
+router.get("/api/items_revenues/:id", (req, res) => {
+  const itemId = req.params.id;
+  console.log(itemId);
+  const itemRevenuesQuery = `
+  SELECT strftime('%Y-%m', o.orderAt) AS month, sum(CAST(i.itemPrice AS INTEGER)) AS revenue, COUNT(i.itemId) AS itemCount
+  FROM items i 
+  JOIN orderItems oi
+  ON i.itemId = oi.itemId
+  JOIN orders o
+  ON oi.orderId = o.orderId
+  GROUP BY i.itemId,month
+  HAVING i.itemId = ?
+  ORDER BY month DESC
+  `;
+  let rows;
+  try{
+    //없으면 빈배열 반환
+    rows = db.prepare(itemRevenuesQuery).all([itemId]);
+
+    res.json(rows);
+
+  } catch (err){
+    console.error("상품의 매출액 조회 실패:", err);
+    return res.status(500).json({ error: "상품의 매출액 조회에 실패하였습니다." });
+  }
+
+});
+
 module.exports = router;

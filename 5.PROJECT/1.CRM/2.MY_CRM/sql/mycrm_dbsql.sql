@@ -170,15 +170,25 @@ WHERE o.userid = '3fbc65e3-dcf3-4cb7-958e-406fbd46035a'
 -- GROUP BY s.storeid, year, month;
 
 
-SELECT sum(CAST(i.itemprice AS INTEGER)), s.storeid, strftime('%Y-%m', o.orderat) AS month
+SELECT strftime('%Y-%m', o.orderAt) AS month, sum(CAST(i.itemPrice AS INTEGER)) AS revenue, COUNT(i.itemId) AS itemCount
 FROM stores s
 JOIN orders o
-ON s.storeid = o.storeid
-JOIN orderitems oi
-ON o.orderid = oi.orderid
+ON s.storeId = o.storeId
+JOIN orderItems oi
+ON o.orderId = oi.orderId
 JOIN items i
-ON oi.itemid = i.itemid
-GROUP BY s.storeid,month;
+ON oi.itemId = i.itemId
+GROUP BY s.storeId,month;
+
+
+/*5-1. 상품별 월간 통계 매출액 */
+SELECT strftime('%Y-%m', o.orderAt) AS month, sum(CAST(i.itemPrice AS INTEGER)) AS revenue, COUNT(i.itemId) AS itemCount
+FROM items i 
+JOIN orderItems oi
+ON i.itemId = oi.itemId
+JOIN orders o
+ON oi.orderId = o.orderId
+GROUP BY i.itemId,month;
 
 
 /*6. 특정 사용자가 방문한 상점의 빈도가 높은 순대로 상위 5개*/

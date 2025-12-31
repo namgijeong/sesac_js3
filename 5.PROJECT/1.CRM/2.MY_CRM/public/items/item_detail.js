@@ -7,13 +7,22 @@ function fetchItemDetail() {
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
-      renderTable(data);
+      renderItemTable(data);
     });
 }
 
-function renderTable(data) {
-  const tableHeader = document.getElementById("table-header");
-  const tableBody = document.getElementById("table-body");
+function fetchItemRevenueDetail() {
+  fetch(`/api/items_revenues/${itemId}`)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      renderItemRevenueTable(data);
+    });
+}
+
+function renderItemTable(data) {
+  const tableHeader = document.getElementById("item-table-header");
+  const tableBody = document.getElementById("item-table-body");
 
   tableHeader.innerHTML = "";
   tableBody.innerHTML = "";
@@ -45,4 +54,43 @@ function renderTable(data) {
   tableBody.appendChild(bodyRow);
 }
 
+
+function renderItemRevenueTable(data) {
+  const tableHeader = document.getElementById("item-revenue-table-header");
+  const tableBody = document.getElementById("item-revenue-table-body");
+
+  tableHeader.innerHTML = "";
+  tableBody.innerHTML = "";
+
+  if (data.length > 0) {
+    //key를 이용해서 헤더
+    const headers = Object.keys(data[0]);
+    const headerRow = document.createElement("tr");
+
+    headers.forEach((h) => {
+      const one_th = document.createElement("th");
+      one_th.textContent = h;
+      headerRow.appendChild(one_th);
+    });
+
+    tableHeader.appendChild(headerRow);
+
+    data.forEach((row) => {
+      const bodyRow = document.createElement("tr");
+
+      for (const [key, value] of Object.entries(row)) {
+        const one_td = document.createElement("td");
+        one_td.textContent = value;
+
+        bodyRow.appendChild(one_td);
+      }
+
+      tableBody.appendChild(bodyRow);
+    });
+  } else {
+    tableBody.innerHTML = "---표시할 데이터가 없습니다.---";
+  }
+}
+
 fetchItemDetail();
+fetchItemRevenueDetail();
