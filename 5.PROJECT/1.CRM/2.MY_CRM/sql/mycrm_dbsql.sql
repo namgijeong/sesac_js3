@@ -235,3 +235,16 @@ GROUP BY u.userid
 ORDER BY purchase_price DESC
 LIMIT 10
 ;
+
+/*8. 특정 상점의 사용자별 방문횟수 TOP 10*/
+SELECT o.userId AS userId, u.userName AS userName, COUNT(o.userId) AS visitedCount
+FROM stores s
+JOIN orders o
+ON s.storeId = o.storeId
+JOIN users u
+ON o.userId = u.userId
+WHERE s.storeId = ~~~
+GROUP BY o.userId
+ORDER BY visitedCount DESC
+LIMIT 10
+;

@@ -107,4 +107,33 @@ router.get("/api/stores_revenues/:id", (req, res) => {
 
 });
 
+router.get("/api/stores_users/:id", (req, res) => {
+  const storeId = req.params.id;
+  console.log(storeId);
+  const storeUsersQuery = `
+ SELECT o.userId AS userId, u.userName AS userName, COUNT(o.userId) AS visitedCount
+  FROM stores s
+  JOIN orders o
+  ON s.storeId = o.storeId
+  JOIN users u
+  ON o.userId = u.userId
+  WHERE s.storeId = ?
+  GROUP BY o.userId
+  ORDER BY visitedCount DESC
+  LIMIT 10
+  `;
+  let rows;
+  try{
+    //없으면 빈배열 반환
+    rows = db.prepare(storeUsersQuery).all([storeId]);
+
+    res.json(rows);
+
+  } catch (err){
+    console.error("상점의 단골고객 조회 실패:", err);
+    return res.status(500).json({ error: "상점의 단골고객 조회에 실패하였습니다." });
+  }
+
+});
+
 module.exports = router;
