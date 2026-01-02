@@ -106,6 +106,8 @@ function renderTable(data) {
         window.location = `/users/${row.userId}`;
       });
       bodyRow.classList.add('go_detail');
+      //하지만 이렇게 했더니 bootstrap 원래 특징때문에 회색빛이 섞인 색깔이 됨
+      //bodyRow.classList.add('custom-hover');
 
       for (const [key, value] of Object.entries(row)) {
         if (key != "userAddress") {

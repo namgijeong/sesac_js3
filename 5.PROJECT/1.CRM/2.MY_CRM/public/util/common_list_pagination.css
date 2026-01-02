@@ -1,0 +1,21 @@
+.go_detail {
+        cursor: pointer;
+      }
+
+      /* td가 tr레이아웃 위에 있음
+      하지만 이렇게 했더니 bootstrap 원래 특징때문에 회색빛이 섞인 색깔이 됨
+       */
+      /* .custom-hover:hover td {
+        background-color: lightblue;
+        color: #0d6efd;
+      } */
+
+      
+     .table.table-hover.custom-table > tbody > tr:hover > * {
+        --bs-table-bg-state: lightblue;
+        --bs-table-color-state: #0d6efd;
+      }
+     
+      .table .table-group-divider {
+        color: lightblue;
+      }
