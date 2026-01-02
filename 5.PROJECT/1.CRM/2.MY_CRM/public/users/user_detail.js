@@ -105,13 +105,13 @@ function renderUserOrderTable(data) {
           one_td.addEventListener("click", () => {
             window.location = `/orderitems/${value}`;
           });
-          one_td.classList.add("go_detail", "text-primary");
+          one_td.classList.add("go_detail", "text-primary", 'custom-td');
         } else if (key === "purchased location") {
           //store id 상세페이지로
           one_td.addEventListener("click", () => {
             window.location = `/stores/${value}`;
           });
-          one_td.classList.add("go_detail", "text-primary");
+          one_td.classList.add("go_detail", "text-primary", 'custom-td');
         }
         bodyRow.appendChild(one_td);
       }
@@ -132,6 +132,7 @@ function renderUserStoreTop5List(data) {
     data.forEach((row) => {
       const liTag = document.createElement("li");
       liTag.textContent = `${row.storeName} (${row.visitCount}번 방문)`;
+      liTag.classList.add('list-group-item', 'd-flex','justify-content-center','align-items-center');
       ulTag.appendChild(liTag);
     });
   } else {
@@ -148,6 +149,7 @@ function renderUserItemTop5List(data) {
     data.forEach((row) => {
       const liTag = document.createElement("li");
       liTag.textContent = `${row.itemName} (${row.purchasedCount}번 주문)`;
+      liTag.classList.add('list-group-item', 'd-flex','justify-content-center','align-items-center');
       ulTag.appendChild(liTag);
     });
   } else {

@@ -1,0 +1,20 @@
+.go_detail {
+  cursor: pointer;
+}
+
+.custom-td:hover {
+  --bs-table-bg-state: lightblue;
+  --bs-table-color-state: #0d6efd;
+}
+
+.table .table-group-divider {
+  color: lightblue;
+}
+
+.list-group-item-action.custom-list-group-item:hover{
+  --bs-list-group-action-color:#0d6efd;
+  --bs-list-group-active-bg:lightblue;
+
+  --bs-list-group-action-hover-bg: lightblue;
+  --bs-list-group-action-hover-color: #0d6efd;
+}
