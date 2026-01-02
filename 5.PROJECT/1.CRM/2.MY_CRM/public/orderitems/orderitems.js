@@ -112,12 +112,12 @@ function renderTable(data) {
           one_td.addEventListener('click',() => {
             window.location = `/orders/${value}`;
           });
-          one_td.classList.add('go_detail','text-primary');
+          one_td.classList.add('go_detail','text-primary', 'custom-td');
         } else if (key === 'itemId'){ //item id 상세페이지로
           one_td.addEventListener('click',() => {
             window.location = `/items/${value}`;
           });
-          one_td.classList.add('go_detail', 'text-primary');
+          one_td.classList.add('go_detail', 'text-primary', 'custom-td');
         }
 
         bodyRow.appendChild(one_td);

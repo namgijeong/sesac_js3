@@ -150,7 +150,7 @@ function renderStoreUserTable(data) {
           one_td.addEventListener("click", () => {
             window.location = `/users/${value}`;
           });
-          one_td.classList.add("go_detail", "text-primary");
+          one_td.classList.add("go_detail", "text-primary", 'custom-td');
         }
         bodyRow.appendChild(one_td);
       }
