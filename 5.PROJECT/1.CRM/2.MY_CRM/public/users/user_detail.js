@@ -2,12 +2,18 @@ const userId = window.location.pathname.split("/").pop();
 // console.log(window.location);
 // console.log(window.location.pathname);
 
+const waitingUserDiv = document.getElementById('waiting-user');
+const waitingUserOrderDiv = document.getElementById('waiting-user-order');
+const waitingUserStoreTop5Div = document.getElementById('waiting-user-store-top5');
+const waitingUserItemTop5Div = document.getElementById('waiting-user-item-top5');
+
 function fetchUserDetail() {
   fetch(`/api/users/${userId}`)
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
       renderUserTable(data);
+      waitingUserDiv.classList.add('d-none');
     });
 }
 
@@ -17,6 +23,7 @@ function fetchUserOrderDetail() {
     .then((data) => {
       console.log(data);
       renderUserOrderTable(data);
+      waitingUserOrderDiv.classList.add('d-none');
     });
 }
 
@@ -26,6 +33,7 @@ function fetchUserStoreTop5Detail() {
     .then((data) => {
       console.log(data);
       renderUserStoreTop5List(data);
+      waitingUserStoreTop5Div.classList.add('d-none');
     });
 }
 
@@ -35,6 +43,7 @@ function fetchUserItemTop5Detail() {
     .then((data) => {
       console.log(data);
       renderUserItemTop5List(data);
+      waitingUserItemTop5Div.classList.add('d-none');
     });
 }
 

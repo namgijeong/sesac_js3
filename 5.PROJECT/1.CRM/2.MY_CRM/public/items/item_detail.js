@@ -2,12 +2,16 @@ const itemId = window.location.pathname.split("/").pop();
 // console.log(window.location);
 // console.log(window.location.pathname);
 
+const waitingItemDiv = document.getElementById('waiting-item');
+const waitingItemRevenueDiv = document.getElementById('waiting-item-revenue');
+
 function fetchItemDetail() {
   fetch(`/api/items/${itemId}`)
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
       renderItemTable(data);
+      waitingItemDiv.classList.add('d-none');
     });
 }
 
@@ -17,6 +21,7 @@ function fetchItemRevenueDetail() {
     .then((data) => {
       console.log(data);
       renderItemRevenueTable(data);
+      waitingItemRevenueDiv.classList.add('d-none');
     });
 }
 

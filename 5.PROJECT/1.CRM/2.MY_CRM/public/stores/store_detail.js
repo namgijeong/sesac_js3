@@ -2,12 +2,17 @@ const storeId = window.location.pathname.split("/").pop();
 // console.log(window.location);
 // console.log(window.location.pathname);
 
+const waitingStoreDiv = document.getElementById('waiting-store');
+const waitingStoreRevenueDiv = document.getElementById('waiting-store-revenue');
+const waitingStoreUserDiv = document.getElementById('waiting-store-user');
+
 function fetchStoreDetail() {
   fetch(`/api/stores/${storeId}`)
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
       renderStoreTable(data);
+      waitingStoreDiv.classList.add('d-none');
     });
 }
 
@@ -17,6 +22,7 @@ function fetchStoreRevenueDetail() {
     .then((data) => {
       console.log(data);
       renderStoreRevenueTable(data);
+      waitingStoreRevenueDiv.classList.add('d-none');
     });
 }
 
@@ -26,6 +32,7 @@ function fetchStoreUserDetail() {
     .then((data) => {
       console.log(data);
       renderStoreUserTable(data);
+      waitingStoreUserDiv.classList.add('d-none');
     });
 }
 

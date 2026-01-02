@@ -2,12 +2,15 @@ const orderId = window.location.pathname.split("/").pop();
 // console.log(window.location);
 // console.log(window.location.pathname);
 
+const waitingOrderDiv = document.getElementById('waiting-order');
+
 function fetchOrderDetail() {
   fetch(`/api/orders/${orderId}`)
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
       renderTable(data);
+      waitingOrderDiv.classList.add('d-none');
     });
 }
 

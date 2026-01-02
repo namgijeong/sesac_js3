@@ -26,6 +26,10 @@
     <div class="container mb-4 text-center">
       <h5>사용자 정보</h5>
       <table class="table align-middle">
+        <div id="waiting-user">
+          <span class="spinner-border spinner-border-sm"></span>
+          <span>데이터 로딩중...</span>
+        </div>
         <thead id="user-table-header" class="table-group-divider fw-normal"></thead>
         <tbody id="user-table-body" class="table-group-divider fw-light"></tbody>
       </table>
@@ -34,6 +38,10 @@
      <div class="container mb-4 text-center">
       <h5>주문 정보</h5>
       <table class="table align-middle">
+        <div id="waiting-user-order">
+          <span class="spinner-border spinner-border-sm"></span>
+          <span>데이터 로딩중...</span>
+        </div>
         <thead id="user-order-table-header" class="table-group-divider fw-normal"></thead>
         <tbody id="user-order-table-body" class="table-group-divider fw-light"></tbody>
       </table>
@@ -42,14 +50,20 @@
     <div class="container mb-4 text-center">
       <h5>자주 방문한 매장 Top 5</h5>
       <ul id="user-store-top5" class="list-group">
-        
+        <div id="waiting-user-store-top5">
+          <span class="spinner-border spinner-border-sm"></span>
+          <span>데이터 로딩중...</span>
+        </div>
       </ul>
     </div>
 
     <div class="container mb-4 text-center">
       <h5>자주 주문한 상품명 Top 5</h5>
       <ul id="user-item-top5" class="list-group">
-        
+        <div id="waiting-user-item-top5">
+          <span class="spinner-border spinner-border-sm"></span>
+          <span>데이터 로딩중...</span>
+        </div>
       </ul>
     </div>
 
