@@ -59,5 +59,8 @@ CREATE TABLE IF NOT EXISTS orderItems(
 -- .import --skip 1 items.csv items
 -- .import --skip 1 orderItems.csv orderItems
 
+--비밀번호 컬럼 추가
+ALTER TABLE users ADD COLUMN userPassword TEXT DEFAULT 'pass1234';
+
 
 

@@ -1,6 +1,7 @@
 const express = require("express");
 const Database = require("better-sqlite3");
 const path = require("path");
+const bcrypt = require("bcrypt");
 
 const db_file = "../mycrm_db.db";
 
@@ -11,7 +12,6 @@ const db_file = "../mycrm_db.db";
 
 const router = express.Router();
 const db = new Database(db_file);
-
 
 /******************
  * 사용자 요청 페이지 전달
@@ -38,19 +38,22 @@ router.get("/api/users", (req, res) => {
   let totalPages = 0;
 
   const totalCountQuery = `SELECT COUNT(userId) AS count FROM users WHERE userName LIKE ? AND userGender LIKE ?`;
-  const row = db.prepare(totalCountQuery).get([`%${searchName}%`, `${searchGender}`]);
+  const row = db
+    .prepare(totalCountQuery)
+    .get([`%${searchName}%`, `${searchGender}`]);
   console.log(row);
-  
+
   const searchCount = row.count;
   totalPages = Math.ceil(searchCount / itemsPerPage);
-  const startIndex = 0 + (pageNum - 1) * itemsPerPage; 
+  const startIndex = 0 + (pageNum - 1) * itemsPerPage;
 
   const usersQuery = `SELECT * FROM users WHERE userName LIKE ? AND userGender LIKE ? LIMIT ? OFFSET ?`;
   try {
-    const rows = db.prepare(usersQuery).all([`%${searchName}%`, `${searchGender}`, itemsPerPage, startIndex]);
-    
-    res.json({ totalPages: totalPages, data: rows });
+    const rows = db
+      .prepare(usersQuery)
+      .all([`%${searchName}%`, `${searchGender}`, itemsPerPage, startIndex]);
 
+    res.json({ totalPages: totalPages, data: rows });
   } catch (err) {
     console.error("사용자 조회 실패:", err);
     return res.status(500).json({ error: "사용자 조회에 실패하였습니다." });
@@ -62,23 +65,41 @@ router.get("/api/users/:id", (req, res) => {
   console.log(userId);
   const userQuery = "SELECT * FROM users WHERE userId=?";
   let row;
-  try{
+  try {
     row = db.prepare(userQuery).get([userId]);
 
-     if (!row) {
+    if (!row) {
       console.error("사용자 조회 실패:", err);
       return res.status(404).json({ error: "사용자 조회에 실패하였습니다." });
     }
 
     res.json(row);
-
-  } catch (err){
+  } catch (err) {
     console.error("사용자 조회 실패:", err);
     return res.status(500).json({ error: "사용자 조회에 실패하였습니다." });
   }
-
 });
 
+//이미 등록된 사용자 비번들 초기화 =>일시적
+router.get("/api/users/password/reset", (req, res) => {
+  const passwordToRegister = "pass1234";
+
+  bcrypt.hash(passwordToRegister, 10, (err, hash) => {
+    if (err) {
+      console.error(err.message);
+    } else {
+      try {
+        const usersQuery = `UPDATE users SET userPassword = ?`;
+        const result = db.prepare(usersQuery).run([hash]);
+        if (result.changes > 0) {
+          res.status(200).json({ success: "사용자들 비밀번호 초기화 완료" });
+        }
+      } catch (err) {
+        return res.status(500).json({ error: "사용자들 비밀번호 초기화 실패" });
+      }
+    }
+  });
+});
 
 router.get("/api/users_orders/:id", (req, res) => {
   const userId = req.params.id;
@@ -90,19 +111,18 @@ router.get("/api/users_orders/:id", (req, res) => {
   ORDER BY orderAt DESC
   `;
   let rows;
-  try{
+  try {
     //없으면 빈배열 반환
     rows = db.prepare(userOrderQuery).all([userId]);
 
     res.json(rows);
-
-  } catch (err){
+  } catch (err) {
     console.error("사용자의 주문 조회 실패:", err);
-    return res.status(500).json({ error: "사용자의 주문 조회에 실패하였습니다." });
+    return res
+      .status(500)
+      .json({ error: "사용자의 주문 조회에 실패하였습니다." });
   }
-
 });
-
 
 router.get("/api/users_stores_top5/:id", (req, res) => {
   const userId = req.params.id;
@@ -120,17 +140,17 @@ router.get("/api/users_stores_top5/:id", (req, res) => {
   LIMIT 5
   `;
   let rows;
-  try{
+  try {
     //없으면 빈배열 반환
     rows = db.prepare(userStoreTop5Query).all([userId]);
 
     res.json(rows);
-
-  } catch (err){
+  } catch (err) {
     console.error("사용자의 자주 방문한 매장 top5 조회 실패:", err);
-    return res.status(500).json({ error: "사용자의 자주 방문한 매장 top5 조회에 실패하였습니다." });
+    return res
+      .status(500)
+      .json({ error: "사용자의 자주 방문한 매장 top5 조회에 실패하였습니다." });
   }
-
 });
 
 router.get("/api/users_items_top5/:id", (req, res) => {
@@ -151,17 +171,17 @@ router.get("/api/users_items_top5/:id", (req, res) => {
   LIMIT 5
   `;
   let rows;
-  try{
+  try {
     //없으면 빈배열 반환
     rows = db.prepare(userItemTop5Query).all([userId]);
 
     res.json(rows);
-
-  } catch (err){
+  } catch (err) {
     console.error("사용자의 자주 주문한 상품 top5 조회 실패:", err);
-    return res.status(500).json({ error: "사용자의 자주 주문한 상품 top5 조회에 실패하였습니다." });
+    return res
+      .status(500)
+      .json({ error: "사용자의 자주 주문한 상품 top5 조회에 실패하였습니다." });
   }
-
 });
 
 module.exports = router;
