@@ -25,6 +25,11 @@ router.get("/items/:id", (req, res) => {
   res.sendFile(path.join(__dirname, "../../public/items", "item_detail.html"));
 });
 
+//kiosk item 페이지로 이동
+router.get('/kiosk/items',(req,res) => {
+  res.sendFile(path.join(__dirname, "../../public/kiosk", "item_list.html"));
+})
+
 /******************
  * 백엔드 API 요청
  ******************/

@@ -107,7 +107,7 @@ function renderTable(data) {
       bodyRow.addEventListener("click", () => {
         console.log("해당 줄 클릭됨");
         //브라우저 창에 주소를 넣어서 이동하는 방법
-        window.location = `/stores/${row.storeId}`;
+        window.location = `/kiosk/items?store_id=${row.storeId}`;
       });
       bodyRow.classList.add('go_detail');
 

@@ -1,22 +1,23 @@
 const currentPaginationSize = 10;
 const searchName = document.getElementById("search-name");
+const searchGender = document.getElementById("search-gender");
 
 document.addEventListener("DOMContentLoaded", () => {
   //검색 버튼 활성화
   const searchBtn = document.getElementById("search-button");
 
   searchBtn.addEventListener("click", () => {
-    fetchStores(searchName.value, 1);
+    fetchItems(searchName.value, 1);
   });
 
   //검색어를 설정하지 않았을때 기본값
-  fetchStores("", 1);
+  fetchItems("", 1);
 });
 
-function fetchStores(name, currentPage) {
+function fetchItems(name, currentPage) {
   //만약 스페이스는 %20으로 바꿔줌
   const queryString = `?name=${encodeURIComponent(name)}&page=${currentPage}`;
-  fetch(`/api/stores${queryString}`)
+  fetch(`/api/items${queryString}`)
     .then((response) => response.json())
     .then((data) => {
       renderTable(data.data);
@@ -76,7 +77,7 @@ function renderPagination(totalPages, currentPage) {
   paginationUl.addEventListener("click", (ev) => {
     const clickedNumber = ev.target.dataset.number;
 
-    fetchStores(searchName.value, clickedNumber);
+    fetchItems(searchName.value, clickedNumber);
   });
 }
 
@@ -107,7 +108,7 @@ function renderTable(data) {
       bodyRow.addEventListener("click", () => {
         console.log("해당 줄 클릭됨");
         //브라우저 창에 주소를 넣어서 이동하는 방법
-        window.location = `/stores/${row.storeId}`;
+        window.location = `/items/${row.itemId}`;
       });
       bodyRow.classList.add('go_detail');
 
