@@ -10,9 +10,64 @@
       integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
       crossorigin="anonymous"
     />
-    <link href="/util/common_list_pagination.css" rel="stylesheet"/>
+    <link href="/util/common_list_pagination.css" rel="stylesheet" />
     <style>
-     
+      .list-group-item.custom-list-group-item {
+        position: relative;
+
+        width: 150px;
+        flex: 0 0 150px; /* grow 0, shrink 0, basis 150px */
+        height: 100px;
+      }
+
+      .product_delete {
+        position: absolute;
+        top: 0px;
+        left: 130px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 20px;
+        height: 20px;
+
+        border-radius: 50%;
+        border: 1px solid red;
+        color: red;
+        background-color: white;
+      }
+
+      .product_button_container {
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .item-count{
+        margin-bottom:0;
+
+        width:30px;
+        height:100%;
+
+        line-height: 30px;
+        text-align: center;
+      }
+
+      .product_button_container button{
+        width:30px;
+        height:30px;
+        
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
     </style>
   </head>
   <body>
@@ -20,8 +75,15 @@
       <h5>주문 상품들 선택</h5>
     </div>
 
-    <div class="container mb-4 d-flex justify-content-center align-items-center gap-5">
-      <input type="text" id="search-name" class="form-control w-25" placeholder="상품 이름 검색" />
+    <div
+      class="container mb-4 d-flex justify-content-center align-items-center gap-5"
+    >
+      <input
+        type="text"
+        id="search-name"
+        class="form-control w-25"
+        placeholder="상품 이름 검색"
+      />
       <button id="search-button" class="btn btn-outline-primary">검색</button>
     </div>
 
@@ -32,19 +94,43 @@
       </table>
     </div>
 
-    <div class="container d-flex justify-content-center" id="pagination"></div>
+    <div
+      class="container mb-5 d-flex justify-content-center"
+      id="pagination"
+    ></div>
+
+    <div class="container mb-4 text-center">
+      <h5>내가 주문한 상품들</h5>
+    </div>
+
+    <ul
+      id="user-selected-items"
+      class="container list-group list-group-horizontal gap-2 overflow-auto bg-light mb-4"
+    >
+      <!-- <li
+        class="list-group-item custom-list-group-item list-group-item-action d-flex flex-column gap-2 justify-content-center align-items-center"
+      >
+        <div>test product</div>
+        <div class="product_delete">x</div>
+        <div class="product_button_container">
+          <button class="minus btn btn-outline-primary">-</button>
+          <p class="item-count">1</p>
+          <button class="plus btn btn-outline-primary">+</button>
+        </div>
+      </li> -->
+    </ul>
+
+    
+    <div class="container mb-4 text-center">
+      <button class="btn btn-outline-primary">주문 완료</button>
+    </div>
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
-    
-    <div class="container mb-4 text-center">
-      <h5>내가 주문한 상품들</h5>
-    </div>
 
-    
     <script src="/kiosk/item_list.js"></script>
   </body>
 </html>

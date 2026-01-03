@@ -1,6 +1,6 @@
 const currentPaginationSize = 10;
 const searchName = document.getElementById("search-name");
-const searchGender = document.getElementById("search-gender");
+const userSelectedItems = document.getElementById('user-selected-items');
 
 document.addEventListener("DOMContentLoaded", () => {
   //검색 버튼 활성화
@@ -106,9 +106,41 @@ function renderTable(data) {
 
       //해당 row에다가 이벤트
       bodyRow.addEventListener("click", () => {
-        console.log("해당 줄 클릭됨");
-        //브라우저 창에 주소를 넣어서 이동하는 방법
-        window.location = `/items/${row.itemId}`;
+        const liTag = document.createElement('li');
+        liTag.classList.add('list-group-item', 'custom-list-group-item', 'list-group-item-action','d-flex','flex-column','gap-2','justify-content-center','align-items-center');
+        liTag.dataset.itemId = row.itemId;
+
+        const nameDiv = document.createElement('div');
+        nameDiv.textContent = row.itemName;
+
+        const deleteDiv = document.createElement('div');
+        deleteDiv.textContent = 'x';
+        deleteDiv.classList.add('product_delete');
+
+        const buttonContainerDiv = document.createElement('div');
+        buttonContainerDiv.classList.add('product_button_container');
+
+        const buttonMinus = document.createElement('button');
+        buttonMinus.textContent = '-';
+        buttonMinus.classList.add('minus', 'btn', 'btn-outline-primary');
+
+        const itemCount = document.createElement('p');
+        itemCount.textContent = 1;
+        itemCount.classList.add('item-count');
+
+        const buttonPlus = document.createElement('button');
+        buttonPlus.textContent = '+';
+        buttonPlus.classList.add('plus', 'btn', 'btn-outline-primary');
+
+        buttonContainerDiv.appendChild(buttonMinus);
+        buttonContainerDiv.appendChild(itemCount);
+        buttonContainerDiv.appendChild(buttonPlus);
+
+        liTag.appendChild(nameDiv);
+        liTag.appendChild(deleteDiv);
+        liTag.appendChild(buttonContainerDiv);
+
+        userSelectedItems.appendChild(liTag);
       });
       bodyRow.classList.add('go_detail');
 
