@@ -25,6 +25,17 @@ router.get("/users/:id", (req, res) => {
   res.sendFile(path.join(__dirname, "../../public/users", "user_detail.html"));
 });
 
+//키오스크 화면 보여주기
+router.get("/kiosk", (req, res) => {
+  console.log("루트 파일 주소는", __dirname);
+  res.sendFile(path.join(__dirname, "../../public/kiosk", "user_login.html"));
+});
+
+router.get("/kiosk/user/register", (req, res) => {
+  console.log("루트 파일 주소는", __dirname);
+  res.sendFile(path.join(__dirname, "../../public/kiosk", "store_list.html"));
+});
+
 /******************
  * 백엔드 API 요청
  ******************/
@@ -99,6 +110,39 @@ router.get("/api/users/password/reset", (req, res) => {
       }
     }
   });
+});
+
+//로그인 검증
+router.post("/api/users/login/check", (req, res) => {
+  const userName = req.body.userName;
+  const userPassword = req.body.userPassword;
+
+  try {
+    const loginCheckQuery = "SELECT * FROM users WHERE userName = ?";
+    const user = db.prepare(loginCheckQuery).get([userName]);
+    //console.log(user);
+
+    if (user) {
+      // 저장된 해시와 입력된 패스워드를 비교
+      bcrypt.compare(userPassword, user.userPassword, (err, result) => {
+        //console.log(result);
+        if (result) {
+          return res.status(200).json({ success: "사용자 로그인 완료" });
+
+          //왜 303?
+          //POST → GET 전환에 가장 안전
+          //새로고침 시 POST 재전송 방지
+          //res.redirect(303, "/kiosk/user/register");
+        } else {
+          return res.status(500).json({ error: "사용자 로그인 정보 불일치" });
+        }
+      });
+    } else {
+      return res.status(500).json({ error: "사용자 로그인 정보 불일치" });
+    }
+  } catch (err) {
+    return res.status(500).json({ error: "사용자 로그인 정보 불일치" });
+  }
 });
 
 router.get("/api/users_orders/:id", (req, res) => {
