@@ -1,6 +1,8 @@
 const currentPaginationSize = 10;
 const searchName = document.getElementById("search-name");
-const userSelectedItems = document.getElementById('user-selected-items');
+const userSelectedItems = document.getElementById("user-selected-items");
+
+let userSelectedArray = [];
 
 document.addEventListener("DOMContentLoaded", () => {
   //검색 버튼 활성화
@@ -106,31 +108,76 @@ function renderTable(data) {
 
       //해당 row에다가 이벤트
       bodyRow.addEventListener("click", () => {
-        const liTag = document.createElement('li');
-        liTag.classList.add('list-group-item', 'custom-list-group-item', 'list-group-item-action','d-flex','flex-column','gap-2','justify-content-center','align-items-center');
+        //이미 클릭한 아이템이었으면, 또 칸을 동적생성하지 않고 갯수를 증가
+        if (userSelectedArray.includes(row.itemId)) {
+          const findLiTag = document.querySelector(
+            `[data-item-id="${row.itemId}"]`
+          );
+          const itemCountP = findLiTag.querySelector(".item-count");
+          const currentNumber = Number(itemCountP.textContent);
+          if (currentNumber >= 99) {
+            return;
+          } else {
+            itemCountP.textContent = currentNumber + 1;
+            return;
+          }
+        }
+
+        userSelectedArray.push(row.itemId);
+
+        const liTag = document.createElement("li");
+        liTag.classList.add(
+          "list-group-item",
+          "custom-list-group-item",
+          "list-group-item-action",
+          "d-flex",
+          "flex-column",
+          "gap-2",
+          "justify-content-center",
+          "align-items-center"
+        );
         liTag.dataset.itemId = row.itemId;
 
-        const nameDiv = document.createElement('div');
+        const nameDiv = document.createElement("div");
         nameDiv.textContent = row.itemName;
 
-        const deleteDiv = document.createElement('div');
-        deleteDiv.textContent = 'x';
-        deleteDiv.classList.add('product_delete');
+        const deleteDiv = document.createElement("div");
+        deleteDiv.textContent = "x";
+        deleteDiv.classList.add("product_delete");
+        deleteDiv.addEventListener("click", () => {
+          deleteDiv.parentNode.remove();
+        });
 
-        const buttonContainerDiv = document.createElement('div');
-        buttonContainerDiv.classList.add('product_button_container');
+        const buttonContainerDiv = document.createElement("div");
+        buttonContainerDiv.classList.add("product_button_container");
 
-        const buttonMinus = document.createElement('button');
-        buttonMinus.textContent = '-';
-        buttonMinus.classList.add('minus', 'btn', 'btn-outline-primary');
+        const buttonMinus = document.createElement("button");
+        buttonMinus.textContent = "-";
+        buttonMinus.classList.add("minus", "btn", "btn-outline-primary");
+        buttonMinus.addEventListener("click", (ev) => {
+          let currentNumber = Number(ev.target.nextElementSibling.textContent);
+          if (currentNumber <= 1) {
+            return;
+          }
+          ev.target.nextElementSibling.textContent = currentNumber - 1;
+        });
 
-        const itemCount = document.createElement('p');
+        const itemCount = document.createElement("p");
         itemCount.textContent = 1;
-        itemCount.classList.add('item-count');
+        itemCount.classList.add("item-count");
 
-        const buttonPlus = document.createElement('button');
-        buttonPlus.textContent = '+';
-        buttonPlus.classList.add('plus', 'btn', 'btn-outline-primary');
+        const buttonPlus = document.createElement("button");
+        buttonPlus.textContent = "+";
+        buttonPlus.classList.add("plus", "btn", "btn-outline-primary");
+        buttonPlus.addEventListener("click", (ev) => {
+          let currentNumber = Number(
+            ev.target.previousElementSibling.textContent
+          );
+          if (currentNumber >= 99) {
+            return;
+          }
+          ev.target.previousElementSibling.textContent = currentNumber + 1;
+        });
 
         buttonContainerDiv.appendChild(buttonMinus);
         buttonContainerDiv.appendChild(itemCount);
@@ -142,7 +189,7 @@ function renderTable(data) {
 
         userSelectedItems.appendChild(liTag);
       });
-      bodyRow.classList.add('go_detail');
+      bodyRow.classList.add("go_detail");
 
       for (const [key, value] of Object.entries(row)) {
         const one_td = document.createElement("td");
