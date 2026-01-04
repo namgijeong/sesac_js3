@@ -12,17 +12,20 @@ const db_file = "../mycrm_db.db";
 const router = express.Router();
 const db = new Database(db_file);
 
-
 /******************
  * 사용자 요청 페이지 전달
  ******************/
 router.get("/orderitems", (req, res) => {
   console.log("루트 파일 주소는", __dirname);
-  res.sendFile(path.join(__dirname, "../../public/orderitems", "orderitems.html"));
+  res.sendFile(
+    path.join(__dirname, "../../public/orderitems", "orderitems.html")
+  );
 });
 
 router.get("/orderitems/:id", (req, res) => {
-  res.sendFile(path.join(__dirname, "../../public/orderitems", "orderitem_detail.html"));
+  res.sendFile(
+    path.join(__dirname, "../../public/orderitems", "orderitem_detail.html")
+  );
 });
 
 /******************
@@ -38,43 +41,49 @@ router.get("/api/orderitems", (req, res) => {
   const totalCountQuery = `SELECT COUNT(orderItemId) AS count FROM orderItems WHERE orderId LIKE ?`;
   const row = db.prepare(totalCountQuery).get([`%${searchId}%`]);
   console.log(row);
-  
+
   const searchCount = row.count;
   totalPages = Math.ceil(searchCount / itemsPerPage);
-  const startIndex = 0 + (pageNum - 1) * itemsPerPage; 
+  const startIndex = 0 + (pageNum - 1) * itemsPerPage;
 
   const orderItemsQuery = `SELECT * FROM orderItems WHERE orderId LIKE ? LIMIT ? OFFSET ?`;
   try {
-    const rows = db.prepare(orderItemsQuery).all([`%${searchId}%`, itemsPerPage, startIndex]);
-    
-    res.json({ totalPages: totalPages, data: rows });
+    const rows = db
+      .prepare(orderItemsQuery)
+      .all([`%${searchId}%`, itemsPerPage, startIndex]);
 
+    res.json({ totalPages: totalPages, data: rows });
   } catch (err) {
     console.error("주문에 따른 상품 조회 실패:", err);
-    return res.status(500).json({ error: "주문에 따른 상품 조회에 실패하였습니다." });
+    return res
+      .status(500)
+      .json({ error: "주문에 따른 상품 조회에 실패하였습니다." });
   }
 });
 
 router.get("/api/orderitems/:id", (req, res) => {
   const orderId = req.params.id;
   console.log(orderId);
-  const orderQuery = "SELECT oi.orderItemId AS orderItemId, oi.orderId AS orderId, oi.itemId AS itemId, i.itemName AS itemName FROM orders o JOIN orderItems oi ON o.orderId = oi.orderId JOIN items i ON oi.itemId = i.itemId WHERE o.orderId=?";
+  const orderQuery =
+    "SELECT oi.orderItemId AS orderItemId, oi.orderId AS orderId, oi.itemId AS itemId, i.itemName AS itemName FROM orders o JOIN orderItems oi ON o.orderId = oi.orderId JOIN items i ON oi.itemId = i.itemId WHERE o.orderId=?";
   let rows;
-  try{
+  try {
     rows = db.prepare(orderQuery).all([orderId]);
 
-     if (!rows) {
+    if (!rows) {
       console.error("주문에 따른 상품 조회 실패:", err);
-      return res.status(404).json({ error: "주문에 따른 상품 조회에 실패하였습니다." });
+      return res
+        .status(404)
+        .json({ error: "주문에 따른 상품 조회에 실패하였습니다." });
     }
 
     res.json(rows);
-
-  } catch (err){
+  } catch (err) {
     console.error("주문에 따른 상품 조회 실패:", err);
-    return res.status(500).json({ error: "주문에 따른 상품 조회에 실패하였습니다." });
+    return res
+      .status(500)
+      .json({ error: "주문에 따른 상품 조회에 실패하였습니다." });
   }
-
 });
 
 module.exports = router;

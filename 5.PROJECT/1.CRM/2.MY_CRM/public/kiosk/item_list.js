@@ -1,6 +1,9 @@
+const storeId = new URLSearchParams(window.location.search)
+  .get("store_id");
 const currentPaginationSize = 10;
 const searchName = document.getElementById("search-name");
 const userSelectedItems = document.getElementById("user-selected-items");
+const kioskOrderSubmit = document.getElementById('kiosk-order-submit');
 
 let userSelectedArray = [];
 
@@ -145,9 +148,12 @@ function renderTable(data) {
         deleteDiv.textContent = "x";
         deleteDiv.classList.add("product_delete");
         deleteDiv.addEventListener("click", () => {
+          const clickedNumber = deleteDiv.parentNode.dataset.itemId;
+          userSelectedArray = userSelectedArray.filter((item) => item != clickedNumber);
           deleteDiv.parentNode.remove();
         });
 
+        //하지만 현재 db에는 해당 아이템 아이디에 대한 개수 컬럼이 존재하지 않음
         const buttonContainerDiv = document.createElement("div");
         buttonContainerDiv.classList.add("product_button_container");
 
@@ -203,3 +209,20 @@ function renderTable(data) {
     tableBody.innerHTML = "---표시할 데이터가 없습니다.---";
   }
 }
+
+kioskOrderSubmit.addEventListener('click', async () => {
+  const response = await fetch(`/api/kiosk/order`,{ 
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body:JSON.stringify({storeId:storeId, items:userSelectedArray}),
+  
+  });
+  const data = await response.json();
+
+  if (Object.hasOwn(data, "success")){
+    alert('주문이 완료되었습니다.');
+    window.location.href = "/kiosk";
+  }
+});

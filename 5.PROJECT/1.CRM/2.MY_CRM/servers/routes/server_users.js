@@ -128,6 +128,13 @@ router.post("/api/users/login/check", (req, res) => {
       bcrypt.compare(userPassword, user.userPassword, (err, result) => {
         //console.log(result);
         if (result) {
+
+          //세션에 저장
+          req.session.user = {
+            id: user.userId,
+            username: user.userName,
+          };
+
           return res.status(200).json({ success: "사용자 로그인 완료" });
 
           //왜 303?
