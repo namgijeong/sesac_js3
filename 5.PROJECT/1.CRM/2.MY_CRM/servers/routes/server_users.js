@@ -18,23 +18,23 @@ const db = new Database(db_file);
  ******************/
 router.get("/", (req, res) => {
   console.log("루트 파일 주소는", __dirname);
-  res.sendFile(path.join(__dirname, "../../public/users", "users.html"));
+  res.sendFile(path.join(__dirname, "../../public/html/users", "users.html"));
 });
 
 router.get("/users/:id", (req, res) => {
-  res.sendFile(path.join(__dirname, "../../public/users", "user_detail.html"));
+  res.sendFile(path.join(__dirname, "../../public/html/users", "user_detail.html"));
 });
 
 //키오스크 화면 보여주기
 router.get("/kiosk", (req, res) => {
   console.log("루트 파일 주소는", __dirname);
-  res.sendFile(path.join(__dirname, "../../public/kiosk", "user_login.html"));
+  res.sendFile(path.join(__dirname, "../../public/html/kiosk", "user_login.html"));
 });
 
 //로그인 성공시 store list 페이지로 이동
 router.get("/kiosk/user/register", (req, res) => {
   console.log("루트 파일 주소는", __dirname);
-  res.sendFile(path.join(__dirname, "../../public/kiosk", "store_list.html"));
+  res.sendFile(path.join(__dirname, "../../public/html/kiosk", "store_list.html"));
 });
 
 /******************

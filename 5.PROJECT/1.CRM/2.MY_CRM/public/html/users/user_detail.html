@@ -10,52 +10,61 @@
       integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
       crossorigin="anonymous"
     />
-    <link href="/util/common_detail.css" rel="stylesheet"/>
+    <link href="/css/common/common_detail.css" rel="stylesheet"/>
     <style>
-      
+     
     </style>
   </head>
   <body>
-    <div id="header"></div>
-
-    <div class="container mb-4 text-center">
-      <h5>상점 상세 테이블</h5>
+    <div id="header">
     </div>
 
     <div class="container mb-4 text-center">
-      <h5>상점 정보</h5>
+      <h5>사용자 상세 테이블</h5>
+    </div>
+
+    <div class="container mb-4 text-center">
+      <h5>사용자 정보</h5>
       <table class="table align-middle">
-        <div id="waiting-store">
+        <div id="waiting-user">
           <span class="spinner-border spinner-border-sm"></span>
           <span>데이터 로딩중...</span>
         </div>
-        <thead id="store-table-header" class="table-group-divider fw-normal"></thead>
-        <tbody id="store-table-body" class="table-group-divider fw-light"></tbody>
+        <thead id="user-table-header" class="table-group-divider fw-normal"></thead>
+        <tbody id="user-table-body" class="table-group-divider fw-light"></tbody>
+      </table>
+    </div>
+
+     <div class="container mb-4 text-center">
+      <h5>주문 정보</h5>
+      <table class="table align-middle">
+        <div id="waiting-user-order">
+          <span class="spinner-border spinner-border-sm"></span>
+          <span>데이터 로딩중...</span>
+        </div>
+        <thead id="user-order-table-header" class="table-group-divider fw-normal"></thead>
+        <tbody id="user-order-table-body" class="table-group-divider fw-light"></tbody>
       </table>
     </div>
 
     <div class="container mb-4 text-center">
-      <h5>상점의 매출액 정보</h5>
-      <table class="table align-middle">
-        <div id="waiting-store-revenue">
+      <h5>자주 방문한 매장 Top 5</h5>
+      <ul id="user-store-top5" class="list-group">
+        <div id="waiting-user-store-top5">
           <span class="spinner-border spinner-border-sm"></span>
           <span>데이터 로딩중...</span>
         </div>
-        <thead id="store-revenue-table-header" class="table-group-divider fw-normal"></thead>
-        <tbody id="store-revenue-table-body" class="table-group-divider fw-light"></tbody>
-      </table>
+      </ul>
     </div>
 
     <div class="container mb-4 text-center">
-      <h5>단골 고객</h5>
-      <table class="table align-middle">
-        <div id="waiting-store-user">
+      <h5>자주 주문한 상품명 Top 5</h5>
+      <ul id="user-item-top5" class="list-group">
+        <div id="waiting-user-item-top5">
           <span class="spinner-border spinner-border-sm"></span>
           <span>데이터 로딩중...</span>
         </div>
-        <thead id="store-user-table-header" class="table-group-divider fw-normal"></thead>
-        <tbody id="store-user-table-body" class="table-group-divider fw-light"></tbody>
-      </table>
+      </ul>
     </div>
 
     <script
@@ -65,7 +74,7 @@
     ></script>
     <!-- html에서 js 불러올때 나의 현재경로에 요청을 함 -->
     <!-- backend endpoint users/dfdfdfdfdfdfdf/user_detail.js 로 요청하기 때문에 / 필요. /를쓰면 express static 기준으로 찾음 -->
-    <script src="/header/header.js"></script>
-    <script src="/stores/store_detail.js"></script>
+    <script src="/html/header/header.js"></script>
+    <script src="/html/users/user_detail.js"></script>
   </body>
 </html>

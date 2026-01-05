@@ -18,11 +18,11 @@ const db = new Database(db_file);
  ******************/
 router.get("/stores", (req, res) => {
   console.log("루트 파일 주소는", __dirname);
-  res.sendFile(path.join(__dirname, "../../public/stores", "stores.html"));
+  res.sendFile(path.join(__dirname, "../../public/html/stores", "stores.html"));
 });
 
 router.get("/stores/:id", (req, res) => {
-  res.sendFile(path.join(__dirname, "../../public/stores", "store_detail.html"));
+  res.sendFile(path.join(__dirname, "../../public/html/stores", "store_detail.html"));
 });
 
 /******************

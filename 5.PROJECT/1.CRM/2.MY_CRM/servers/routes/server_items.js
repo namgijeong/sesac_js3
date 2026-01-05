@@ -18,16 +18,16 @@ const db = new Database(db_file);
  ******************/
 router.get("/items", (req, res) => {
   console.log("루트 파일 주소는", __dirname);
-  res.sendFile(path.join(__dirname, "../../public/items", "items.html"));
+  res.sendFile(path.join(__dirname, "../../public/html/items", "items.html"));
 });
 
 router.get("/items/:id", (req, res) => {
-  res.sendFile(path.join(__dirname, "../../public/items", "item_detail.html"));
+  res.sendFile(path.join(__dirname, "../../public/html/items", "item_detail.html"));
 });
 
 //kiosk item 페이지로 이동
 router.get('/kiosk/items',(req,res) => {
-  res.sendFile(path.join(__dirname, "../../public/kiosk", "item_list.html"));
+  res.sendFile(path.join(__dirname, "../../public/html/kiosk", "item_list.html"));
 })
 
 /******************
