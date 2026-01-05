@@ -1,8 +1,8 @@
-const express = require("express");
-const Database = require("better-sqlite3");
-const path = require("path");
+const express = require('express');
+const Database = require('better-sqlite3');
+const path = require('path');
 
-const db_file = "../mycrm_db.db";
+const db_file = '../mycrm_db.db';
 
 // express.Router()는 라우트들을 묶기 위한 독립적인 라우팅 객체
 // 즉,
@@ -12,30 +12,29 @@ const db_file = "../mycrm_db.db";
 const router = express.Router();
 const db = new Database(db_file);
 
-
 /******************
  * 사용자 요청 페이지 전달
  ******************/
-router.get("/items", (req, res) => {
-  console.log("루트 파일 주소는", __dirname);
-  res.sendFile(path.join(__dirname, "../../public/html/items", "items.html"));
+router.get('/items', (req, res) => {
+  console.log('루트 파일 주소는', __dirname);
+  res.sendFile(path.join(__dirname, '../../public/html/items', 'items.html'));
 });
 
-router.get("/items/:id", (req, res) => {
-  res.sendFile(path.join(__dirname, "../../public/html/items", "item_detail.html"));
+router.get('/items/:id', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../public/html/items', 'item_detail.html'));
 });
 
 //kiosk item 페이지로 이동
-router.get('/kiosk/items',(req,res) => {
-  res.sendFile(path.join(__dirname, "../../public/html/kiosk", "item_list.html"));
-})
+router.get('/kiosk/items', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../public/html/kiosk', 'item_list.html'));
+});
 
 /******************
  * 백엔드 API 요청
  ******************/
-router.get("/api/items", (req, res) => {
+router.get('/api/items', (req, res) => {
   //LIKE '%%'로 하면 모두 다 검색한다는 뜻
-  const searchName = req.query.name || "";
+  const searchName = req.query.name || '';
   const pageNum = parseInt(req.query.page) || 1;
   const itemsPerPage = 20; // 고정=> 하지만 좋은건 아님
   let totalPages = 0;
@@ -43,71 +42,66 @@ router.get("/api/items", (req, res) => {
   const totalCountQuery = `SELECT COUNT(itemId) AS count FROM items WHERE itemName LIKE ?`;
   const row = db.prepare(totalCountQuery).get([`%${searchName}%`]);
   console.log(row);
-  
+
   const searchCount = row.count;
   totalPages = Math.ceil(searchCount / itemsPerPage);
-  const startIndex = 0 + (pageNum - 1) * itemsPerPage; 
+  const startIndex = 0 + (pageNum - 1) * itemsPerPage;
 
   const itemsQuery = `SELECT * FROM items WHERE itemName LIKE ? LIMIT ? OFFSET ?`;
   try {
     const rows = db.prepare(itemsQuery).all([`%${searchName}%`, itemsPerPage, startIndex]);
-    
-    res.json({ totalPages: totalPages, data: rows });
 
+    res.json({ totalPages: totalPages, data: rows });
   } catch (err) {
-    console.error("상품 조회 실패:", err);
-    return res.status(500).json({ error: "상품 조회에 실패하였습니다." });
+    console.error('상품 조회 실패:', err);
+    return res.status(500).json({ error: '상품 조회에 실패하였습니다.' });
   }
 });
 
-router.get("/api/items/:id", (req, res) => {
+router.get('/api/items/:id', (req, res) => {
   const itemId = req.params.id;
   console.log(itemId);
-  const itemQuery = "SELECT * FROM items WHERE itemId=?";
+  const itemQuery = 'SELECT * FROM items WHERE itemId=?';
   let row;
-  try{
+  try {
     row = db.prepare(itemQuery).get([itemId]);
 
-     if (!row) {
-      console.error("상품 조회 실패:", err);
-      return res.status(404).json({ error: "상품 조회에 실패하였습니다." });
+    if (!row) {
+      console.error('상품 조회 실패:', err);
+      return res.status(404).json({ error: '상품 조회에 실패하였습니다.' });
     }
 
     res.json(row);
-
-  } catch (err){
-    console.error("상품 조회 실패:", err);
-    return res.status(500).json({ error: "상품 조회에 실패하였습니다." });
+  } catch (err) {
+    console.error('상품 조회 실패:', err);
+    return res.status(500).json({ error: '상품 조회에 실패하였습니다.' });
   }
-
 });
 
-router.get("/api/items_revenues/:id", (req, res) => {
+router.get('/api/items_revenues/:id', (req, res) => {
   const itemId = req.params.id;
   console.log(itemId);
   const itemRevenuesQuery = `
-  SELECT strftime('%Y-%m', o.orderAt) AS month, sum(CAST(i.itemPrice AS INTEGER)) AS revenue, COUNT(i.itemId) AS itemCount
-  FROM items i 
-  JOIN orderItems oi
-  ON i.itemId = oi.itemId
-  JOIN orders o
-  ON oi.orderId = o.orderId
-  GROUP BY i.itemId,month
-  HAVING i.itemId = ?
-  ORDER BY month DESC
+    SELECT strftime('%Y-%m', o.orderAt) AS month, sum(CAST(i.itemPrice AS INTEGER)) AS revenue, COUNT(i.itemId) AS itemCount
+    FROM items i 
+    JOIN orderItems oi
+    ON i.itemId = oi.itemId
+    JOIN orders o
+    ON oi.orderId = o.orderId
+    GROUP BY i.itemId,month
+    HAVING i.itemId = ?
+    ORDER BY month DESC
   `;
   let rows;
-  try{
+  try {
     //없으면 빈배열 반환
     rows = db.prepare(itemRevenuesQuery).all([itemId]);
 
     res.json(rows);
-
-  } catch (err){
-    console.error("상품의 매출액 조회 실패:", err);
-    return res.status(500).json({ error: "상품의 매출액 조회에 실패하였습니다." });
+  } catch (err) {
+    console.error('상품의 매출액 조회 실패:', err);
+    return res.status(500).json({ error: '상품의 매출액 조회에 실패하였습니다.' });
   }
-
 });
 
 module.exports = router;

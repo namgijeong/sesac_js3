@@ -1,12 +1,12 @@
-const express = require("express");
-const Database = require("better-sqlite3");
-const path = require("path");
+const express = require('express');
+const Database = require('better-sqlite3');
+const path = require('path');
 //require을 쓰려면 구버전 설치
 // npm install uuid@8
-const uuid = require("uuid");
+const uuid = require('uuid');
 
 const formatDateTime = require('../../public/js/util/datetime');
-const db_file = "../mycrm_db.db";
+const db_file = '../mycrm_db.db';
 
 // express.Router()는 라우트들을 묶기 위한 독립적인 라우팅 객체
 // 즉,
@@ -16,7 +16,7 @@ const db_file = "../mycrm_db.db";
 const router = express.Router();
 const db = new Database(db_file);
 
-router.post("/api/kiosk/order", (req, res) => {
+router.post('/api/kiosk/order', (req, res) => {
   /*
   let orderItemId;
   while (1) {
@@ -51,39 +51,34 @@ router.post("/api/kiosk/order", (req, res) => {
   //세션에서 로그인 정보 읽기
   if (!req.session.user) {
     console.log('로그인안함');
-    return res.status(500).json({ error: "로그인 필요" });
+    return res.status(500).json({ error: '로그인 필요' });
   }
 
   const userId = req.session.user.id;
 
   try {
     const orderQuery = `INSERT INTO orders(orderId, orderAt, storeId, userId) VALUES(?, ?, ?, ?)`;
-    db.prepare(orderQuery).run([
-      orderId,
-      formatDateTime(new Date()),
-      storeId,
-      userId,
-    ]);
+    db.prepare(orderQuery).run([orderId, formatDateTime(new Date()), storeId, userId]);
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ error: "최종 주문 접수 실패" });
+    return res.status(500).json({ error: '최종 주문 접수 실패' });
   }
 
   //foreach를 쓰면 return이 되도 반복문이 종료가 안됨
   for (const item of items) {
     const itemId = item;
     const orderItemId = uuid.v4();
-    
+
     try {
       const orderItemQuery = `INSERT INTO orderItems(orderItemId, orderId, itemId) VALUES(?, ?, ?)`;
       db.prepare(orderItemQuery).run([orderItemId, orderId, itemId]);
     } catch (err) {
       console.log(err);
-      return res.status(500).json({ error: "주문한 상품 접수 실패" });
+      return res.status(500).json({ error: '주문한 상품 접수 실패' });
     }
   }
 
-  res.status(200).json({ success: "주문이 접수되었습니다" });
+  res.status(200).json({ success: '주문이 접수되었습니다' });
 });
 
 module.exports = router;
