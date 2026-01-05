@@ -1,9 +1,7 @@
 const express = require('express');
-const Database = require('better-sqlite3');
-const path = require('path');
-const bcrypt = require('bcrypt');
 
-const db_file = '../mycrm_db.db';
+const { showUsersController, showUserController, showKioskController, kioskUserRegisterController } = require('../controller/user_controller');
+const { apiUsersController, apiUser, apiUsersPasswordReset, apiUserLoginCheck, apiUserOrders, apiUserStoresTop5, apiUserItemsTop5 } = require('../controller/user_api_controller');
 
 // express.Router()는 라우트들을 묶기 위한 독립적인 라우팅 객체
 // 즉,
@@ -11,214 +9,37 @@ const db_file = '../mycrm_db.db';
 // 근데 서버를 띄우는 역할은 안 함
 
 const router = express.Router();
-const db = new Database(db_file);
 
 /******************
  * 사용자 요청 페이지 전달
  ******************/
-router.get('/', (req, res) => {
-  console.log('루트 파일 주소는', __dirname);
-  res.sendFile(path.join(__dirname, '../../public/html/users', 'users.html'));
-});
+router.get('/', showUsersController);
 
-router.get('/users/:id', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../public/html/users', 'user_detail.html'));
-});
+router.get('/users/:id', showUserController);
 
 //키오스크 화면 보여주기
-router.get('/kiosk', (req, res) => {
-  console.log('루트 파일 주소는', __dirname);
-  res.sendFile(path.join(__dirname, '../../public/html/kiosk', 'user_login.html'));
-});
+router.get('/kiosk', showKioskController);
 
 //로그인 성공시 store list 페이지로 이동
-router.get('/kiosk/user/register', (req, res) => {
-  console.log('루트 파일 주소는', __dirname);
-  res.sendFile(path.join(__dirname, '../../public/html/kiosk', 'store_list.html'));
-});
+router.get('/kiosk/user/register', kioskUserRegisterController);
 
 /******************
  * 백엔드 API 요청
  ******************/
-router.get('/api/users', (req, res) => {
-  //LIKE '%%'로 하면 모두 다 검색한다는 뜻
-  const searchName = req.query.name || '';
-  const searchGender = req.query.gender === 'all' ? '%%' : req.query.gender;
-  console.log('gender', searchGender);
-  const pageNum = parseInt(req.query.page) || 1;
-  const itemsPerPage = 20; // 고정=> 하지만 좋은건 아님
-  let totalPages = 0;
+router.get('/api/users', apiUsersController);
 
-  const totalCountQuery = `SELECT COUNT(userId) AS count FROM users WHERE userName LIKE ? AND userGender LIKE ?`;
-  const row = db.prepare(totalCountQuery).get([`%${searchName}%`, `${searchGender}`]);
-  console.log(row);
-
-  const searchCount = row.count;
-  totalPages = Math.ceil(searchCount / itemsPerPage);
-  const startIndex = 0 + (pageNum - 1) * itemsPerPage;
-
-  const usersQuery = `SELECT * FROM users WHERE userName LIKE ? AND userGender LIKE ? LIMIT ? OFFSET ?`;
-  try {
-    const rows = db.prepare(usersQuery).all([`%${searchName}%`, `${searchGender}`, itemsPerPage, startIndex]);
-
-    res.json({ totalPages: totalPages, data: rows });
-  } catch (err) {
-    console.error('사용자 조회 실패:', err);
-    return res.status(500).json({ error: '사용자 조회에 실패하였습니다.' });
-  }
-});
-
-router.get('/api/users/:id', (req, res) => {
-  const userId = req.params.id;
-  console.log(userId);
-  const userQuery = 'SELECT * FROM users WHERE userId=?';
-  let row;
-  try {
-    row = db.prepare(userQuery).get([userId]);
-
-    if (!row) {
-      console.error('사용자 조회 실패:', err);
-      return res.status(404).json({ error: '사용자 조회에 실패하였습니다.' });
-    }
-
-    res.json(row);
-  } catch (err) {
-    console.error('사용자 조회 실패:', err);
-    return res.status(500).json({ error: '사용자 조회에 실패하였습니다.' });
-  }
-});
+router.get('/api/users/:id', apiUser);
 
 //이미 등록된 사용자 비번들 초기화 =>일시적
-router.get('/api/users/password/reset', (req, res) => {
-  const passwordToRegister = 'pass1234';
-
-  bcrypt.hash(passwordToRegister, 10, (err, hash) => {
-    if (err) {
-      console.error(err.message);
-    } else {
-      try {
-        const usersQuery = `UPDATE users SET userPassword = ?`;
-        const result = db.prepare(usersQuery).run([hash]);
-        if (result.changes > 0) {
-          res.status(200).json({ success: '사용자들 비밀번호 초기화 완료' });
-        }
-      } catch (err) {
-        return res.status(500).json({ error: '사용자들 비밀번호 초기화 실패' });
-      }
-    }
-  });
-});
+router.get('/api/users/password/reset', apiUsersPasswordReset);
 
 //로그인 검증
-router.post('/api/users/login/check', (req, res) => {
-  const userName = req.body.userName;
-  const userPassword = req.body.userPassword;
+router.post('/api/users/login/check', apiUserLoginCheck);
 
-  try {
-    const loginCheckQuery = 'SELECT * FROM users WHERE userName = ?';
-    const user = db.prepare(loginCheckQuery).get([userName]);
-    //console.log(user);
+router.get('/api/users_orders/:id', apiUserOrders);
 
-    if (user) {
-      // 저장된 해시와 입력된 패스워드를 비교
-      bcrypt.compare(userPassword, user.userPassword, (err, result) => {
-        //console.log(result);
-        if (result) {
-          //세션에 저장
-          req.session.user = {
-            id: user.userId,
-            username: user.userName,
-          };
+router.get('/api/users_stores_top5/:id', apiUserStoresTop5);
 
-          return res.status(200).json({ success: '사용자 로그인 완료' });
-
-          //왜 303?
-          //POST → GET 전환에 가장 안전
-          //새로고침 시 POST 재전송 방지
-          //res.redirect(303, "/kiosk/user/register");
-        } else {
-          return res.status(401).json({ error: '사용자 로그인 정보 불일치' });
-        }
-      });
-    } else {
-      return res.status(401).json({ error: '사용자 로그인 정보 불일치' });
-    }
-  } catch (err) {
-    return res.status(500).json({ error: '사용자 로그인 정보 불일치' });
-  }
-});
-
-router.get('/api/users_orders/:id', (req, res) => {
-  const userId = req.params.id;
-  console.log(userId);
-  const userOrderQuery = `
-    SELECT orderId AS orderId, orderAt AS 'purchased date', storeId AS 'purchased location'
-    FROM orders 
-    WHERE userId = ?
-    ORDER BY orderAt DESC
-  `;
-  let rows;
-
-  try {
-    // 없으면 빈배열 반환
-    rows = db.prepare(userOrderQuery).all([userId]);
-
-    res.json(rows);
-  } catch (err) {
-    console.error('사용자의 주문 조회 실패:', err);
-    return res.status(500).json({ error: '사용자의 주문 조회에 실패하였습니다.' });
-  }
-});
-
-router.get('/api/users_stores_top5/:id', (req, res) => {
-  const userId = req.params.id;
-  console.log(userId);
-  const userStoreTop5Query = `
-    SELECT COUNT(*) AS visitCount, s.storeName AS storeName
-    FROM users u
-    JOIN orders o ON u.userId = o.userId
-    JOIN stores s ON o.storeId = s.storeId 
-    WHERE u.userId = ?
-    GROUP BY s.storeId
-    ORDER BY visitCount DESC
-    LIMIT 5
-  `;
-  let rows;
-  try {
-    //없으면 빈배열 반환
-    rows = db.prepare(userStoreTop5Query).all([userId]);
-
-    res.json(rows);
-  } catch (err) {
-    console.error('사용자의 자주 방문한 매장 top5 조회 실패:', err);
-    return res.status(500).json({ error: '사용자의 자주 방문한 매장 top5 조회에 실패하였습니다.' });
-  }
-});
-
-router.get('/api/users_items_top5/:id', (req, res) => {
-  const userId = req.params.id;
-  console.log(userId);
-  const userItemTop5Query = `
-    SELECT COUNT(i.itemId) AS purchasedCount , i.itemName AS itemName
-    FROM users u
-    JOIN orders o ON u.userid = o.userId
-    JOIN orderItems oi ON o.orderId = oi.orderId
-    JOIN items i ON oi.itemId = i.itemId
-    WHERE u.userid = ?
-    GROUP BY i.itemId
-    ORDER BY purchasedCount DESC
-    LIMIT 5
-  `;
-  let rows;
-  try {
-    //없으면 빈배열 반환
-    rows = db.prepare(userItemTop5Query).all([userId]);
-
-    res.json(rows);
-  } catch (err) {
-    console.error('사용자의 자주 주문한 상품 top5 조회 실패:', err);
-    return res.status(500).json({ error: '사용자의 자주 주문한 상품 top5 조회에 실패하였습니다.' });
-  }
-});
+router.get('/api/users_items_top5/:id', apiUserItemsTop5);
 
 module.exports = router;
