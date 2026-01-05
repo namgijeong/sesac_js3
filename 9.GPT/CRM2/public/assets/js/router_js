@@ -1,0 +1,10 @@
+
+import { renderTable } from "./components/table_js";
+import { renderPagination } from "./components/pagination_js";
+
+export async function loadPage(name, page=1){
+  const res = await fetch(`/api/${name}?page=${page}`);
+  const data = await res.json();
+  renderTable(data.rows);
+  renderPagination(name, data.total, page);
+}

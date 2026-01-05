@@ -1,0 +1,15 @@
+
+export function renderTable(rows){
+  if(!rows.length){ document.getElementById("content").innerHTML="No Data"; return;}
+  const keys = Object.keys(rows[0]);
+  let html = "<table class='table table-bordered'><thead><tr>";
+  keys.forEach(k=>html+=`<th>${k}</th>`);
+  html+="</tr></thead><tbody>";
+  rows.forEach(r=>{
+    html+="<tr>";
+    keys.forEach(k=>html+=`<td>${r[k]}</td>`);
+    html+="</tr>";
+  });
+  html+="</tbody></table>";
+  document.getElementById("content").innerHTML = html;
+}

@@ -1,0 +1,10 @@
+
+const express = require("express");
+const router = express.Router();
+
+router.use("/users", require("./users_routes_js"));
+router.use("/stores", require("./stores_routes_js"));
+router.use("/items", require("./items_routes_js"));
+router.use("/orders", require("./orders_routes_js"));
+
+module.exports = router;

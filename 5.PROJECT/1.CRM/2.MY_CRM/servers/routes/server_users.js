@@ -157,14 +157,15 @@ router.get("/api/users_orders/:id", (req, res) => {
   const userId = req.params.id;
   console.log(userId);
   const userOrderQuery = `
-  SELECT orderId AS orderId, orderAt AS 'purchased date' , storeId AS 'purchased location'
-  FROM orders 
-  WHERE userId = ?
-  ORDER BY orderAt DESC
+    SELECT orderId AS orderId, orderAt AS 'purchased date', storeId AS 'purchased location'
+    FROM orders 
+    WHERE userId = ?
+    ORDER BY orderAt DESC
   `;
   let rows;
+
   try {
-    //없으면 빈배열 반환
+    // 없으면 빈배열 반환
     rows = db.prepare(userOrderQuery).all([userId]);
 
     res.json(rows);
@@ -211,12 +212,9 @@ router.get("/api/users_items_top5/:id", (req, res) => {
   const userItemTop5Query = `
   SELECT COUNT(i.itemId) AS purchasedCount , i.itemName AS itemName
   FROM users u
-  JOIN orders o
-  ON u.userid = o.userId
-  JOIN orderItems oi
-  ON o.orderId = oi.orderId
-  JOIN items i
-  ON oi.itemId = i.itemId
+  JOIN orders o ON u.userid = o.userId
+  JOIN orderItems oi ON o.orderId = oi.orderId
+  JOIN items i ON oi.itemId = i.itemId
   WHERE u.userid = ?
   GROUP BY i.itemId
   ORDER BY purchasedCount DESC
