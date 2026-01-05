@@ -5,6 +5,7 @@ const path = require("path");
 // npm install uuid@8
 const uuid = require("uuid");
 
+const formatDateTime = require('../../public/js/util/datetime');
 const db_file = "../mycrm_db.db";
 
 // express.Router()는 라우트들을 묶기 위한 독립적인 라우팅 객체
@@ -14,17 +15,6 @@ const db_file = "../mycrm_db.db";
 
 const router = express.Router();
 const db = new Database(db_file);
-
-function formatDateTime(date) {
-  const yyyy = date.getFullYear();
-  const mm = String(date.getMonth() + 1).padStart(2, "0");
-  const dd = String(date.getDate()).padStart(2, "0");
-  const hh = String(date.getHours()).padStart(2, "0");
-  const mi = String(date.getMinutes()).padStart(2, "0");
-  const ss = String(date.getSeconds()).padStart(2, "0");
-
-  return `${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}`;
-}
 
 router.post("/api/kiosk/order", (req, res) => {
   /*

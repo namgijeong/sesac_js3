@@ -142,11 +142,11 @@ router.post("/api/users/login/check", (req, res) => {
           //새로고침 시 POST 재전송 방지
           //res.redirect(303, "/kiosk/user/register");
         } else {
-          return res.status(500).json({ error: "사용자 로그인 정보 불일치" });
+          return res.status(401).json({ error: "사용자 로그인 정보 불일치" });
         }
       });
     } else {
-      return res.status(500).json({ error: "사용자 로그인 정보 불일치" });
+      return res.status(401).json({ error: "사용자 로그인 정보 불일치" });
     }
   } catch (err) {
     return res.status(500).json({ error: "사용자 로그인 정보 불일치" });
