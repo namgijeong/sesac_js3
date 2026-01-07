@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 
+    relative => position: relative
+    overflow-x-auto => overflow-x: auto
+    shadow-md => box-shadow: medium
+    sm:rounded-lg => 화면 너비 ≥ 640px 일 때만 모서리를 크게 둥글게
+
+    w-full => 부모 요소의 가로를 꽉 채움
+    text-sm => 기본(text-base)보다 작은 글씨
+    text-left => 기본 텍스트 왼쪽 정렬
+    rtl:text-right => RTL 언어(아랍어, 히브리어 등) 용 오른쪽 정렬 
+    dark: => 다크모드일 때 글자색 변경
+
+    text-xs => 가장 작은 글자 크기 중 하나
+    uppercase => 모든 글자를 대문자
+
+    sr-only => 화면에는 숨기고, 스크린 리더(시각장애인용)에게만 읽히는 텍스트
+    border-b => 아래쪽(bottom)에만 테두리를 준다
+
+    md:w-32 => md 미디어쿼리 이상시 width 길이
+    max-w-full => max-width: 100%;
+    max-h-full => max-width: 100%;
+
+    flex-col => flex 방향을 세로(column)로 바꾼 것
+    items-center => align-items: center;
+    justify-center => justify-content:center;
+
+    me => margin-inline-end
+
+    h-6 => 높이
+    w-6 => 너비
+    border => 테두리 있음
+    rounded-full => 완전한 원
+    font-medium => 글자 두께: 중간 (500)
+    focus: => focus시에
+    ring => box-shadow 기반의 “포커스 강조 효과
+
+    inline-flex  => display: inline-flex; inline 요소처럼 동작, 내부 정렬은 flex랑 완전히 동일
+    -->
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th scope="col" class="px-16 py-3">
+              <span class="sr-only">Image</span>
+            </th>
+            <th scope="col" class="px-6 py-3">Product</th>
+            <th scope="col" class="px-6 py-3">Qty</th>
+            <th scope="col" class="px-6 py-3">Price</th>
+            <th scope="col" class="px-6 py-3">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <td class="p-4">
+              <img src="https://flowbite.com/docs/images/products/apple-watch.png" class="w-16 md:w-32 max-w-full max-h-full" alt="Apple Watch" />
+            </td>
+            <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">Apple Watch</td>
+            <td class="px-6 py-4">
+              <div class="flex items-center">
+                <button
+                  class="inline-flex items-center justify-center p-1 me-3 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                  type="button"
+                >
+                  <span class="sr-only">Quantity button</span>
+                  <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
+                  </svg>
+                </button>
+                <div>
+                  <input
+                    type="number"
+                    id="first_product"
+                    class="bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="1"
+                    required
+                  />
+                </div>
+                <button
+                  class="inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                  type="button"
+                >
+                  <span class="sr-only">Quantity button</span>
+                  <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
+                  </svg>
+                </button>
+              </div>
+            </td>
+            <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">$599</td>
+            <td class="px-6 py-4">
+              <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
+            </td>
+          </tr>
+          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <td class="p-4">
+              <img src="https://flowbite.com/docs/images/products/imac.png" class="w-16 md:w-32 max-w-full max-h-full" alt="Apple iMac" />
+            </td>
+            <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">iMac 27"</td>
+            <td class="px-6 py-4">
+              <div class="flex items-center">
+                <button
+                  class="inline-flex items-center justify-center p-1 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                  type="button"
+                >
+                  <span class="sr-only">Quantity button</span>
+                  <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
+                  </svg>
+                </button>
+                <div class="ms-3">
+                  <input
+                    type="number"
+                    id="first_product"
+                    class="bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="1"
+                    required
+                  />
+                </div>
+                <button
+                  class="inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                  type="button"
+                >
+                  <span class="sr-only">Quantity button</span>
+                  <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
+                  </svg>
+                </button>
+              </div>
+            </td>
+            <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">$2499</td>
+            <td class="px-6 py-4">
+              <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
+            </td>
+          </tr>
+          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <td class="p-4">
+              <img src="https://flowbite.com/docs/images/products/iphone-12.png" class="w-16 md:w-32 max-w-full max-h-full" alt="iPhone 12" />
+            </td>
+            <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">IPhone 12</td>
+            <td class="px-6 py-4">
+              <div class="flex items-center">
+                <button
+                  class="inline-flex items-center justify-center p-1 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                  type="button"
+                >
+                  <span class="sr-only">Quantity button</span>
+                  <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
+                  </svg>
+                </button>
+                <div class="ms-3">
+                  <input
+                    type="number"
+                    id="first_product"
+                    class="bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="1"
+                    required
+                  />
+                </div>
+                <button
+                  class="inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                  type="button"
+                >
+                  <span class="sr-only">Quantity button</span>
+                  <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
+                  </svg>
+                </button>
+              </div>
+            </td>
+            <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">$999</td>
+            <td class="px-6 py-4">
+              <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
