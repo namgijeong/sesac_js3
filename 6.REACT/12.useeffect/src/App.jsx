@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import UserCard from './components/UserCard';
-import SearchBox from './SearchBox';
+import SearchBox from './components/SearchBox';
 
 function App() {
   //const [count, setCount] = useState(0);
@@ -40,6 +40,7 @@ function App() {
     setSearchKeyword(name);
   }
 
+  //컴포넌트 함수 본문에 있는 모든 코드는 “렌더링 시점마다 실행된다”
   const filteredUsers = users.filter(u=> u.name.toLowerCase().includes(searchKeyword.toLowerCase()));
   
 

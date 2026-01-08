@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import TodoForm from './components/TodoForm.jsx';
 import TodoList from './components/TodoList.jsx';
+import TodoCount from './components/TodoCount.jsx';
+import TodoVisible from './components/TodoVisible.jsx';
 
 function TodoApp() {
   const [todos, setTodos] = useState([
@@ -11,7 +13,11 @@ function TodoApp() {
   //controlled 상태 - 입력박스 내용
   const [text, setText] = useState('');
   //완료 갯수 상태
-  const [completedCount, setCompletedCount] = useState(0);
+  //const [completedCount, setCompletedCount] = useState(0);
+  //전체 갯수 상태
+  //const [totalCount, setTotalCount] = useState(todos.length);
+  //완료 항목 숨기기 체크 상태 
+  const [hide, setHide] = useState(false);
 
   function addTodo(e) {
     e.preventDefault();
@@ -28,7 +34,6 @@ function TodoApp() {
     //새로운 것을 앞에 추가
     //렌더링이 끝난 이후에 이 콜백함수가 실행되도록
     setTodos((prev) => [newTodo, ...prev]);
-
     setText('');
 
     //이렇게 하는건 비추천
@@ -54,12 +59,13 @@ function TodoApp() {
   }
 
   function toggleTodo(id) {
-    setTodos((prev) => {
+    setTodos((prev) => { 
       return prev.map((t) => {
         if (t.id !== id) return t;
         return { ...t, done: !t.done }; //다른 컬럼은 두고 done 컬럼만 덮어쓰기
       });
     });
+
 
     //하면 안되는 예시
     //직접 다이렉트로 변경해도 안되고,
@@ -80,12 +86,32 @@ function TodoApp() {
     // setTodos(todos);
   }
 
+  function visibleChange(hide){
+    setHide(hide);
+  }
+
+  //첫번째 방법 => 내가 한 방법
+  // useEffect(()=>{
+  //   let count = todos.filter((t) => t.done === true).length;
+  //   setCompletedCount((prev) => {
+  //     return count
+  //   });
+  //   setTotalCount(todos.length);
+  // },[todos]);
+
+  //두번째 방법
+  //todos로부터 계산 가능한 값은 state로 저장하지 말고 렌더링 때 계산해라
+  const totalCount = todos.length;
+  const completedCount = todos.filter(t => t.done).length;
+
   return (
     <>
       <div style={{padding:16, maxWidth:500}}>
         <h2>할일 목록</h2>
+        <TodoCount completedCount={completedCount} totalCount={totalCount}/>
         <TodoForm text={text} setText={setText} onAdd={addTodo} />
-        <TodoList todos={todos} onToggle={toggleTodo} onDelete={deleteTodo} />
+        <TodoVisible onChange={visibleChange}/>
+        <TodoList hide={hide} todos={todos} onToggle={toggleTodo} onDelete={deleteTodo} />
       </div>
     </>
   );
