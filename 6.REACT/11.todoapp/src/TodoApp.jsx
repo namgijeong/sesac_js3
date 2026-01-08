@@ -8,9 +8,10 @@ function TodoApp() {
     { id: 1, text: 'React  공부하기', done: false },
     { id: 2, text: 'vite  공부하기', done: false },
   ]);
-
-  //controlled 상태
+  //controlled 상태 - 입력박스 내용
   const [text, setText] = useState('');
+  //완료 갯수 상태
+  const [completedCount, setCompletedCount] = useState(0);
 
   function addTodo(e) {
     e.preventDefault();
@@ -33,8 +34,8 @@ function TodoApp() {
     //이렇게 하는건 비추천
     //setTodos([newTodo, ...todos]);
 
-    // 1. setTodos([newTodo, 'A', 'B'])      // 예약
-    // 2. setTodos([anotherTodo, 'A', 'B']) // 예약
+    // 1. setTodos([newTodo, ...todos])      // 예약
+    // 2. setTodos([newTodo, ...todos]) // 예약
     // 3. batching 종료
     //Batching = 여러 개의 state 업데이트를 한 번의 렌더링으로 묶는 것
     //큐에 쌓인 업데이트들을 계산
@@ -43,10 +44,10 @@ function TodoApp() {
     // 4. 마지막 예약값으로 state 갱신
     // 첫 번째 업데이트는 덮어써져서 사라짐
 
-    // setTodos([newTodo, 'A', 'B'])  // 예약 1
-    // setTodos([newTodo, 'A', 'B'])  // 예약 2
+    // setTodos([newTodo, ...todos])  // 예약 1
+    // setTodos([newTodo, ...todos])  // 예약 2
     // ...
-    // setTodos([newTodo, 'A', 'B'])  // 예약 10
+    // setTodos([newTodo, ...todos])  // 예약 10
     // batching 종료
     // → 마지막 예약값만 사용, newTodo가 10번 들어가지 않음
     // [newTodo, 'A', 'B']
