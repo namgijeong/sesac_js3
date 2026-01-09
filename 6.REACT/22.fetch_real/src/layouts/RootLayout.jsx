@@ -3,7 +3,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 //메뉴 아래 나오는 실제 페이지가 표시될곳 Outlet
 
 const linkStyle = ({isActive}) => ({
-    texteDecoration:'none',
+    textDecoration:'none',
     fontWeight: isActive ? 700 :400,
 })
 export default function RootLayout() {
