@@ -13,6 +13,7 @@ export default function RootLayout() {
       <nav style={{display:'flex',gap:12, marginBottom:16}}>
         <NavLink to="/" end style={linkStyle}>Home</NavLink>
         <NavLink to="/users" style={linkStyle}>Users</NavLink>
+        <NavLink to="/posts" style={linkStyle}>Posts</NavLink>
         <NavLink to="/about" style={linkStyle}>About</NavLink>
       </nav>
 

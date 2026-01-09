@@ -4,8 +4,10 @@ import RootLayout from './layouts/RootLayout.jsx';
 import Home from './pages/Home.jsx';
 import Users from './pages/Users.jsx';
 import UserDetail from './pages/UserDetail.jsx';
+import Posts from './pages/Posts.jsx';
 import About from './pages/About.jsx';
 import NotFound from './pages/NotFound.jsx';
+
 function App() {
   return (
     <Routes>
@@ -27,6 +29,7 @@ function App() {
            <Route path=":userId" element={<UserDetail />} />
         </Route> */}
 
+        <Route path="posts" element={<Posts/>}/>
         <Route path="about" element={<About />} />
 
         {/* 404 페이지 */}

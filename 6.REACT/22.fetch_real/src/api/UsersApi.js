@@ -11,6 +11,16 @@ async function requestJson(url) {
   return res.json();
 }
 
+export async function deleteUserById(userId) {
+  const res = await fetch(`${BASE_URL}/users/${userId}`, {
+    method: 'DELETE',
+  });
+
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status}`);
+  }
+}
+
 export async function fetchUsers() {
   return requestJson(`${BASE_URL}/users`);
 }
