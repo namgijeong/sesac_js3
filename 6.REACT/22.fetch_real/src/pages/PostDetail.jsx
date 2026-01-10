@@ -2,6 +2,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 import { fetchPostById } from '../api/PostsApi';
+import Comments from './Comments';
 
 const PostDetail = () => {
   const { postId } = useParams();
@@ -26,10 +27,6 @@ const PostDetail = () => {
     fetchData();
   }, [postId]);
 
-  useEffect(() => {
-    console.log(post);
-  }, [post]);
-
   const goback = () => {
     navigate(-1);
   };
@@ -43,7 +40,7 @@ const PostDetail = () => {
   if (errorMsg) {
     return (
       <div>
-        <h1>Users</h1>
+        <h1>Post</h1>
         <p style={{ color: 'crimson' }}>에러: {errorMsg}</p>
         <p>다시 시도...</p>
         <button onClick={() => window.location.reload()}>새로고침</button>
@@ -62,6 +59,7 @@ const PostDetail = () => {
       <hr />
       <p>{post.body}</p>
       <hr />
+      <Comments postId={postId}/>
     </>
   );
 };

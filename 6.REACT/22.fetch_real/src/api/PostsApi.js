@@ -20,3 +20,9 @@ export async function fetchPostById(postId){
     const data = await requestJson(`${BASE_URL}/posts/${postId}`);
     return data;
 }
+
+export async function fetchComments(postId){
+    const data = await requestJson(`${BASE_URL}/posts/${postId}/comments`);
+    return data;
+}
+
