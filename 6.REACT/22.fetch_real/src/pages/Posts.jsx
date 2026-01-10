@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 
 import { fetchPosts } from '../api/PostsApi';
 
@@ -83,7 +84,6 @@ const Posts = () => {
     const startIndex = (page - 1) * SHOW_POSTS_COUNT;
     const endIndex = startIndex + SHOW_POSTS_COUNT;
     setPaginationPosts(posts.slice(startIndex, endIndex));
-    
   }
 
   const totalPages = Math.max(1, Math.ceil(posts.length / SHOW_POSTS_COUNT));
@@ -113,13 +113,25 @@ const Posts = () => {
 
     const buttonList = [];
     if (prevButton) {
-      buttonList.push(<button key={startButtonBlockIndex - 1} onClick={() => setPage(startButtonBlockIndex - 1)}>prev</button>);
+      buttonList.push(
+        <button key={startButtonBlockIndex - 1} onClick={() => setPage(startButtonBlockIndex - 1)}>
+          prev
+        </button>,
+      );
     }
     for (let i = startButtonBlockIndex; i <= endButtonBlockIndex; i++) {
-      buttonList.push(<button key={i} onClick={() => setPage(i)}>{i}</button>);
+      buttonList.push(
+        <button key={i} onClick={() => setPage(i)}>
+          {i}
+        </button>,
+      );
     }
     if (nextButton) {
-      buttonList.push(<button key={endButtonBlockIndex + 1} onClick={() => setPage(endButtonBlockIndex + 1)}>next</button>);
+      buttonList.push(
+        <button key={endButtonBlockIndex + 1} onClick={() => setPage(endButtonBlockIndex + 1)}>
+          next
+        </button>,
+      );
     }
     return buttonList;
   }
@@ -133,10 +145,12 @@ const Posts = () => {
         <ul>
           {paginationPosts.map((p) => (
             <div key={p.id} style={{ marginBottom: 50 }}>
-              <div>작성자: {p.userId}</div>
-              <div>게시글 번호: {p.id}</div>
-              <div>제목: {p.title}</div>
-              <div>내용: {p.body}</div>
+              <Link to={`/posts/${p.id}`}>
+                <div>게시글 번호: {p.id}</div>
+              </Link>  
+                <div>작성자: {p.userId}</div>
+                <div>제목: {p.title}</div>
+                <div>내용: {p.body}</div> 
             </div>
           ))}
         </ul>

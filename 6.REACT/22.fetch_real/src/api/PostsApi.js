@@ -16,3 +16,7 @@ export async function fetchPosts(){
     return data;
 }
 
+export async function fetchPostById(postId){
+    const data = await requestJson(`${BASE_URL}/posts/${postId}`);
+    return data;
+}
