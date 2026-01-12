@@ -1,6 +1,6 @@
 import TextInput from './TextInput';
 
-export default function LoginForm({ form, message, canSubmit, onChange, onSubmit}) {
+export default function LoginForm({ form, message, canSubmit, onChange, onSubmit, idRef, pwRef}) {
     const boxStyle = {
         padding: 10, border: '1px solid #ddd', borderRadius: 8 
     }
@@ -8,8 +8,8 @@ export default function LoginForm({ form, message, canSubmit, onChange, onSubmit
 
   return (
     <form onSubmit={onSubmit} style={{ display: 'grid', gap: 10 }}>
-      <TextInput label="아이디" name="id" value={form.id} onChange={onChange} />
-      <TextInput label="비밀번호" name="pw" type="password" value={form.pw} onChange={onChange} />
+      <TextInput label="아이디" name="id" value={form.id} onChange={onChange} inputRef={idRef}/>
+      <TextInput label="비밀번호" name="pw" type="password" value={form.pw} onChange={onChange} inputRef={pwRef}/>
 
       {/* 아이디 저장 체크박스 */}
       <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
