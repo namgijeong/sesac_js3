@@ -2,7 +2,6 @@ import { useEffect, useState, useMemo, useRef } from 'react';
 import { fetchLogin } from '../api/auth';
 
 const SAVED_ID_KEY = 'saved_login_id';
-
 function getInitialForm() {
   const savedId = localStorage.getItem(SAVED_ID_KEY);
   return {
@@ -14,7 +13,7 @@ function getInitialForm() {
 }
 
 //커스텀훅 => use로 시작하고, 내부에서 다른 hook을 호출, JSX를 리턴하지 않는 함수
-export function useLoginForm() {
+export const useLoginForm = () => {
   //const [form, setForm] = useState(getInitialForm());  // lazy init 아님,  불릴때 마다 실행됨
   const [form, setForm] = useState(() => getInitialForm()); // lazy init 이 페이지가 불릴때 1회만 호출
   //const [form, setForm] = useState({ id: '', pw: '', rememberId: false });
@@ -96,15 +95,16 @@ export function useLoginForm() {
       setMessage({ type: 'success', text: '로그인 성공' });
       setForm((prev) => ({ ...prev, pw: '' }));
 
-      //사용자 정보 반환
       return user;
+
     } catch (err) {
       localStorage.removeItem(SAVED_ID_KEY);
-      setMessage({ type: 'error', text: `로그인 실패: ${err.message || '오류가 발생했습니다.'}` });
+      setMessage({ type: 'error', text: '로그인 실패: 아이디 또는 비밀번호가 틀렸습니다.' });
       setForm((prev) => ({ ...prev, pw: '' }));
+
       throw err;
     }
   };
 
   return { form, message, canSubmit, updateField, submit, idRef, pwRef };
-}
+};

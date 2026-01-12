@@ -1,4 +1,4 @@
-import {useAuth} from '../auth/AuthProvider.jsx';
+import { useAuth } from "../auth/AuthProvider";
 
 export default function ProfilePage(){
     const {user} = useAuth();
