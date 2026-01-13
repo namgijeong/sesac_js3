@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@theme {
+  --color-pastel-bg: #fdfbf7;
+  --color-pastel-card: #ffffff;
+  --color-pastel-primary: #b8c6db;
+  --color-pastel-secondary: #f5f7fa;
+  --color-pastel-accent: #ffb7b2;
+  --color-pastel-green: #c7e9c0;
+  --color-pastel-blue: #c6dbef;
+  --color-pastel-yellow: #fff7bc;
+  --color-pastel-text: #4a4a4a;
+  --color-pastel-muted: #9ca3af;
+}
+
+@layer base {
+  body {
+    @apply bg-pastel-bg text-pastel-text font-sans antialiased;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 cursor-pointer border border-transparent shadow-sm hover:shadow-md active:scale-95;
+  }
+
+  .btn.primary {
+    @apply bg-pastel-primary text-slate-800 hover:bg-slate-300;
+  }
+
+  .btn.danger {
+    @apply bg-red-100 text-red-700 hover:bg-red-200;
+  }
+
+  .btn.ghost {
+    @apply bg-transparent hover:bg-gray-100 text-gray-600;
+  }
+
+  .input {
+    @apply w-full px-3 py-2 rounded-lg border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-pastel-primary/50 focus:border-pastel-primary transition-all;
+  }
+
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 p-4 transition-all hover:shadow-md;
+  }
+}
+
+/* Custom scrollbar for Gantt */
+.gantt-scroll::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.gantt-scroll::-webkit-scrollbar-track {
+  @apply bg-gray-100 rounded;
+}
+
+.gantt-scroll::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded hover:bg-gray-400;
+}

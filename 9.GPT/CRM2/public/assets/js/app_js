@@ -1,6 +1,0 @@
-
-import { renderNavbar } from "./components/navbar_js";
-import { loadPage } from "./router_js";
-
-renderNavbar();
-loadPage("users");
