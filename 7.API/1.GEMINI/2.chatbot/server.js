@@ -20,7 +20,7 @@ app.post('/api/chat', async (req, res) => {
 
   history.push({role:'user', parts:[{text:message}]});
   
-  history.history.slice(-20); //최근 20개만 남기고 다 버린다
+  history.slice(-20); //최근 20개만 남기고 다 버린다
 
   console.log('---질문 시작----');
   console.log(history);
