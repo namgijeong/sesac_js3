@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <style>
+      #map {
+        height: 480px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+      //맨처음 페이지 열릴때 지도 초점 좌표/ zoom 하는 정도
+      var map = L.map('map').setView([37.578, 126.877], 12);
+
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map);
+
+      // 서울 관광지 명소 (검증된 이미지 URL: Wikimedia Special:FilePath)
+      let touristSpots = [
+        {
+          name: '경복궁',
+          location: [37.5796, 126.977],
+          description: '조선의 법궁으로 근정전과 경회루가 유명한 대표 궁궐이다.',
+          imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Gyeongbokgung_Geunjeongjeon.jpg',
+        },
+        {
+          name: '명동',
+          location: [37.5636, 126.982],
+          description: '쇼핑·음식·뷰티 매장이 밀집한 서울 대표 관광 상권이다.',
+          imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Myeong-dong_street_by_night.JPG',
+        },
+        {
+          name: '광화문 광장',
+          location: [37.5714, 126.9769],
+          description: '세종대로 중심에 있는 도심 광장으로 산책과 전시가 많다.',
+          imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Gwanghwamun_plaza.jpg',
+        },
+        {
+          name: '청계천',
+          location: [37.5702, 126.991],
+          description: '도심을 가로지르는 산책 코스로 야경과 이벤트가 인기다.',
+          imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Cheonggyecheon.jpg',
+        },
+        {
+          name: '북촌한옥마을',
+          location: [37.5826, 126.983],
+          description: '전통 한옥이 보존된 골목 풍경으로 사진 명소로 유명하다.',
+          imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Bukchon_Hanok_Village.jpg',
+        },
+        {
+          name: '인사동',
+          location: [37.5742, 126.9847],
+          description: '전통 공예·갤러리·찻집이 모인 서울의 전통 문화 거리다.',
+          imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Insadong_Street_in_Seoul.jpg',
+        },
+        {
+          name: '창덕궁',
+          location: [37.5794, 126.991],
+          description: '유네스코 세계유산으로 자연 지형을 살린 궁궐 배치가 특징이다.',
+          imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Changdeokgung-Injeongjeon.jpg',
+        },
+        {
+          name: '반포 달빛무지개분수',
+          location: [37.5096, 126.9957],
+          description: '반포대교에서 밤에 펼쳐지는 분수 쇼로 한강 야경 명소다.',
+          imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Banpo_Moonlight_Rainbow_Fountain.jpg',
+        },
+        {
+          name: '뚝섬 한강공원',
+          location: [37.5312, 127.0669],
+          description: '피크닉·자전거·야경을 즐기기 좋은 한강 대표 공원이다.',
+          imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Han_river_park_night_view.jpg',
+        },
+        {
+          name: '63빌딩',
+          location: [37.5194, 126.9407],
+          description: '여의도 한강변 랜드마크로 전망과 야경 포인트로 유명하다.',
+          imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Seoul_Building63.jpg',
+        },
+      ];
+
+      touristSpots.forEach((spot) => {
+        //let marker = L.marker(spot.location).addTo(map).bindPopup(spot.name);
+
+        const heartIcon = L.icon({
+          iconUrl: 'https://cdn-icons-png.flaticon.com/512/188/188333.png',
+          iconSize: [36, 36],
+          iconAnchor: [18, 36],
+          popupAnchor: [0, -36],
+        });
+
+        let marker = L.marker(spot.location, { icon: heartIcon }).addTo(map);
+        marker.on('click', () => {
+          //이미지를 먼저 로드하고, 로드가 완료된 다음에 팝업을 띄운다
+          let image = new Image();
+          image.src = spot.imageUrl;
+          image.style.width = '100%';
+
+          image.onload = () => {
+            let popupContent = `
+              <div>
+                <h3>${spot.name}</h3>
+                <p>${spot.description}</p>
+                <img src="${spot.imageUrl}" style="width:100%"/>
+              </div>  
+            `;
+
+            //map.flyTo(spot.location, 16);
+
+            //bindPopup을 덮어쓰는것이다.
+            let popup = L.popup().setLatLng(spot.location).setContent(popupContent).openOn(map);
+          };
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>데이트 플랜 (Leaflet + 무료 지오코딩)</title>
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; }
+      .wrap { max-width: 960px; margin: 0 auto; padding: 16px; }
+      .row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
+      .row input[type="text"] { flex: 1; min-width: 220px; padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; }
+      button { padding: 10px 12px; border: 0; border-radius: 8px; cursor: pointer; }
+      .btn { background: #111; color: #fff; }
+      .btn2 { background: #f2f2f2; }
+      .btn-danger { background: #ffeded; color: #b00020; }
+      .small { font-size: 12px; color: #666; }
+      #map { height: 520px; border-radius: 14px; overflow: hidden; border: 1px solid #eee; margin-top: 12px; }
+      .stop-item { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: center; }
+      .badge { font-size: 12px; padding: 6px 8px; border-radius: 999px; background: #f2f2f2; color: #333; }
+      .status { margin-top: 8px; font-size: 13px; color: #333; white-space: pre-line; }
+      .muted { color: #777; }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <h2 style="margin: 0 0 8px;">데이트 플랜 (주소 → 좌표 → 선 연결)</h2>
+      <div class="small">
+        주소는 한글로 입력해도 됨. “경로찾기”를 누르면 무료 지오코딩으로 좌표를 얻고, Leaflet polyline으로 순서대로 연결함.
+      </div>
+
+      <div class="row" style="margin-top: 12px;">
+        <button class="btn2" id="addStopBtn">+ 장소 추가</button>
+        <button class="btn" id="routeBtn">경로찾기</button>
+        <button class="btn2" id="clearBtn">선/마커 지우기</button>
+      </div>
+
+      <div id="stops"></div>
+
+      <div class="status" id="status"></div>
+
+      <div id="map"></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+      // ---------------------------
+      // 1) 지도 기본 세팅
+      // ---------------------------
+      const map = L.map("map").setView([37.5665, 126.9784], 12);
+
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: "&copy; OpenStreetMap",
+      }).addTo(map);
+
+      // ---------------------------
+      // 2) UI: 장소 입력 줄 관리
+      // ---------------------------
+      const stopsEl = document.getElementById("stops");
+      const statusEl = document.getElementById("status");
+
+      let stopIdSeq = 1;
+
+      function makeStopRow(value = "") {
+        const id = stopIdSeq++;
+        const row = document.createElement("div");
+        row.className = "stop-item";
+        row.dataset.stopId = String(id);
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.placeholder = "예) 서울특별시 중구 세종대로 110 (서울시청)";
+        input.value = value;
+
+        const badge = document.createElement("span");
+        badge.className = "badge";
+        badge.textContent = "좌표: -";
+
+        const delBtn = document.createElement("button");
+        delBtn.className = "btn-danger";
+        delBtn.textContent = "삭제";
+        delBtn.onclick = () => row.remove();
+
+        row.appendChild(input);
+        row.appendChild(badge);
+        row.appendChild(delBtn);
+
+        return row;
+      }
+
+      function addStop(value = "") {
+        stopsEl.appendChild(makeStopRow(value));
+      }
+
+      // 기본 2개(출발/도착)
+      addStop("서울특별시 중구 세종대로 110 서울시청");
+      addStop("서울특별시 강남구 테헤란로 152 강남역");
+
+      document.getElementById("addStopBtn").addEventListener("click", () => addStop(""));
+
+      // ---------------------------
+      // 3) 무료 지오코딩: Nominatim (무인증)
+      // ---------------------------
+      // 주소(문자열) -> {lat, lon} or null
+      async function geocodeAddress(address) {
+        const q = encodeURIComponent(address);
+        // accept-language=ko 로 한글 결과 우선
+        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${q}&limit=1&accept-language=ko`;
+
+        const res = await fetch(url, {
+          headers: {
+            // 브라우저에서 User-Agent를 못 바꾸니, 최소한 Referer 기반으로 동작하는 경우가 많음.
+            // (Nominatim은 과도한 요청을 막기 때문에 사용량은 꼭 조심!)
+          },
+        });
+
+        if (!res.ok) return null;
+
+        const data = await res.json();
+        if (!data || data.length === 0) return null;
+
+        return {
+          lat: parseFloat(data[0].lat),
+          lng: parseFloat(data[0].lon),
+          displayName: data[0].display_name,
+        };
+      }
+
+      function sleep(ms) {
+        return new Promise((r) => setTimeout(r, ms));
+      }
+
+      // ---------------------------
+      // 4) 지도에 표시: 마커/라인 관리
+      // ---------------------------
+      let markers = [];
+      let routeLine = null;
+
+      function clearMapLayers() {
+        markers.forEach((m) => map.removeLayer(m));
+        markers = [];
+        if (routeLine) {
+          map.removeLayer(routeLine);
+          routeLine = null;
+        }
+        statusEl.textContent = "";
+      }
+
+      document.getElementById("clearBtn").addEventListener("click", clearMapLayers);
+
+      // ---------------------------
+      // 5) 경로찾기(=지오코딩 후 직선 연결)
+      // ---------------------------
+      document.getElementById("routeBtn").addEventListener("click", async () => {
+        clearMapLayers();
+
+        const rows = Array.from(stopsEl.querySelectorAll(".stop-item"));
+        const addresses = rows
+          .map((row) => row.querySelector('input[type="text"]').value.trim())
+          .filter((v) => v.length > 0);
+
+        if (addresses.length < 2) {
+          statusEl.textContent = "장소를 최소 2개 이상 입력해줘.";
+          return;
+        }
+
+        statusEl.textContent = "지오코딩 중... (무료 API라 너무 자주 누르면 막힐 수 있어)\n";
+
+        const points = [];
+
+        // 순서대로 지오코딩 (레이트리밋 대비로 약간 딜레이)
+        for (let i = 0; i < rows.length; i++) {
+          const row = rows[i];
+          const input = row.querySelector('input[type="text"]');
+          const badge = row.querySelector(".badge");
+          const addr = input.value.trim();
+
+          // 빈 줄은 스킵
+          if (!addr) {
+            badge.textContent = "좌표: -";
+            continue;
+          }
+
+          statusEl.textContent += `- ${addr}\n`;
+
+          const result = await geocodeAddress(addr);
+
+          // 너무 빠른 연속 호출 방지(간단 딜레이)
+          await sleep(450);
+
+          if (!result) {
+            badge.textContent = "좌표: 실패";
+            statusEl.textContent += `  ↳ 좌표 변환 실패 (주소를 더 구체적으로 써줘)\n`;
+            continue;
+          }
+
+          badge.textContent = `좌표: ${result.lat.toFixed(5)}, ${result.lng.toFixed(5)}`;
+
+          points.push([result.lat, result.lng]);
+
+          // 마커 표시 (간단 라벨)
+          const marker = L.marker([result.lat, result.lng]).addTo(map);
+          marker.bindPopup(`<b>${points.length}번째</b><br/>${addr}<br/><span class="muted">${result.displayName}</span>`);
+          markers.push(marker);
+        }
+
+        if (points.length < 2) {
+          statusEl.textContent += "\n유효한 좌표가 2개 미만이라 선을 그릴 수 없어.";
+          return;
+        }
+
+        // 선 연결 (직선)
+        routeLine = L.polyline(points, { weight: 5 }).addTo(map);
+
+        // 화면 맞추기
+        map.fitBounds(routeLine.getBounds(), { padding: [20, 20] });
+
+        statusEl.textContent += `\n완료! (유효 지점 ${points.length}개 연결)`;
+      });
+    </script>
+  </body>
+</html>
