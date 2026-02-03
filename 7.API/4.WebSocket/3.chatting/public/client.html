@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #messageContainer {
+        margin-top: 20px;
+        width: 400px;
+        height: 200px;
+        border: 1px solid gray;
+        padding: 10px;
+        overflow-y: auto;
+      }
+
+      .sentMessage {
+        text-align: right;
+        margin-bottom: 10px;
+      }
+
+      .receivedMessage {
+        text-align: left;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>웹소켓 테스트</h1>
+    <input id="msg" type="text" placeholder="메시지 입력" />
+    <button onclick="send()">전송</button>
+    <div id="messageContainer"></div>
+    <script>
+      //웹소켓 프로토콜
+      //const socket = new WebSocket('ws://localhost:3333');
+      //또 다른 방법 => 브라우저의 주소 가져오기
+      const socket = new WebSocket(`ws://${window.location.hostname}:3333`);
+
+
+      socket.onopen = () => {
+        console.log('서버와 연결됨');
+      };
+
+      socket.onmessage = (ev) => {
+        console.log('서버가 한말:', ev.data);
+        display(JSON.parse(ev.data));
+      };
+
+      function display(message) {
+        const messageContainer = document.getElementById('messageContainer');
+        const newMessage = document.createElement('div');
+
+        newMessage.textContent = message.content;
+        if (message.type === 'received') {
+          newMessage.classList.add('receivedMessage');
+        } else {
+            newMessage.classList.add('sentMessage');
+        }
+
+        messageContainer.appendChild(newMessage);
+      }
+
+      function send() {
+        const msg = document.getElementById('msg').value;
+
+        //JSON으로 포맷팅
+        const messageObj = { content: msg };
+
+        socket.send(JSON.stringify(messageObj));
+      }
+    </script>
+  </body>
+</html>
