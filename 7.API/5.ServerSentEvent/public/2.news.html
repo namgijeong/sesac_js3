@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #news{
+            margin-top:20px;
+            padding:10px;
+            border:1px solid #ddd;
+            max-width:400px;
+            min-height:200px;
+        }
+        .news-item{
+            padding:5px;
+            border-bottom:1px solid #eee;
+        }
+        .highlight{
+            background-color:rgba(255,255,0,0.2);
+            color:black;
+        }
+    </style>
+</head>
+<body>
+    <h1>뉴스 헤드라인 피드</h1>
+    <div id="news"></div>
+
+    <script>
+        const eventSource = new EventSource('/newsfeed');
+        const newsDiv= document.getElementById('news');
+
+        let newsList = [];
+
+        eventSource.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            console.log(data);
+
+            //맨 앞에 넣기 위해서..
+            newsList.unshift(data.news);
+            if (newsList.length > 5){
+                //오래된거 지우기
+                newsList.pop();
+            }
+
+            newsDiv.innerHTML = newsList.map((news, index) => {
+                return `<div class="news-item ${index === 0 ? 'highlight' : ''}">${news}</div>`
+            }).join('');
+
+            //하이라이트 효과는 1초후 제거
+            setTimeout(()=>{
+                const highlight = document.querySelector('.highlight');
+                if (highlight){
+                    highlight.classList.remove('highlight');
+                }
+            },1000);
+        }
+    </script>
+</body>
+</html>
