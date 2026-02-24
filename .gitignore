@@ -21,3 +21,6 @@ dist/
 
 #Credentials
 .env
+
+#typescript 개발 폴더에서 자동생성된 js파일은 예외
+8.TYPESCRIPT/**/*.js
